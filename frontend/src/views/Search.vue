@@ -1,9 +1,5 @@
 <template>
-  <div
-    v-infinite-scroll="loadMore"
-    infinite-scroll-disabled="loading"
-    infinite-scroll-distance="10"
-  >
+  <div v-infinite-scroll="loadMore" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
     <v-container fill-height fluid grid-list-xl>
       <v-layout justify-center wrap mt-5>
         <v-flex xs12 md8>
@@ -15,13 +11,9 @@
                     <v-text-field v-model="storeName" label="음식점 이름" />
                   </v-flex>
                   <v-flex xs12 text-center>
-                    <v-btn
-                      large
-                      class="indigo white--text ma-5"
-                      rounded
-                      color="blue lighten-1"
-                      @click="onSubmit"
-                    >GO!</v-btn>
+                    <v-btn large class="indigo white--text ma-5" rounded color="blue lighten-1" @click="onSubmit"
+                      >GO!</v-btn
+                    >
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -47,31 +39,31 @@
 </template>
 
 <script>
-import Card from "@/components/Card";
-import StoreListCard from "@/components/StoreListCard";
-import { mapState, mapActions } from "vuex";
+// import Card from "@/components/Card";
+// import StoreListCard from "@/components/StoreListCard";
+// import { mapState, mapActions } from "vuex";
 export default {
   components: {
     Card,
-    StoreListCard
+    StoreListCard,
   },
   data: () => ({
-    storeName: "",
-    loading: true
+    storeName: '',
+    loading: true,
   }),
   computed: {
     ...mapState({
-      stores: state => state.data.storeSearchList,
-      page: state => state.data.storeSearchPage
-    })
+      stores: (state) => state.data.storeSearchList,
+      page: (state) => state.data.storeSearchPage,
+    }),
   },
   methods: {
-    ...mapActions("data", ["getStores"]),
+    ...mapActions('data', ['getStores']),
     onSubmit: async function() {
       const params = {
         name: this.storeName,
         page: 1,
-        append: false
+        append: false,
       };
       await this.getStores(params);
       this.loading = false;
@@ -81,13 +73,13 @@ export default {
       const params = {
         name: this.storeName,
         page: this.page,
-        append: true
+        append: true,
       };
       await this.getStores(params);
       setTimeout(() => {
         this.loading = false;
       }, 1000);
-    }
-  }
+    },
+  },
 };
 </script>

@@ -1,13 +1,29 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import data from "./modules/data";
-import app from "./modules/app";
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+// import data from './modules/@temp';
 
 Vue.use(Vuex);
 
+const state = {
+  spinnerActive: false,
+};
+const getters = {
+  //state에서 추가적인 작업 후 return
+};
+const actions = {
+  //async await 사용
+};
+const mudations = {
+  SET_SPINNER_TOGGLE(state) {
+    state.spinnerActive = !state.spinnerActive;
+  },
+};
+
 export default new Vuex.Store({
-  modules: {
-    data,
-    app
-  }
+  state,
+  getters,
+  actions,
+  mutations,
+  modules: {},
 });

@@ -14,7 +14,7 @@ const getters = {
 const actions = {
   //async await 사용
 };
-const mudations = {
+const mutations = {
   SET_SPINNER_TOGGLE(state) {
     state.spinnerActive = !state.spinnerActive;
   },

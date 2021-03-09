@@ -1,20 +1,15 @@
 <template>
-  <v-app id="app">
-    <route-view />
-  </v-app>
+  <div id="app">
+    <router-view />
+  </div>
 </template>
 
 <script>
 import './assets/css/static/style.css';
 
 export default {
-  name: 'app',
-  components: {
-    Drawer,
-    Toolbar,
-    RouteView,
-    GoTop,
-  },
+  name: 'App',
+  components: {},
   date() {
     return {};
   },

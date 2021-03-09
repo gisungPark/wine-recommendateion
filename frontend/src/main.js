@@ -6,7 +6,6 @@ import store from './store';
 //추가 라이브러리
 import vuetify from './plugins/vuetify';
 import infiniteScroll from 'vue-infinite-scroll';
-
 Vue.config.productionTip = false;
 Vue.use(infiniteScroll);
 //https://www.npmjs.com/package/vue-moment
@@ -14,8 +13,8 @@ Vue.use(infiniteScroll);
 Vue.use(require('vue-moment'));
 
 new Vue({
-  vuetify,
   router,
   store,
+  vuetify,
   render: (h) => h(App),
 }).$mount('#app');

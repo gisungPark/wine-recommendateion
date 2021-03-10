@@ -78,7 +78,7 @@ ex) [backend] feat : 로그인기능
 ```
 master
 
-    **develop**
+  develop
 
     analy
 

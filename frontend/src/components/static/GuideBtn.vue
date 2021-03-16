@@ -193,7 +193,7 @@ button {
   background-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.05), 0px 0px 2px rgba(0, 0, 0, 0.05), 0px 0px 4px rgba(0, 0, 0, 0.04), 0px 0px 8px rgba(0, 0, 0, 0.1),
     0 16px 16px rgba(0, 0, 0, 0.1) !important;
-  transition: background-color, transform 0.3s ease;
+  transition: background-color 0.3s, transform 0.3s ease;
 }
 .extension-item:hover {
   background-color: #fff;

@@ -1,0 +1,30 @@
+/* 
+예시
+div {
+  animation-name: example;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-delay: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+div {
+  animation: example 5s linear 2s infinite alternate;
+}
+*/
+
+.marquee {
+  animation-name: marquee;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translate(0%, 0%);
+  }
+  to {
+    transform: translate(-50%, 0%);
+  }
+}

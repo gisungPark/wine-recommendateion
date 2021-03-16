@@ -24,6 +24,12 @@ export default {
 };
 </script>
 
+<style>
+body {
+  background-color: var(--basic-color-bg);
+}
+</style>
+
 <style scoped>
 #guide-btn {
   width: 100%;

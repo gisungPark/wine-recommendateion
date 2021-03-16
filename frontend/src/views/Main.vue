@@ -1,6 +1,9 @@
 <template>
   <div>
     <h1>{{ message }}</h1>
+    <div id="wrap">
+      <h1>hello</h1>
+    </div>
   </div>
 </template>
 
@@ -18,5 +21,10 @@ export default {
 <style scoped>
 div {
   background-color: red;
+}
+#wrap {
+  width: 100%;
+  height: 2000px;
+  background-color: green;
 }
 </style>

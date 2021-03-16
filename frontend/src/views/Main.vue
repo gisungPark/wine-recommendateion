@@ -20,7 +20,7 @@ export default {
 
 <style scoped>
 div {
-  background-color: red;
+  background-color: rgba(255, 0, 0, 0.295);
 }
 #wrap {
   width: 100%;

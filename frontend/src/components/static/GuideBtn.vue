@@ -9,6 +9,20 @@
         </div>
       </div>
       <button class="guide-btn container-shadow-bold"></button>
+
+      <div id="extension-frame">
+        <button class="extension-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z" />
+          </svg>
+        </button>
+        <button class="extension-item">
+          <span class="char1">E</span>
+          <span class="char2">s</span>
+          <span class="char3">t</span>
+        </button>
+        <button class="extension-item"></button>
+      </div>
     </div>
   </div>
 </template>
@@ -98,20 +112,67 @@ export default {
   font-size: 4rem;
 }
 
-.guide-btn {
+button {
   width: 72px;
   height: 72px;
-  margin: 4px 4px 4px auto;
+  margin: 4px 4px 4px 4px;
+  border-radius: 50%;
+}
+
+.guide-btn {
+  margin: 4px 4px 4px auto !important;
   background-color: #c9726d;
   background-image: url(../../assets/images/guide_btn_image.png);
   background-position: center;
   background-size: contain;
-  border-radius: 50%;
   z-index: 2;
   transition: 0.5s transform, 0.5s background-color ease;
 }
+
 .guide-btn:hover {
   transform: scale(1.11);
   background-color: #c7433c;
+}
+
+#extension-frame {
+  position: absolute;
+  right: 10px;
+  bottom: 12px;
+  background-color: blue;
+  width: 80px;
+  border-radius: 80px;
+}
+.extension-item {
+  background-color: #fff;
+}
+.extension-item:nth-child(1) {
+  fill: rgb(205, 0, 0);
+}
+button span {
+  font: 26px Monaco, MonoSpace;
+  height: 200px;
+  position: absolute;
+  width: 20px;
+  left: 0;
+  top: 0;
+  transform-origin: bottom center;
+}
+.char1 {
+  transform: rotate(6deg);
+}
+.char2 {
+  transform: rotate(12deg);
+}
+.char3 {
+  transform: rotate(18deg);
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

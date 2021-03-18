@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <GuideBtn id="guide-btn" />
+    <LoginDialog />
     <router-view />
   </div>
 </template>
@@ -8,10 +9,13 @@
 <script>
 import './assets/css/static/style.css';
 import GuideBtn from './components/static/GuideBtn.vue';
+import LoginDialog from './components/static/LoginDialog.vue;';
+
 export default {
   name: 'App',
   components: {
     GuideBtn,
+    LoginDialog,
   },
   date() {
     return {};

@@ -1,7 +1,7 @@
 <template>
   <div data-app>
     <v-row justify="center">
-      <v-dialog v-model="loginDialog" persistent max-width="600px">
+      <v-dialog v-model="isOk" persistent max-width="600px">
         <v-card>
           <div
             style="
@@ -39,7 +39,7 @@
               <!-- 로그인 버튼 중앙 정렬 필요 -->
               <v-row>
                 <div id="loginBtn" class="btnBar">
-                  <v-btn style="width: 200px" text @click="close">
+                  <v-btn style="width: 200px" text @click="onLogin">
                     CONTINUE
                   </v-btn>
                 </div>
@@ -91,15 +91,19 @@ export default {
     KakaoLogin,
   },
   data: () => ({
-    dialog: false,
+    isOk: false,
     userPw: "",
-    userID: "",
+    userId: "",
   }),
   computed: {
     ...mapState("loginDialog", ["loginDialog"]),
   },
   methods: {
     ...mapMutations("loginDialog", ["SET_LOGIN_TOGGLE"]),
+    onLogin() {
+      alert(this.userId + " 님 환영합니다.");
+    },
+
     close() {
       this.SET_LOGIN_TOGGLE();
     },

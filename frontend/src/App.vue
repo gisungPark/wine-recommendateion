@@ -2,6 +2,7 @@
   <div id="app">
     <GuideBtn id="guide-btn" />
     <LoginModal />
+    <JoinModal />
     <router-view id="router-view" />
   </div>
 </template>
@@ -10,11 +11,14 @@
 import "./assets/css/static/style.css";
 import GuideBtn from "./components/static/GuideBtn.vue";
 import LoginModal from "./components/static/Login.vue";
+import JoinModal from "./components/static/Join.vue";
+
 export default {
   name: "App",
   components: {
     GuideBtn,
     LoginModal,
+    JoinModal,
   },
   date() {
     return {};

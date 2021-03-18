@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 
 // import data from './modules/@temp';
 import guideBtn from './modules/guideBtn';
+import nav from './modules/nav';
 
 Vue.use(Vuex);
 
@@ -22,5 +23,6 @@ export default new Vuex.Store({
   mutations,
   modules: {
     guideBtn,
+    nav,
   },
 });

@@ -33,6 +33,14 @@ font-family: 'Lobster', cursive;
 .shrink {
   transform: scale(0);
 }
+.no-drag {
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+
 /* 정사각형 */
 .square {
   /* width는 적용 scope내에서 imoprtant로 조절 */

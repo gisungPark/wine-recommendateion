@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Nav id="navigation" />
     <GuideBtn id="guide-btn" />
     <router-view />
   </div>
@@ -7,10 +8,13 @@
 
 <script>
 import './assets/css/static/style.css';
+import Nav from './components/static/Nav.vue';
 import GuideBtn from './components/static/GuideBtn.vue';
+
 export default {
   name: 'App',
   components: {
+    Nav,
     GuideBtn,
   },
   date() {
@@ -31,6 +35,13 @@ body {
 </style>
 
 <style scoped>
+#navigation {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  top: 0;
+  left: 0;
+}
 #guide-btn {
   width: 100%;
   position: fixed;

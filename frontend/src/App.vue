@@ -1,17 +1,20 @@
 <template>
   <div id="app">
     <GuideBtn id="guide-btn" />
-    <router-view />
+    <LoginModal />
+    <router-view id="router-view" />
   </div>
 </template>
 
 <script>
-import './assets/css/static/style.css';
-import GuideBtn from './components/static/GuideBtn.vue';
+import "./assets/css/static/style.css";
+import GuideBtn from "./components/static/GuideBtn.vue";
+import LoginModal from "./components/static/Login.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
     GuideBtn,
+    LoginModal,
   },
   date() {
     return {};
@@ -35,5 +38,11 @@ body {
   width: 100%;
   position: fixed;
   bottom: 0px;
+}
+
+#router-view {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 </style>

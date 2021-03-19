@@ -42,15 +42,19 @@ export default {
       this.SET_NAV_TOGGLE();
     },
     clickedRcomm() {
+      this.SET_NAV_TOGGLE();
       alert(`clicked!`);
     },
     clickedWines() {
+      this.SET_NAV_TOGGLE();
       alert(`clicked!`);
     },
     clickedTopic() {
+      this.SET_NAV_TOGGLE();
       alert(`clicked!`);
     },
     clickedChart() {
+      this.SET_NAV_TOGGLE();
       alert(`clicked!`);
     },
   },
@@ -177,8 +181,7 @@ export default {
 }
 li {
   color: var(--basic-color-fill);
-  font-size: 5rem;
-  line-height: 5rem;
+  font-size: 10vw;
   cursor: pointer;
   transition: color 0.6s, transform 0.3s ease;
 }

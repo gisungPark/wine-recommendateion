@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 // import data from './modules/@temp';
 import guideBtn from './modules/guideBtn';
 import loginDialog from './modules/loginDialog';
+import userInfo from './modules/userInfo';
 
 Vue.use(Vuex);
 
@@ -24,5 +25,6 @@ export default new Vuex.Store({
   modules: {
     guideBtn,
     loginDialog,
+    userInfo
   },
 });

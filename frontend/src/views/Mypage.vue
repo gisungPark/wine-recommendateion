@@ -19,41 +19,17 @@
           <div class="imgBox">
             <img
               class="profile"
-              src="https://newsimg.hankookilbo.com/cms/articlerelease/2020/10/02/f18cb31b-168f-4c4e-8fac-86a9864350ef.jpg"
+              :src="this.userInfo.profile"
               alt="프로필 이미지"
             />
           </div>
+          <span id="userId">{{ this.userInfo.nickname }}</span>
           <div class="content-item">
-            <div
-              style="
-                margin: 15px;
-                background-color: black;
-                height: 100px;
-                width: 98%;
-              "
-            >
-              aaaaa
-            </div>
-            <div
-              style="
-                margin: 15px;
-                background-color: black;
-                height: 100px;
-                width: 98%;
-              "
-            >
-              aaaaa
-            </div>
-            <div
-              style="
-                margin: 15px;
-                background-color: black;
-                height: 100px;
-                width: 98%;
-              "
-            >
-              aaaaa
-            </div>
+            <MyReviews
+              v-for="(review, idx) in reviews"
+              :key="idx"
+              :review="review"
+            />
           </div>
         </div>
       </div>
@@ -62,8 +38,41 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+import MyReviews from "@/components/static/mypage/MyReviews.vue";
+
 export default {
   name: "Mypage",
+  components: {
+    MyReviews,
+  },
+
+  data: () => ({
+    cnt: 3,
+    info: "",
+    reviews: [
+      {
+        img:
+          "https://www.lacasabodega.com/wp-content/uploads/2019/02/Botella_Sembro.jpg",
+        reviewTitle: "1번 딸기맛이 나요",
+        reviewScore: 4,
+      },
+      {
+        img: "https://img.maisonkorea.com/2020/04/msk_5e8d7129f1d53.jpg",
+        reviewTitle: "2번 바나나맛이 나요",
+        reviewScore: 4,
+      },
+      {
+        img:
+          "http://www.sommeliertimes.com/news/photo/201905/13382_26893_4347.jpg",
+        reviewTitle: "3번 사과맛이 나요",
+        reviewScore: 4,
+      },
+    ],
+  }),
+  computed: {
+    ...mapState("userInfo", ["userInfo"]),
+  },
 };
 </script>
 
@@ -110,24 +119,23 @@ export default {
   background: #903749;
   border-radius: 20px;
   font-weight: bold;
+  width: 120px;
+  height: 25px;
   transform: rotate(-90deg);
   /* width: 150px; */
 }
 .nav-btn-item1 {
   position: absolute;
-  width: 120px;
   bottom: 70px;
   left: 100px;
 }
 .nav-btn-item2 {
   position: absolute;
-  width: 120px;
   bottom: 200px;
   left: 100px;
 }
 .nav-btn-item3 {
   position: absolute;
-  width: 120px;
   bottom: 330px;
   left: 100px;
 }
@@ -140,7 +148,7 @@ export default {
   position: relative;
   top: 150px;
   width: 90%;
-  height: 70vh;
+  height: auto;
   background-color: white;
   border-radius: 2em;
 }
@@ -159,8 +167,18 @@ export default {
   object-fit: cover;
 }
 
+#userId {
+  font-size: 32px;
+  font-weight: bold;
+  position: absolute;
+  top: -40px;
+  left: 210px;
+}
+
 .content-item {
   position: relative;
   top: 100px;
+  display: flex;
+  flex-direction: column;
 }
 </style>

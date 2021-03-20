@@ -10,8 +10,8 @@
 <script>
 import "./assets/css/static/style.css";
 import GuideBtn from "./components/static/GuideBtn.vue";
-import LoginModal from "./components/static/Login.vue";
-import JoinModal from "./components/static/Join.vue";
+import LoginModal from "./components/static/user/Login.vue";
+import JoinModal from "./components/static/user/Join.vue";
 
 export default {
   name: "App",
@@ -42,11 +42,13 @@ body {
   width: 100%;
   position: fixed;
   bottom: 0px;
+  z-index: 10;
 }
 
 #router-view {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 0;
 }
 </style>

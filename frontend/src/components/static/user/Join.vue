@@ -1,7 +1,7 @@
 <template>
   <div data-app>
     <v-row justify="center">
-      <v-dialog v-model="loginDialog" persistent max-width="600px">
+      <v-dialog v-model="joinDialog" persistent max-width="600px">
         <v-card>
           <div
             style="
@@ -106,19 +106,19 @@ export default {
     ],
   }),
   computed: {
-    ...mapState("loginDialog", ["loginDialog"]),
+    ...mapState("loginDialog", ["joinDialog"]),
     passwordConfirmationRule() {
       return () =>
         this.password === this.passwordCheck || "비밀번호가 일치하지 않습니다.";
     },
   },
   methods: {
-    ...mapMutations("loginDialog", ["SET_LOGIN_TOGGLE"]),
+    ...mapMutations("loginDialog", ["SET_JOIN_TOGGLE"]),
     join() {
       alert(this.userId + " " + this.password + " " + this.nickname);
     },
     close() {
-      this.SET_LOGIN_TOGGLE();
+      this.SET_JOIN_TOGGLE();
     },
   },
 };

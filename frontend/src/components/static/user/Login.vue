@@ -1,7 +1,7 @@
 <template>
   <div data-app>
     <v-row justify="center">
-      <v-dialog v-model="isOk" persistent max-width="600px">
+      <v-dialog v-model="loginDialog" persistent max-width="600px">
         <v-card>
           <div
             style="
@@ -72,7 +72,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="close">
+            <v-btn color="blue darken-1" text @click="onJoin">
               JOIN YourWine
             </v-btn>
           </v-card-actions>
@@ -91,17 +91,25 @@ export default {
     KakaoLogin,
   },
   data: () => ({
-    isOk: false,
     userPw: "",
     userId: "",
   }),
   computed: {
-    ...mapState("loginDialog", ["loginDialog"]),
+    ...mapState("loginDialog", ["loginDialog", "joinDialog"]),
   },
   methods: {
-    ...mapMutations("loginDialog", ["SET_LOGIN_TOGGLE"]),
+    ...mapMutations("loginDialog", ["SET_LOGIN_TOGGLE", "SET_JOIN_TOGGLE"]),
+    ...mapMutations("guideBtn", [
+      "SET_GUIDEBTN_TOGGLE",
+      "SET_GUIDEBTNTIP_TOGGLE",
+    ]),
+
     onLogin() {
       alert(this.userId + " 님 환영합니다.");
+      this.SET_LOGIN_TOGGLE();
+      this.SET_GUIDEBTN_TOGGLE();
+      this.$router.push({ name: "Mypage" });
+      // this.$router.push(`/mypage`);
     },
 
     close() {
@@ -111,6 +119,10 @@ export default {
       alert("로그인 성공");
     },
     onFailure() {},
+    onJoin() {
+      console.log("click join btn!!");
+      this.SET_JOIN_TOGGLE();
+    },
   },
 };
 </script>

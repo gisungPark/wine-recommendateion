@@ -60,8 +60,6 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-
-
     //규칙 추출
     public List<String> getRoles(String token){
         return (List<String>) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("roles");
@@ -69,11 +67,10 @@ public class JwtTokenProvider {
 
     // Request의 Header에서 토큰 파인싱, "X-AUTH-TOKEN" , 헤더이름 커스텀 가능
     public String resolveToken(HttpServletRequest req){
-        return req.getHeader("X-AUTH-TOKEN");
+        return req.getHeader("TOKEN");
     }
 
     public boolean validateToken(String jwtToken){
-        System.out.println("토큰 확인");
         try{
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date()); // 기한이 현재보다 전인지

@@ -12,6 +12,6 @@ public class TokenResultDTO {
     private String nickname;
 
     @ApiModelProperty(value="correct")
-    private Boolean correct;
+    private Integer code;
 }
 

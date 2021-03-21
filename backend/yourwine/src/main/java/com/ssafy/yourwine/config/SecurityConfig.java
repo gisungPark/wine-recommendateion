@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user/signup", "/user/checkemail/**", "/user/checknickname/**", "/user/checkuser",
-                            "/user/signin", "/user/checkmail")
+                            "/user/login", "/user/checkmail")
                 .permitAll()
                 .antMatchers(
                         "/v2/api-docs", "/swagger-resources/**",

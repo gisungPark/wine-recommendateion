@@ -52,20 +52,20 @@ public class UserService {
             return false;
     }
 
-    public TokenResultDTO signIn(SignInDTO signInDTO) {
+    public TokenResultDTO logIn(SignInDTO signInDTO) {
         User user = userRepository.findByEmailAndPassword(signInDTO.getEmail(), signInDTO.getPassword());
         TokenResultDTO tokenResultDTO = new TokenResultDTO();
 
         if(user != null){
             tokenResultDTO.setToken(jwtTokenProvider.generateToken(user.getUserId()));
             tokenResultDTO.setNickname(user.getNickname());
-            tokenResultDTO.setCorrect(true);
+            tokenResultDTO.setCode(0);
 
             user.setToken(tokenResultDTO.getToken());
 
             userRepository.save(user);
         } else {
-            tokenResultDTO.setCorrect(false);
+            tokenResultDTO.setCode(1);
         }
 
         return tokenResultDTO;
@@ -93,12 +93,12 @@ public class UserService {
                 if (user.getFlag()) {
                     tokenResultDTO.setToken(token);
                     tokenResultDTO.setNickname(user.getNickname());
-                    tokenResultDTO.setCorrect(true);
+                    tokenResultDTO.setCode(2);
 
                     return tokenResultDTO;
                 } else {
                     tokenResultDTO.setToken(token);
-                    tokenResultDTO.setCorrect(false);
+                    tokenResultDTO.setCode(3);
 
                     return tokenResultDTO;
                 }
@@ -113,12 +113,12 @@ public class UserService {
                 userRepository.save(user);
 
                 tokenResultDTO.setToken(token);
-                tokenResultDTO.setCorrect(false);
+                tokenResultDTO.setCode(3);
 
                 return tokenResultDTO;
             }
         } else {
-            tokenResultDTO.setCorrect(false);
+            tokenResultDTO.setCode(4);
 
             return tokenResultDTO;
         }
@@ -127,20 +127,65 @@ public class UserService {
     public TokenResultDTO updateUser(String token, String nickname) {
 	    String user_id = jwtTokenProvider.getUserId(token);
         User user = userRepository.findByUserId(user_id);
-        String new_token = jwtTokenProvider.generateToken(user_id);
-
-        user.setNickname(nickname);
-        user.setToken(new_token);
-        user.setFlag(true);
-
-        userRepository.save(user);
-
+        User user2 = userRepository.findByNickname(nickname);
         TokenResultDTO tokenResultDTO = new TokenResultDTO();
 
-        tokenResultDTO.setToken(new_token);
-        tokenResultDTO.setNickname(nickname);
-        tokenResultDTO.setCorrect(true);
+        if(user2 != null) {
+            String new_token = jwtTokenProvider.generateToken(user_id);
+
+            user.setToken(new_token);
+
+            userRepository.save(user);
+
+            tokenResultDTO.setToken(new_token);
+            tokenResultDTO.setCode(6);
+
+        } else {
+            user.setNickname(nickname);
+            user.setToken(null);
+            user.setFlag(true);
+
+            userRepository.save(user);
+
+            tokenResultDTO.setCode(5);
+
+        }
 
         return tokenResultDTO;
+    }
+
+    public UserDTO getUserInfo(String token) {
+        String user_id = jwtTokenProvider.getUserId(token);
+        User user = userRepository.findByUserId(user_id);
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setEmail(user.getEmail());
+        userDTO.setNickname(user.getNickname());
+        userDTO.setImg(user.getImg());
+        userDTO.setProvider(user.getProvider());
+
+        return userDTO;
+    }
+
+    public void updatePassword(String token, String password) {
+        String user_id = jwtTokenProvider.getUserId(token);
+        User user = userRepository.findByUserId(user_id);
+
+        user.setPassword(password);
+
+        userRepository.save(user);
+    }
+
+    public boolean checkPassword(String token, String password) {
+        String user_id = jwtTokenProvider.getUserId(token);
+        User user = userRepository.findByUserId(user_id);
+
+        String password2 = user.getPassword();
+
+        if(password.equals(password2)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

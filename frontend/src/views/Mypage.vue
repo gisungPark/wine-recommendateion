@@ -3,33 +3,30 @@
   <div class="fram">
     <div class="item" style="background-color: #e84545">
       <div class="left-wrap">
-        <div class="nav-title">
-          <span>Mypage</span>
-        </div>
+        <span class="nav-title">Mypage</span>
         <div class="nav-btn">
-          <button class="nav-btn-item1">스크랩ㄸㄸㄸㄸㄸㄸ한 와인</button>
+          <button class="nav-btn-item1">스크랩한 와인</button>
           <button class="nav-btn-item2">내가 남긴 리뷰</button>
           <button class="nav-btn-item3">내 취향 통계</button>
         </div>
       </div>
     </div>
+
     <div class="item" style="background-color: #2b2e4a">
       <div class="right-wrap">
         <div class="content">
           <div class="imgBox">
-            <img
-              class="profile"
-              :src="this.userInfo.profile"
-              alt="프로필 이미지"
-            />
+            <img class="profile" :src="this.userInfo.profile" alt="프로필 이미지" />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>
           <div class="content-item">
-            <MyReviews
-              v-for="(review, idx) in reviews"
-              :key="idx"
-              :review="review"
-            />
+            <MyReviews v-for="(review, idx) in reviews" :key="idx" :review="review" />
+          </div>
+          <div class="content-item">
+            <MyReviews v-for="(review, idx) in reviews" :key="idx" :review="review" />
+          </div>
+          <div class="content-item">
+            <MyReviews v-for="(review, idx) in reviews" :key="idx" :review="review" />
           </div>
         </div>
       </div>
@@ -38,40 +35,44 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-import MyReviews from "@/components/static/mypage/MyReviews.vue";
+import { mapState, mapMutations } from 'vuex';
+import MyReviews from '@/components/static/mypage/MyReviews.vue';
 
 export default {
-  name: "Mypage",
+  name: 'Mypage',
   components: {
     MyReviews,
   },
 
   data: () => ({
-    cnt: 3,
-    info: "",
+    cnt: 4,
+    info: '',
     reviews: [
       {
-        img:
-          "https://www.lacasabodega.com/wp-content/uploads/2019/02/Botella_Sembro.jpg",
-        reviewTitle: "1번 딸기맛이 나요",
+        img: 'https://www.lacasabodega.com/wp-content/uploads/2019/02/Botella_Sembro.jpg',
+        reviewTitle: '1번 딸기맛이 나요',
         reviewScore: 4,
       },
       {
-        img: "https://img.maisonkorea.com/2020/04/msk_5e8d7129f1d53.jpg",
-        reviewTitle: "2번 바나나맛이 나요",
+        img: 'https://img.maisonkorea.com/2020/04/msk_5e8d7129f1d53.jpg',
+        reviewTitle: '2번 바나나맛이 나요',
         reviewScore: 4,
       },
       {
-        img:
-          "http://www.sommeliertimes.com/news/photo/201905/13382_26893_4347.jpg",
-        reviewTitle: "3번 사과맛이 나요",
+        img: 'http://www.sommeliertimes.com/news/photo/201905/13382_26893_4347.jpg',
+        reviewTitle: '3번 사과맛이 나요',
+        reviewScore: 4,
+      },
+      {
+        img: 'http://www.sommeliertimes.com/news/photo/201905/13382_26893_4347.jpg',
+        reviewTitle: '3번 사과맛이 나요',
         reviewScore: 4,
       },
     ],
   }),
   computed: {
-    ...mapState("userInfo", ["userInfo"]),
+    ...mapState('userInfo', ['userInfo']),
+    ...mapState('nav', ['navActive']),
   },
 };
 </script>
@@ -84,7 +85,7 @@ export default {
   display: flex;
   z-index: 0;
 }
-.item:nth-child(1) {
+/* .item:nth-child(1) {
   flex: 2 1 0;
   display: flex;
   flex-direction: column;
@@ -92,8 +93,16 @@ export default {
 .item:nth-child(2) {
   flex-grow: 1;
   flex: 14 1 0;
+} */
+.item:nth-child(1) {
+  width: 173px;
+  display: flex;
+  flex-direction: column;
 }
-
+.item:nth-child(2) {
+  flex-grow: 1;
+  flex: 14 1 0;
+}
 .left-wrap {
   display: flex;
   flex-direction: column;
@@ -106,14 +115,13 @@ export default {
   font-weight: bold;
   margin: 5px;
   position: absolute;
-  bottom: 90px;
-  left: 30px;
+  bottom: 65px;
+  left: 10px;
   transform: rotate(-90deg);
 }
 .nav-btn {
   display: flex;
   flex-flow: row nowrap;
-  transform: rotate(-90deg);
 }
 .nav-btn > button {
   border: 1px solid black;
@@ -122,22 +130,21 @@ export default {
   font-weight: bold;
   width: 120px;
   height: 25px;
+  left: 80px;
+  transform: rotate(-90deg);
   /* width: 150px; */
 }
 .nav-btn-item1 {
   position: absolute;
   bottom: 70px;
-  left: 100px;
 }
 .nav-btn-item2 {
   position: absolute;
   bottom: 200px;
-  left: 100px;
 }
 .nav-btn-item3 {
   position: absolute;
   bottom: 330px;
-  left: 100px;
 }
 
 .right-wrap {
@@ -146,7 +153,7 @@ export default {
 }
 .content {
   position: relative;
-  top: 150px;
+  margin-top: 150px;
   width: 90%;
   height: auto;
   background-color: white;
@@ -177,7 +184,7 @@ export default {
 
 .content-item {
   position: relative;
-  top: 100px;
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
 }

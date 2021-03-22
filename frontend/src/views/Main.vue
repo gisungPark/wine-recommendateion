@@ -60,6 +60,7 @@
     <section id="main-section3">
       <div class="main-message wine-review">
         <h1>{{ avg }}</h1>
+        <Scrap :scraped="true" />
       </div>
     </section>
     <section id="main-section4"></section>
@@ -68,8 +69,13 @@
 
 <script>
 import { mapState } from 'vuex';
+import Scrap from '@/components/button/Scrap.vue';
+
 export default {
   name: 'Main',
+  components: {
+    Scrap,
+  },
   filters: {
     currency(val) {
       return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -128,6 +134,10 @@ const breath = (target) => {
 </script>
 
 <style scoped>
+#wrap {
+  overflow-x: hidden;
+}
+
 #main-section1 {
   background-color: var(--basic-color-bg);
 }
@@ -156,8 +166,7 @@ section {
   top: 50%;
   transform: translate(-50%, -50%);
   width: auto;
-  height: auto;
-  max-height: 80vh;
+  height: 60vh;
 }
 .stop {
 }
@@ -260,5 +269,11 @@ span {
 }
 .wine-info hr {
   width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .wine-title-sub {
+    top: 59%;
+  }
 }
 </style>

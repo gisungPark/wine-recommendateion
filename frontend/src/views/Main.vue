@@ -71,6 +71,7 @@ section {
 .marquee-container {
   position: absolute;
   top: 38vh;
+  opacity: 0.8;
   white-space: nowrap;
 }
 .title {
@@ -82,7 +83,7 @@ section {
   /* transform: translate(0, -23vh); */
   font-size: 30vh;
   line-height: 30vh;
-  padding-right: 200px;
+  padding-left: 200px;
 }
 .wine-title-sub {
   position: absolute;
@@ -90,6 +91,7 @@ section {
   left: 50%;
   margin-left: 30px;
   font-size: 10vh;
+  text-shadow: 0 0 1px rgba(225, 169, 87, 0.644), 0 0 2px rgba(225, 169, 87, 0.747), 0 0 4px rgba(225, 169, 87, 0.548), 0 0 12px rgba(225, 169, 87, 0.541) !important;
 }
 .tilt {
   transform: rotate(3deg);

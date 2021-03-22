@@ -7,7 +7,7 @@
           <span>Mypage</span>
         </div>
         <div class="nav-btn">
-          <button class="nav-btn-item1">스크랩한 와인</button>
+          <button class="nav-btn-item1">스크랩ㄸㄸㄸㄸㄸㄸ한 와인</button>
           <button class="nav-btn-item2">내가 남긴 리뷰</button>
           <button class="nav-btn-item3">내 취향 통계</button>
         </div>
@@ -113,6 +113,7 @@ export default {
 .nav-btn {
   display: flex;
   flex-flow: row nowrap;
+  transform: rotate(-90deg);
 }
 .nav-btn > button {
   border: 1px solid black;
@@ -121,7 +122,6 @@ export default {
   font-weight: bold;
   width: 120px;
   height: 25px;
-  transform: rotate(-90deg);
   /* width: 150px; */
 }
 .nav-btn-item1 {

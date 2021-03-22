@@ -62,7 +62,7 @@
               <v-row>
                 <div class="btnBar">
                   <KakaoLogin
-                    api-key="ba1e87a869408be092569e9742130104"
+                    :api-key="getKakaoApiKey"
                     :on-success="onSuccess"
                     :on-failure="onFailure"
                   />
@@ -85,17 +85,23 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import KakaoLogin from "vue-kakao-login";
+import { login } from "@/api/login.js";
+
+const API_KEY = process.env.VUE_APP_KAKAO_LOGIN_API_KEY;
 
 export default {
   components: {
     KakaoLogin,
   },
   data: () => ({
-    userPw: "",
     userId: "",
+    userPw: "",
   }),
   computed: {
     ...mapState("loginDialog", ["loginDialog", "joinDialog"]),
+    getKakaoApiKey() {
+      return API_KEY;
+    },
   },
   methods: {
     ...mapMutations("loginDialog", ["SET_LOGIN_TOGGLE", "SET_JOIN_TOGGLE"]),
@@ -105,11 +111,33 @@ export default {
     ]),
 
     onLogin() {
-      alert(this.userId + " 님 환영합니다.");
+      const success = (response) => {
+        //1. respose.code
+        switch (response.code) {
+          case 0: // 로그인 성공 => 토큰, 닉네임 저장
+            break;
+          case 1: // 로그인 실패 => 토큰, 닉네임 저장 x
+            break;
+          case 2: // 소셜 로그인 성공 => 토큰, 닉네임 저장
+            break;
+          case 3: // 소셜 최초 로그인 => 회원 가입 이동
+            break;
+          case 4: // 토큰 유효성 검사 실패
+            break;
+          case 5: // 정상 가입 완료
+            break;
+          case 6: // 가입 실패
+            break;
+        }
+      };
+      const fail = {};
+      const userInfo = {};
+
+      login(userInfo, success, fail);
+
       this.SET_LOGIN_TOGGLE();
       this.SET_GUIDEBTN_TOGGLE();
       this.$router.push({ name: "Mypage" });
-      // this.$router.push(`/mypage`);
     },
 
     close() {

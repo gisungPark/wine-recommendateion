@@ -4593,8 +4593,13 @@ internal-ip@^4.3.0:
 
 interpret@^1.0.0:
   version "1.4.0"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.4.0.tgz#665ab8bc4da27a774a40584e812e3e0fa45b1a1e"
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
+=======
+  resolved "https://registry.npm.taobao.org/interpret/download/interpret-1.4.0.tgz#665ab8bc4da27a774a40584e812e3e0fa45b1a1e"
+  integrity sha1-Zlq4vE2iendKQFhOgS4+D6RbGh4=
+>>>>>>> eb8f36bd86094395659d8111c3bb5ebdd077253b
 
 invariant@^2.2.2:
   version "2.2.4"
@@ -5142,8 +5147,13 @@ kind-of@^6.0.0, kind-of@^6.0.2:
 
 klona@^2.0.4:
   version "2.0.4"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.4.tgz#7bb1e3affb0cb8624547ef7e8f6708ea2e39dfc0"
   integrity sha512-ZRbnvdg/NxqzC7L9Uyqzf4psi1OM4Cuc+sJAkQPjO6XkQIJTNbfK2Rsmbw8fx1p2mkZdp2FZYo2+LwXYY/uwIA==
+=======
+  resolved "https://registry.npm.taobao.org/klona/download/klona-2.0.4.tgz#7bb1e3affb0cb8624547ef7e8f6708ea2e39dfc0"
+  integrity sha1-e7Hjr/sMuGJFR+9+j2cI6i4538A=
+>>>>>>> eb8f36bd86094395659d8111c3bb5ebdd077253b
 
 launch-editor-middleware@^2.2.1:
   version "2.2.1"
@@ -5337,8 +5347,13 @@ lru-cache@^5.1.1:
 
 lru-cache@^6.0.0:
   version "6.0.0"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-6.0.0.tgz#6d6fe6570ebd96aaf90fcad1dafa3b2566db3a94"
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
+=======
+  resolved "https://registry.npm.taobao.org/lru-cache/download/lru-cache-6.0.0.tgz#6d6fe6570ebd96aaf90fcad1dafa3b2566db3a94"
+  integrity sha1-bW/mVw69lqr5D8rR2vo7JWbbOpQ=
+>>>>>>> eb8f36bd86094395659d8111c3bb5ebdd077253b
   dependencies:
     yallist "^4.0.0"
 
@@ -5891,8 +5906,13 @@ nth-check@^1.0.2:
 
 null-loader@^3.0.0:
   version "3.0.0"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/null-loader/-/null-loader-3.0.0.tgz#3e2b6c663c5bda8c73a54357d8fa0708dc61b245"
   integrity sha512-hf5sNLl8xdRho4UPBOOeoIwT3WhjYcMUQm0zj44EhD6UscMAz72o2udpoDFBgykucdEDGIcd6SXbc/G6zssbzw==
+=======
+  resolved "https://registry.npm.taobao.org/null-loader/download/null-loader-3.0.0.tgz#3e2b6c663c5bda8c73a54357d8fa0708dc61b245"
+  integrity sha1-PitsZjxb2oxzpUNX2PoHCNxhskU=
+>>>>>>> eb8f36bd86094395659d8111c3bb5ebdd077253b
   dependencies:
     loader-utils "^1.2.3"
     schema-utils "^1.0.0"
@@ -7032,7 +7052,11 @@ readdirp@~3.5.0:
 
 rechoir@^0.6.2:
   version "0.6.2"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/rechoir/-/rechoir-0.6.2.tgz#85204b54dba82d5742e28c96756ef43af50e3384"
+=======
+  resolved "https://registry.npm.taobao.org/rechoir/download/rechoir-0.6.2.tgz#85204b54dba82d5742e28c96756ef43af50e3384"
+>>>>>>> eb8f36bd86094395659d8111c3bb5ebdd077253b
   integrity sha1-hSBLVNuoLVdC4oyWdW70OvUOM4Q=
   dependencies:
     resolve "^1.1.6"
@@ -7377,8 +7401,13 @@ sass-graph@2.2.5:
 
 sass-loader@^10.0.0:
   version "10.1.1"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/sass-loader/-/sass-loader-10.1.1.tgz#4ddd5a3d7638e7949065dd6e9c7c04037f7e663d"
   integrity sha512-W6gVDXAd5hR/WHsPicvZdjAWHBcEJ44UahgxcIE196fW2ong0ZHMPO1kZuI5q0VlvMQZh32gpv69PLWQm70qrw==
+=======
+  resolved "https://registry.npm.taobao.org/sass-loader/download/sass-loader-10.1.1.tgz?cache=0&sync_timestamp=1612805082645&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsass-loader%2Fdownload%2Fsass-loader-10.1.1.tgz#4ddd5a3d7638e7949065dd6e9c7c04037f7e663d"
+  integrity sha1-Td1aPXY455SQZd1unHwEA39+Zj0=
+>>>>>>> eb8f36bd86094395659d8111c3bb5ebdd077253b
   dependencies:
     klona "^2.0.4"
     loader-utils "^2.0.0"
@@ -7388,8 +7417,8 @@ sass-loader@^10.0.0:
 
 sass@^1.32.0:
   version "1.32.8"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.32.8.tgz#f16a9abd8dc530add8834e506878a2808c037bdc"
-  integrity sha512-Sl6mIeGpzjIUZqvKnKETfMf0iDAswD9TNlv13A7aAF3XZlRPMq4VvJWBC2N2DXbp94MQVdNSFG6LfF/iOXrPHQ==
+  resolved "https://registry.npm.taobao.org/sass/download/sass-1.32.8.tgz#f16a9abd8dc530add8834e506878a2808c037bdc"
+  integrity sha1-8WqavY3FMK3Yg05QaHiigIwDe9w=
   dependencies:
     chokidar ">=2.0.0 <4.0.0"
 
@@ -7462,8 +7491,13 @@ semver@^6.0.0, semver@^6.1.1, semver@^6.1.2, semver@^6.3.0:
 
 semver@^7.1.2, semver@^7.3.2:
   version "7.3.4"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.4.tgz#27aaa7d2e4ca76452f98d3add093a72c943edc97"
   integrity sha512-tCfb2WLjqFAtXn4KEdxIhalnRtoKFN7nAwj0B3ZXCbQloV2tq5eDbcTmT68JJD3nRJq24/XgxtQKFIpQdtvmVw==
+=======
+  resolved "https://registry.npm.taobao.org/semver/download/semver-7.3.4.tgz?cache=0&sync_timestamp=1606853731020&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsemver%2Fdownload%2Fsemver-7.3.4.tgz#27aaa7d2e4ca76452f98d3add093a72c943edc97"
+  integrity sha1-J6qn0uTKdkUvmNOt0JOnLJQ+3Jc=
+>>>>>>> eb8f36bd86094395659d8111c3bb5ebdd077253b
   dependencies:
     lru-cache "^6.0.0"
 
@@ -7595,8 +7629,13 @@ shell-quote@^1.6.1:
 
 shelljs@^0.8.3:
   version "0.8.4"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.8.4.tgz#de7684feeb767f8716b326078a8a00875890e3c2"
   integrity sha512-7gk3UZ9kOfPLIAbslLzyWeGiEqx9e3rxwZM0KE6EL8GlGwjym9Mrlx5/p33bWTu9YG6vcS4MBxYZDHYr5lr8BQ==
+=======
+  resolved "https://registry.npm.taobao.org/shelljs/download/shelljs-0.8.4.tgz#de7684feeb767f8716b326078a8a00875890e3c2"
+  integrity sha1-3naE/ut2f4cWsyYHiooAh1iQ48I=
+>>>>>>> eb8f36bd86094395659d8111c3bb5ebdd077253b
   dependencies:
     glob "^7.0.0"
     interpret "^1.0.0"
@@ -8479,7 +8518,7 @@ urix@^0.1.0:
   resolved "https://registry.yarnpkg.com/urix/-/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
 
-url-loader@^1.1.2:
+url-loader@^1.1.1, url-loader@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/url-loader/-/url-loader-1.1.2.tgz#b971d191b83af693c5e3fea4064be9e1f2d7f8d8"
   integrity sha512-dXHkKmw8FhPqu8asTc1puBfe3TehOCo2+RmOOev5suNCIYBcT626kxiWg1NBVkwc4rO8BGa7gP70W7VXuqHrjg==
@@ -8595,8 +8634,13 @@ vm-browserify@^1.0.1:
 
 vue-cli-plugin-vuetify@~2.2.2:
   version "2.2.2"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/vue-cli-plugin-vuetify/-/vue-cli-plugin-vuetify-2.2.2.tgz#4b29854ad199d811941b8ca894ca34593127e0bf"
   integrity sha512-e0p9fuc7YDDUjTi8Uw5XNEwfTZmY+5+kZ22k9ZGsWtDOtWt1dW/oZt3aZtSLrhzEPSimkOWNBD7KZOB3fxNEGA==
+=======
+  resolved "https://registry.npm.taobao.org/vue-cli-plugin-vuetify/download/vue-cli-plugin-vuetify-2.2.2.tgz#4b29854ad199d811941b8ca894ca34593127e0bf"
+  integrity sha1-SymFStGZ2BGUG4yolMo0WTEn4L8=
+>>>>>>> eb8f36bd86094395659d8111c3bb5ebdd077253b
   dependencies:
     null-loader "^3.0.0"
     semver "^7.1.2"
@@ -8635,6 +8679,13 @@ vue-infinite-scroll@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/vue-infinite-scroll/-/vue-infinite-scroll-2.0.2.tgz#ca37a91fe92ee0ad3b74acf8682c00917144b711"
   integrity sha512-n+YghR059YmciANGJh9SsNWRi1YZEBVlODtmnb/12zI+4R72QZSWd+EuZ5mW6auEo/yaJXgxzwsuhvALVnm73A==
+
+vue-kakao-login@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/vue-kakao-login/-/vue-kakao-login-1.0.5.tgz#ffcde4ad4ca005542ffd01f3e7af220511da25a3"
+  integrity sha512-/p+yQS5t4DwUL+1+EVGdxJperKj6YOC9GWxEO0RIrV4EaMIjT3aK3rpm0KsfHfLvwKGlv9rofuq/+bj2N6kY2w==
+  dependencies:
+    url-loader "^1.1.1"
 
 vue-loader@^15.7.0:
   version "15.9.6"
@@ -8687,8 +8738,8 @@ vue@^2.6.10:
 
 vuetify-loader@^1.7.0:
   version "1.7.2"
-  resolved "https://registry.yarnpkg.com/vuetify-loader/-/vuetify-loader-1.7.2.tgz#5cdc45309496cf3a5fe431fd7611706ffa4aa8c8"
-  integrity sha512-2GSo4KvRAOThBsj8mvtIEeIoyBAZx38GDfh8D90e/or7Hzx4813krJKvcQAllyLO/Ln0eQWrq2IuvBXnZ55cSA==
+  resolved "https://registry.npm.taobao.org/vuetify-loader/download/vuetify-loader-1.7.2.tgz?cache=0&sync_timestamp=1612538127049&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvuetify-loader%2Fdownload%2Fvuetify-loader-1.7.2.tgz#5cdc45309496cf3a5fe431fd7611706ffa4aa8c8"
+  integrity sha1-XNxFMJSWzzpf5DH9dhFwb/pKqMg=
   dependencies:
     decache "^4.6.0"
     file-loader "^6.2.0"
@@ -8696,8 +8747,13 @@ vuetify-loader@^1.7.0:
 
 vuetify@^2.4.0:
   version "2.4.7"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.4.7.tgz#341f16950475466a7fa43f4cb507cc8c3ef170b9"
   integrity sha512-4RvdZ+BO23fPq8JCEdo9ENjE1AoMqDe1bm+4M57wNTfvW4djScxQnVYeUSE/7PHuzdSW/nROR5oyLQnGDB+DIA==
+=======
+  resolved "https://registry.npm.taobao.org/vuetify/download/vuetify-2.4.7.tgz?cache=0&sync_timestamp=1615985176886&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvuetify%2Fdownload%2Fvuetify-2.4.7.tgz#341f16950475466a7fa43f4cb507cc8c3ef170b9"
+  integrity sha1-NB8WlQR1Rmp/pD9MtQfMjD7xcLk=
+>>>>>>> eb8f36bd86094395659d8111c3bb5ebdd077253b
 
 vuex@^3.1.1:
   version "3.6.2"
@@ -8999,8 +9055,13 @@ yallist@^3.0.2:
 
 yallist@^4.0.0:
   version "4.0.0"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
+=======
+  resolved "https://registry.npm.taobao.org/yallist/download/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
+  integrity sha1-m7knkNnA7/7GO+c1GeEaNQGaOnI=
+>>>>>>> eb8f36bd86094395659d8111c3bb5ebdd077253b
 
 yargs-parser@^13.1.2:
   version "13.1.2"

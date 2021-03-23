@@ -1,7 +1,7 @@
 <template>
   <!-- fram -> container -> wrap -->
   <div class="fram">
-    <div class="item" style="background-color: #242323">
+    <div class="item">
       <div class="left-wrap">
         <span class="nav-title">Mypage</span>
         <div class="nav-btn">
@@ -112,10 +112,17 @@ export default {
   width: 173px;
   display: flex;
   flex-direction: column;
+  background-color: #242323;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
 }
 .item:nth-child(2) {
   flex-grow: 1;
   flex: 14 1 0;
+  margin-left: 172px;
+  /* padding-bottom: 100px; */
 }
 .left-wrap {
   display: flex;
@@ -166,6 +173,7 @@ export default {
 .right-wrap {
   display: flex;
   justify-content: center;
+  padding-bottom: 100px;
 }
 .content {
   position: relative;

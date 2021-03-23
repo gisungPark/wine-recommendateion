@@ -42,14 +42,15 @@ export default {
 <style scoped>
 .reviews-fram {
   width: 90%;
-  height: 150px;
+  height: 130px;
   display: flex;
   flex-direction: row;
   margin: 15px;
   border-radius: 2em;
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 .reviews-item:nth-child(1) {
+  background-color: #f4f4f4;
   width: 150px;
 }
 .reviews-item:nth-child(2) {
@@ -66,11 +67,9 @@ export default {
   align-items: center;
 }
 .reviews-Img {
-  position: relative;
-
+  position: absolute;
   width: 150px;
-  height: 170px;
-  z-index: 5;
+  height: 150px;
 }
 
 .wineImg {
@@ -79,7 +78,7 @@ export default {
   left: 10px;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 /* ###########  리뷰정보 중간지점!!  ################# */
@@ -104,7 +103,7 @@ export default {
 
 .review-writer {
   position: relative;
-  top: 50px;
+  top: 27px;
   display: flex;
 }
 
@@ -151,6 +150,7 @@ export default {
   font-size: 15px;
   margin: 4px;
   cursor: pointer;
+  flex: 1 1 0;
 }
 a.button {
   color: black;

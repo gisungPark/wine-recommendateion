@@ -1,0 +1,49 @@
+/* 
+예시
+div {
+  animation-name: example;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-delay: 2s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+div {
+  animation: example 5s linear 2s infinite alternate;
+}
+*/
+
+.marquee {
+  animation-name: marquee;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.breath {
+  animation-name: breath;
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+}
+@keyframes breath {
+  0% {
+    color: rgb(225, 169, 87);
+    text-shadow: 0 0 1px rgba(225, 169, 87, 0.644), 0 0 2px rgba(225, 169, 87, 0.747), 0 0 4px rgba(225, 169, 87, 0.548), 0 0 12px rgba(225, 169, 87, 0.541);
+  }
+  50% {
+    color: rgba(225, 170, 87, 0.7);
+    text-shadow: 0 0 1px rgba(225, 170, 87, 0), 0 0 2px rgba(225, 170, 87, 0), 0 0 4px rgba(225, 170, 87, 0), 0 0 12px rgba(225, 170, 87, 0);
+  }
+  100% {
+    color: rgb(225, 169, 87);
+    text-shadow: 0 0 1px rgba(225, 169, 87, 0.644), 0 0 2px rgba(225, 169, 87, 0.747), 0 0 4px rgba(225, 169, 87, 0.548), 0 0 12px rgba(225, 169, 87, 0.541);
+  }
+}

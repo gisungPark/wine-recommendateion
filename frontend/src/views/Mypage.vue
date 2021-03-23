@@ -8,13 +8,16 @@
           <button class="nav-btn-item1">스크랩한 와인</button>
           <button class="nav-btn-item2">내가 남긴 리뷰</button>
           <button class="nav-btn-item3">내 취향 통계</button>
+          <button class="nav-btn-item4" @click="onPreferenceSetting">
+            취향 설정
+          </button>
         </div>
       </div>
     </div>
 
     <div class="item" style="background-color: #0f0f0f">
       <div class="right-wrap">
-        <div class="content">
+        <div v-show="this.screenState != 4" class="content">
           <div class="imgBox">
             <img
               class="profile"
@@ -30,7 +33,11 @@
               :review="review"
               :userInfo="userInfo"
             />
+            <div class="content-item"></div>
           </div>
+        </div>
+        <div v-show="this.screenState == 4" class="content4">
+          <PreferenceSetting :preferenceList="preferenceList" />
         </div>
       </div>
     </div>
@@ -40,6 +47,7 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import MyReviews from "@/components/static/mypage/MyReviews.vue";
+import PreferenceSetting from "@/components/static/mypage/PreferenceSetting.vue";
 
 // const aa = "@/assets/images/wine01.png";
 
@@ -47,11 +55,12 @@ export default {
   name: "Mypage",
   components: {
     MyReviews,
+    PreferenceSetting,
   },
 
   data: () => ({
     cnt: 4,
-    info: "",
+    screenState: 1,
     reviews: [
       {
         img: "https://img.maisonkorea.com/2020/04/msk_5e8d712726056.jpg",
@@ -83,10 +92,180 @@ export default {
         date: "2020.12.08",
       },
     ],
+    preferenceList: [
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://lh3.googleusercontent.com/proxy/5JLNvB9FpeGq9MjyLFAInGtBvjQkRF2CA1OrA425Z19wgw2w6GiFb11eHrY1cEEj4U4PkgsdsukmAhQZk5Uom3gFZMpJtAEzPklrPE_WXVrIzqp9z5YTFB-0TPIw-N-h8XQg3qjwrxq1A1ShinUxhHIXx8aD8Xw6oPOWc1U3CT2wmrqKhX89Gz36DRMSZk86ti8MV8hffBgxmvVTogaYamn60ViFMRcBOSwUiCPij9L1Qz0g6cElCx7fg9LYS7zzBfo_Tjq65cVl4hsXRcQB48hGD7F-umDP5poCMNRgGJLhv5NyUtmeFpV-_Nnt2dY09WyBQ0uryd_kuzvXF2vUkW4SxyQw9-p8pDzt33IbVPFyIGnsV60XDg",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://blog.kakaocdn.net/dn/berilh/btqGVwR4KHe/pyu7QGH81CoeCdNhFAdx01/img.jpg",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26286D4C590089210C",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6OE8la_DKabhGQmoJZjYtf2RqEU4p5NeNMQ&usqp=CAU",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEjEnTU125CEs7FttDpQcldEX_pJ0_Ck0GIQ&usqp=CAU",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJEabRKkN_8GLvMHApb3-ZjA8CB_fV4t6GA&usqp=CAU",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9979FB445BE9264118",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://lh3.googleusercontent.com/proxy/hBdn90FtERmFWFvtQQKpQsQCAh9hBisfEdowMWShDwlByR5R-wxL3-wRF31WfScmTZnGL99NJqeivj_pHQKVfkWajj8qrhbTIr-zL2UBb5D14lbU0LvCZeAFJ3yjPTgRVZN0TGhUTMRoZJQL4a-477bM0C6pMgkcBGsWj2Y5lI-Oad7O6LVr09c",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://lh3.googleusercontent.com/proxy/5JLNvB9FpeGq9MjyLFAInGtBvjQkRF2CA1OrA425Z19wgw2w6GiFb11eHrY1cEEj4U4PkgsdsukmAhQZk5Uom3gFZMpJtAEzPklrPE_WXVrIzqp9z5YTFB-0TPIw-N-h8XQg3qjwrxq1A1ShinUxhHIXx8aD8Xw6oPOWc1U3CT2wmrqKhX89Gz36DRMSZk86ti8MV8hffBgxmvVTogaYamn60ViFMRcBOSwUiCPij9L1Qz0g6cElCx7fg9LYS7zzBfo_Tjq65cVl4hsXRcQB48hGD7F-umDP5poCMNRgGJLhv5NyUtmeFpV-_Nnt2dY09WyBQ0uryd_kuzvXF2vUkW4SxyQw9-p8pDzt33IbVPFyIGnsV60XDg",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://blog.kakaocdn.net/dn/berilh/btqGVwR4KHe/pyu7QGH81CoeCdNhFAdx01/img.jpg",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26286D4C590089210C",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6OE8la_DKabhGQmoJZjYtf2RqEU4p5NeNMQ&usqp=CAU",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEjEnTU125CEs7FttDpQcldEX_pJ0_Ck0GIQ&usqp=CAU",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJEabRKkN_8GLvMHApb3-ZjA8CB_fV4t6GA&usqp=CAU",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9979FB445BE9264118",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://lh3.googleusercontent.com/proxy/hBdn90FtERmFWFvtQQKpQsQCAh9hBisfEdowMWShDwlByR5R-wxL3-wRF31WfScmTZnGL99NJqeivj_pHQKVfkWajj8qrhbTIr-zL2UBb5D14lbU0LvCZeAFJ3yjPTgRVZN0TGhUTMRoZJQL4a-477bM0C6pMgkcBGsWj2Y5lI-Oad7O6LVr09c",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://lh3.googleusercontent.com/proxy/5JLNvB9FpeGq9MjyLFAInGtBvjQkRF2CA1OrA425Z19wgw2w6GiFb11eHrY1cEEj4U4PkgsdsukmAhQZk5Uom3gFZMpJtAEzPklrPE_WXVrIzqp9z5YTFB-0TPIw-N-h8XQg3qjwrxq1A1ShinUxhHIXx8aD8Xw6oPOWc1U3CT2wmrqKhX89Gz36DRMSZk86ti8MV8hffBgxmvVTogaYamn60ViFMRcBOSwUiCPij9L1Qz0g6cElCx7fg9LYS7zzBfo_Tjq65cVl4hsXRcQB48hGD7F-umDP5poCMNRgGJLhv5NyUtmeFpV-_Nnt2dY09WyBQ0uryd_kuzvXF2vUkW4SxyQw9-p8pDzt33IbVPFyIGnsV60XDg",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://blog.kakaocdn.net/dn/berilh/btqGVwR4KHe/pyu7QGH81CoeCdNhFAdx01/img.jpg",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26286D4C590089210C",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6OE8la_DKabhGQmoJZjYtf2RqEU4p5NeNMQ&usqp=CAU",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEjEnTU125CEs7FttDpQcldEX_pJ0_Ck0GIQ&usqp=CAU",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJEabRKkN_8GLvMHApb3-ZjA8CB_fV4t6GA&usqp=CAU",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9979FB445BE9264118",
+      },
+      {
+        idx: 0,
+        name: "사과",
+        img:
+          "https://lh3.googleusercontent.com/proxy/hBdn90FtERmFWFvtQQKpQsQCAh9hBisfEdowMWShDwlByR5R-wxL3-wRF31WfScmTZnGL99NJqeivj_pHQKVfkWajj8qrhbTIr-zL2UBb5D14lbU0LvCZeAFJ3yjPTgRVZN0TGhUTMRoZJQL4a-477bM0C6pMgkcBGsWj2Y5lI-Oad7O6LVr09c",
+      },
+    ],
   }),
   computed: {
     ...mapState("userInfo", ["userInfo"]),
     ...mapState("nav", ["navActive"]),
+  },
+  methods: {
+    onPreferenceSetting() {
+      if (this.screenState == 1) this.screenState = 4;
+      else this.screenState = 1;
+    },
   },
 };
 </script>
@@ -157,6 +336,10 @@ export default {
   transform: rotate(-90deg);
   /* width: 150px; */
 }
+.nav-btn > button:hover {
+  transform: rotate(-90deg) scale(1.2) !important;
+}
+
 .nav-btn-item1 {
   position: absolute;
   bottom: 70px;
@@ -168,6 +351,12 @@ export default {
 .nav-btn-item3 {
   position: absolute;
   bottom: 330px;
+}
+
+.nav-btn-item4 {
+  position: absolute;
+  bottom: 460px;
+  border: 1px solid var(--basic-color-key) !important;
 }
 
 .right-wrap {
@@ -215,5 +404,12 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.content4 {
+  position: relative;
+  margin-top: 150px;
+  width: 90%;
+  height: auto;
 }
 </style>

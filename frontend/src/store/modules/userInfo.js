@@ -2,7 +2,7 @@ const state = {
     userInfo: {
         userId: '',
         nickname: '와인좋아!!',
-        profile: 'https://newsimg.hankookilbo.com/cms/articlerelease/2020/10/02/f18cb31b-168f-4c4e-8fac-86a9864350ef.jpg',
+        profile: 'https://t1.daumcdn.net/cfile/tistory/99DBE73359AAC5D224',
     }
   };
 const getters = {

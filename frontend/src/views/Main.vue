@@ -57,9 +57,9 @@
     </section>
     <section id="main-section3">
       <div class="main-message wine-review">
-        <h1>{{ avg }}</h1>
+        <p class="b-desc">{{ avg }}</p>
         <div class="star-rate" :style="{ width: starRate + 'vw' }"></div>
-        <Scrap :scraped="true" />
+        <Scrap class="scrap-btn" :scraped="true" />
       </div>
     </section>
     <section id="main-section4"></section>
@@ -278,12 +278,33 @@ span {
   width: 100%;
 }
 
+#main-section3 {
+  display: flex;
+  align-items: center;
+}
+.wine-review {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* width: 100%; */
+}
+.wine-review p {
+  font-size: 40vh;
+  line-height: 40vh;
+}
 .star-rate {
   width: 50vw;
   height: 10vw;
   background-image: url(../assets/images/start.png);
   background-size: contain;
   background-repeat: repeat-x;
+}
+.scrap-btn {
+  transform: scale(1.5);
+  align-self: flex-start;
+  margin-top: 2rem;
+  margin-left: 2rem;
+  margin-bottom: 4rem;
 }
 
 @media (min-width: 1024px) {

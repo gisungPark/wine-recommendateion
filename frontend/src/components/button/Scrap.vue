@@ -49,6 +49,7 @@ export default {
   transition: fill 0.3s, opacity 0.3s, transform 0.3s cubic-bezier(0.49, 0.15, 0.22, 1.36);
 }
 #scrap span {
+  padding: 3px;
   margin-top: -0.1rem;
   font-size: 1.2rem;
   transition: color 0.3s ease;

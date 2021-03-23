@@ -12,9 +12,7 @@
           </span>
         </div>
       </div>
-      <transition :name="breath">
-        <span class="title wine-title-sub b-desc-e tilt" ref="titleSub">RODA</span>
-      </transition>
+      <span class="title wine-title-sub b-desc-e tilt" ref="titleSub">RODA</span>
     </section>
     <section id="main-section2">
       <div class="main-message wine-top">와인종류?아니면 지역 국기</div>
@@ -60,7 +58,7 @@
     <section id="main-section3">
       <div class="main-message wine-review">
         <h1>{{ avg }}</h1>
-        <div class="star-rate"></div>
+        <div class="star-rate" :style="{ width: starRate + 'vw' }"></div>
         <Scrap :scraped="true" />
       </div>
     </section>
@@ -104,34 +102,39 @@ export default {
         tannin: 1,
       },
       avg: 4.5,
+      starRate: 10,
     };
   },
+  created() {
+    // 별점에 따라 별 개수 동적 표시를 위해 width값 계산
+    this.starRate = this.starRate * this.avg;
+  },
   mounted() {
-    breath(this.$refs.titleSub);
+    // breath(this.$refs.titleSub);
   },
 };
 
-const breath = (target) => {
-  console.log(target);
-  target
-    .animate(
-      {
-        textShadow: '0 0 1px rgba(225, 170, 87, 0), 0 0 2px rgba(225, 170, 87, 0), 0 0 4px rgba(225, 170, 87, 0), 0 0 12px rgba(225, 170, 87, 0)',
-      },
-      150
-    )
-    .animate(
-      {
-        textShadow:
-          '0 0 1px rgba(225, 169, 87, 0.644), 0 0 2px rgba(225, 169, 87, 0.747), 0 0 4px rgba(225, 169, 87, 0.548), 0 0 12px rgba(225, 169, 87, 0.541)',
-      },
-      150,
-      function() {
-        var nextIn = Math.floor(Math.random() * 1000);
-        setTimeout('breath()', nextIn);
-      }
-    );
-};
+// const breath = (target) => {
+//   console.log(target);
+//   target
+//     .animate(
+//       {
+//         textShadow: '0 0 1px rgba(225, 170, 87, 0), 0 0 2px rgba(225, 170, 87, 0), 0 0 4px rgba(225, 170, 87, 0), 0 0 12px rgba(225, 170, 87, 0)',
+//       },
+//       150
+//     )
+//     .animate(
+//       {
+//         textShadow:
+//           '0 0 1px rgba(225, 169, 87, 0.644), 0 0 2px rgba(225, 169, 87, 0.747), 0 0 4px rgba(225, 169, 87, 0.548), 0 0 12px rgba(225, 169, 87, 0.541)',
+//       },
+//       150,
+//       function() {
+//         var nextIn = Math.floor(Math.random() * 1000);
+//         setTimeout('breath()', nextIn);
+//       }
+//     );
+// };
 </script>
 
 <style scoped>
@@ -174,6 +177,9 @@ section {
 
 /* TODO: section 1 영역 */
 /* FIXME:  */
+#main-section1 {
+  overflow: hidden;
+}
 .marquee-container {
   position: absolute;
   top: 38vh;
@@ -273,9 +279,11 @@ span {
 }
 
 .star-rate {
-  width: 50px;
-  height: 50px;
+  width: 50vw;
+  height: 10vw;
   background-image: url(../assets/images/start.png);
+  background-size: contain;
+  background-repeat: repeat-x;
 }
 
 @media (min-width: 1024px) {

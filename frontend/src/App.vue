@@ -57,6 +57,8 @@ body {
 
 #router-view {
   position: absolute;
+  width: 100%;
+  overflow-x: hidden;
   top: 0;
   left: 0;
   z-index: 0;

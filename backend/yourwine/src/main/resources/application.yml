@@ -20,3 +20,9 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+  devtools: 
+    livereload: 
+      enabled: true 
+    restart:
+      enable: true
+   

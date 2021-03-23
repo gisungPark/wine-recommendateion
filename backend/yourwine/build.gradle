@@ -24,6 +24,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+	//reload
+ 	compile("org.springframework.boot:spring-boot-devtools")
 	//롬복
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
@@ -38,7 +40,8 @@ dependencies {
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
-    compile('org.modelmapper:modelmapper:0.7.8')
+	//dto와 Entity 자동 변환 modelmappers
+    compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.0'
 
     //mysql
     runtimeOnly 'mysql:mysql-connector-java'

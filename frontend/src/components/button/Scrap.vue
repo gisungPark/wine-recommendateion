@@ -11,7 +11,12 @@
 export default {
   name: 'Scrap',
   props: {
-    scraped: Boolean,
+    scraped: {
+      type: Boolean,
+      default: function() {
+        return false;
+      },
+    },
   },
 };
 </script>

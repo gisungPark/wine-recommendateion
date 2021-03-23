@@ -60,6 +60,7 @@
     <section id="main-section3">
       <div class="main-message wine-review">
         <h1>{{ avg }}</h1>
+        <div class="star-rate"></div>
         <Scrap :scraped="true" />
       </div>
     </section>
@@ -269,6 +270,12 @@ span {
 }
 .wine-info hr {
   width: 100%;
+}
+
+.star-rate {
+  width: 50px;
+  height: 50px;
+  background-image: url(../assets/images/start.png);
 }
 
 @media (min-width: 1024px) {

@@ -22,7 +22,7 @@ public class Scrap {
 	
 	@EmbeddedId
 	@Column(name = "scrap_id", unique = true)
-	private ScrapKey id = new ScrapKey();
+	private ScrapKey scrapId = new ScrapKey();
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", insertable=false, updatable=false)
@@ -31,4 +31,5 @@ public class Scrap {
 	@ManyToOne
 	@JoinColumn(name = "wine_id", insertable=false, updatable=false)
 	private Wine wine;
+	
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.yourwine.model.dto.*;
 import com.ssafy.yourwine.service.GrapeService;
+import com.ssafy.yourwine.service.ScrapService;
 import com.ssafy.yourwine.service.WineService;
 
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +26,7 @@ public class WineController {
 
 	private final GrapeService grapeService;
 	private final WineService WineService;
+	private final ScrapService ScrapService;
 
 	@GetMapping("/test/{wineId}")
 	public void test(@PathVariable int wineId) {
@@ -56,15 +58,19 @@ public class WineController {
 		return WineService.getWineList();
 	}
 
-	@ApiOperation(value = "와인 스크랩 추가", notes = "스크랩 추가 성공시 '성공' 반환")
+	@ApiOperation(value = "와인 스크랩 추가", notes = "스크랩을 추가한다!")
 	@PostMapping("/scrap/{wineId}")
-	public void saveScrap(@RequestHeader("TOKEN") String token, int wineId) {
-		WineService.saveScrap(token, wineId);
+	public void saveScrap(@ApiParam(value = "토큰") @RequestHeader("TOKEN") String token, @ApiParam(value = "와인ID") @PathVariable int wineId) {
+		ScrapService.saveScrap(token, wineId);
 	}
 
-	@ApiOperation(value = "와인 스크랩 삭제", notes = "스크랩 삭제 성공시 성공시 '성공' 반환")
+	@ApiOperation(value = "와인 스크랩 삭제", notes = "스크랩을 삭제한다!")
 	@DeleteMapping("/scrap/{wineId}")
-	public void deleteScrap(@RequestHeader("TOKEN") String token, int wineId) {
-		WineService.deleteScrap(token, wineId);
+	public void deleteScrap(@ApiParam(value = "토큰") @RequestHeader("TOKEN") String token, @ApiParam(value = "와인ID") @PathVariable int wineId) {
+		ScrapService.deleteScrap(token, wineId);
 	}
+	
+	
+	
+	
 }

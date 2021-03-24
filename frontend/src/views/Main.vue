@@ -1,7 +1,7 @@
 <template>
   <div id="wrap">
     <img src="../assets/images/wine.png" alt="오늘의 와인 이미지" id="main-wine-img" />
-    <section id="main-section1">
+    <section id="main-section-0">
       <div class="marquee-container tilt">
         <div class="marquee">
           <span class="title wine-title b-desc-e">
@@ -12,11 +12,11 @@
           </span>
         </div>
       </div>
-      <span class="title wine-title-sub b-desc-e tilt" ref="titleSub">RODA</span>
+      <span class="title wine-title-sub b-desc-e tilt" ref="titleSub">{{ subtitle }}</span>
     </section>
-    <section id="main-section2">
+    <section id="main-section-1">
       <div class="main-message wine-top">와인종류?아니면 지역 국기</div>
-      <div class="main-message wine-name">
+      <div class="main-message wine-name sticky-elem">
         <h2 class="ename b-desc-e">{{ wine.ename }}</h2>
         <hr />
         <p class="kname">{{ wine.kname }}</p>
@@ -29,7 +29,8 @@
       </div>
       <div class="main-message wine-info">
         <div class="wine-info-item">
-          <span>지역</span><span>{{ wine.area }}</span>
+          <span>지역</span><span>{{ wine.area }}</span
+          >d
         </div>
         <hr />
         <div class="wine-info-item">
@@ -55,20 +56,21 @@
       </div>
       <div>맛 수치 값 차트?</div>
     </section>
-    <section id="main-section3">
-      <div class="main-message wine-review">
+    <section id="main-section-2">
+      <div class="main-message wine-review sticky-elem">
         <p class="b-desc">{{ avg }}</p>
         <div class="star-rate" :style="{ width: starRate + 'vw' }"></div>
         <Scrap class="scrap-btn" :scraped="true" />
       </div>
     </section>
-    <section id="main-section4"></section>
+    <section id="main-section-3"></section>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import Scrap from '@/components/button/Scrap.vue';
+import * as interaction from '@/scripts/interaction.js';
 
 export default {
   name: 'Main',
@@ -83,6 +85,7 @@ export default {
   data() {
     return {
       title: `TODAY'S WINE`,
+      subtitle: '',
       wine: {
         wine_id: `0`,
         img: ``,
@@ -108,8 +111,14 @@ export default {
   created() {
     // 별점에 따라 별 개수 동적 표시를 위해 width값 계산
     this.starRate = this.starRate * this.avg;
+    // subtitle 생성, enmae에서 쉼표까지 텍스트 자르기
+    let index = null;
+    index = this.wine.ename.indexOf(',');
+    this.subtitle = this.wine.ename.substring(0, index);
   },
   mounted() {
+    // interaction section 제어
+    interaction.main();
     // breath(this.$refs.titleSub);
   },
 };
@@ -142,16 +151,30 @@ export default {
   overflow-x: hidden;
 }
 
-#main-section1 {
+.sticky-elem {
+  display: none !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+#show-scene-0 #main-section-0 .sticky-elem,
+#show-scene-1 #main-section-1 .sticky-elem,
+#show-scene-2 #main-section-2 .sticky-elem,
+#show-scene-3 #main-section-3 .sticky-elem {
+  display: block !important;
+}
+
+#main-section-0 {
   background-color: var(--basic-color-bg);
 }
-#main-section2 {
+#main-section-1 {
   background-color: var(--basic-color-bg2);
 }
-#main-section3 {
+#main-section-2 {
   background-color: var(--basic-color-bg3);
 }
-#main-section4 {
+#main-section-3 {
   background-color: var(--basic-color-bg4);
 }
 
@@ -165,7 +188,7 @@ section {
 #main-wine-img {
   position: fixed;
   z-index: 5;
-  filter: drop-shadow(5px 5px 12px rgb(0, 0, 0));
+  filter: drop-shadow(15px 15px 30px rgb(0, 0, 0));
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -177,7 +200,7 @@ section {
 
 /* TODO: section 1 영역 */
 /* FIXME:  */
-#main-section1 {
+#main-section-0 {
   overflow: hidden;
 }
 .marquee-container {
@@ -196,6 +219,7 @@ section {
   font-size: 30vh;
   line-height: 30vh;
   padding-left: 200px;
+  transform-origin: center center;
 }
 .wine-title-sub {
   position: relative;
@@ -204,6 +228,7 @@ section {
   margin-left: 30px;
   font-size: 10vh;
   text-shadow: 0 0 1px rgba(225, 169, 87, 0.644), 0 0 2px rgba(225, 169, 87, 0.747), 0 0 4px rgba(225, 169, 87, 0.548), 0 0 12px rgba(225, 169, 87, 0.541);
+  transform-origin: top left;
 }
 .tilt {
   transform: rotate(3deg);
@@ -211,7 +236,7 @@ section {
 
 /* TODO: section 2 영역 */
 /* FIXME:  */
-#main-section2 {
+#main-section-1 {
   color: var(--basic-color-fill);
 }
 .main-message {
@@ -278,13 +303,14 @@ span {
   width: 100%;
 }
 
-#main-section3 {
+#main-section-2 {
   display: flex;
   align-items: center;
 }
 .wine-review {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   /* width: 100%; */
 }
@@ -309,7 +335,7 @@ span {
 
 @media (min-width: 1024px) {
   .wine-title-sub {
-    top: 59%;
+    top: 58%;
   }
 }
 </style>

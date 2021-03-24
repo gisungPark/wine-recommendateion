@@ -49,9 +49,10 @@ body {
   left: 0;
 }
 #guide-btn {
-  width: 100%;
   position: fixed;
-  bottom: 0px;
+  width: 100%;
+  bottom: 0;
+  pointer-events: none;
   z-index: 10;
 }
 

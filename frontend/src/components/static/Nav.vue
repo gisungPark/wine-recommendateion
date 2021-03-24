@@ -10,7 +10,7 @@
       </div>
       <div class="logo">
         <h1 id="title">Your Wine</h1>
-        <img src="../../assets/images/logo_w.png" alt="logo image" />
+        <img src="../../assets/images/logo_w.png" alt="logo image" @click="clickedLogo" />
       </div>
     </section>
 
@@ -56,6 +56,10 @@ export default {
     clickedChart() {
       this.SET_NAV_TOGGLE();
       alert(`clicked!`);
+    },
+    // 메인 페이지로 이동
+    clickedLogo() {
+      this.$router.push({ name: 'Main' });
     },
   },
 };
@@ -148,9 +152,14 @@ export default {
   transform: translate(-50%, 0);
 }
 .logo img {
+  cursor: pointer;
   width: auto;
   height: auto;
   max-height: 2rem;
+  transition: transform 0.3s ease;
+}
+.logo img:hover {
+  transform: scale(1.1);
 }
 
 /* TODO: 메뉴 리스트 영역 */

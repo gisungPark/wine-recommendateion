@@ -5,11 +5,11 @@
       <div class="left-wrap">
         <span class="nav-title">Mypage</span>
         <div class="nav-btn">
-          <button class="nav-btn-item1">스크랩한 와인</button>
-          <button class="nav-btn-item2">내가 남긴 리뷰</button>
-          <button class="nav-btn-item3">내 취향 통계</button>
+          <button class="nav-btn-item1">Scrap</button>
+          <button class="nav-btn-item2">Review</button>
+          <button class="nav-btn-item3">Statistics</button>
           <button class="nav-btn-item4" @click="onPreferenceSetting">
-            취향 설정
+            Favorite
           </button>
         </div>
       </div>
@@ -97,7 +97,7 @@ export default {
         idx: 0,
         name: "사과",
         img:
-          "https://lh3.googleusercontent.com/proxy/5JLNvB9FpeGq9MjyLFAInGtBvjQkRF2CA1OrA425Z19wgw2w6GiFb11eHrY1cEEj4U4PkgsdsukmAhQZk5Uom3gFZMpJtAEzPklrPE_WXVrIzqp9z5YTFB-0TPIw-N-h8XQg3qjwrxq1A1ShinUxhHIXx8aD8Xw6oPOWc1U3CT2wmrqKhX89Gz36DRMSZk86ti8MV8hffBgxmvVTogaYamn60ViFMRcBOSwUiCPij9L1Qz0g6cElCx7fg9LYS7zzBfo_Tjq65cVl4hsXRcQB48hGD7F-umDP5poCMNRgGJLhv5NyUtmeFpV-_Nnt2dY09WyBQ0uryd_kuzvXF2vUkW4SxyQw9-p8pDzt33IbVPFyIGnsV60XDg",
+          "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
       },
       {
         idx: 0,
@@ -151,7 +151,7 @@ export default {
         idx: 0,
         name: "사과",
         img:
-          "https://lh3.googleusercontent.com/proxy/5JLNvB9FpeGq9MjyLFAInGtBvjQkRF2CA1OrA425Z19wgw2w6GiFb11eHrY1cEEj4U4PkgsdsukmAhQZk5Uom3gFZMpJtAEzPklrPE_WXVrIzqp9z5YTFB-0TPIw-N-h8XQg3qjwrxq1A1ShinUxhHIXx8aD8Xw6oPOWc1U3CT2wmrqKhX89Gz36DRMSZk86ti8MV8hffBgxmvVTogaYamn60ViFMRcBOSwUiCPij9L1Qz0g6cElCx7fg9LYS7zzBfo_Tjq65cVl4hsXRcQB48hGD7F-umDP5poCMNRgGJLhv5NyUtmeFpV-_Nnt2dY09WyBQ0uryd_kuzvXF2vUkW4SxyQw9-p8pDzt33IbVPFyIGnsV60XDg",
+          "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
       },
       {
         idx: 0,
@@ -205,7 +205,7 @@ export default {
         idx: 0,
         name: "사과",
         img:
-          "https://lh3.googleusercontent.com/proxy/5JLNvB9FpeGq9MjyLFAInGtBvjQkRF2CA1OrA425Z19wgw2w6GiFb11eHrY1cEEj4U4PkgsdsukmAhQZk5Uom3gFZMpJtAEzPklrPE_WXVrIzqp9z5YTFB-0TPIw-N-h8XQg3qjwrxq1A1ShinUxhHIXx8aD8Xw6oPOWc1U3CT2wmrqKhX89Gz36DRMSZk86ti8MV8hffBgxmvVTogaYamn60ViFMRcBOSwUiCPij9L1Qz0g6cElCx7fg9LYS7zzBfo_Tjq65cVl4hsXRcQB48hGD7F-umDP5poCMNRgGJLhv5NyUtmeFpV-_Nnt2dY09WyBQ0uryd_kuzvXF2vUkW4SxyQw9-p8pDzt33IbVPFyIGnsV60XDg",
+          "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
       },
       {
         idx: 0,

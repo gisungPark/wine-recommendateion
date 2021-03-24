@@ -44,6 +44,9 @@ public class User implements UserDetails {
     @Column(name = "flag")
     private Boolean flag;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Scrap> scrap = new ArrayList<>();
+    
     @PrePersist
     void preInsert(){
         if(this.flag==null)

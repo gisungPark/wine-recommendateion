@@ -47,6 +47,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Scrap> scrap = new ArrayList<>();
     
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Review> review = new ArrayList<Review>();
+    
     @PrePersist
     void preInsert(){
         if(this.flag==null)

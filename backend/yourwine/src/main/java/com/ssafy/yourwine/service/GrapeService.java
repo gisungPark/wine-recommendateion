@@ -20,7 +20,8 @@ public class GrapeService {
 	private final ModelMapper modelMapper = new ModelMapper();
 	private final GrapeRepository grapeRepository;
 
-	public GrapeDTO getGrape(Integer grapeId) {	
+	//품종 상세보기
+	public GrapeDTO getGrape(int grapeId) {	
 		Grape grape = grapeRepository.findByGrapeId(grapeId);
 		if(grape == null)
 			return null;
@@ -28,6 +29,7 @@ public class GrapeService {
 		return grapeDto;
 	}
 	
+	//품종 전체 리스트
 	public List<GrapeDTO> getGrapeList(){
 		List<Grape> grapeList = grapeRepository.findAll();
 		if(grapeList == null)

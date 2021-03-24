@@ -9,6 +9,6 @@ import com.ssafy.yourwine.model.entity.Grape;
 
 public interface GrapeRepository extends JpaRepository<Grape, Integer>{
 
-	Grape findByGrapeId(Integer grapeId);
+	Grape findByGrapeId(int grapeId);
 	
 }

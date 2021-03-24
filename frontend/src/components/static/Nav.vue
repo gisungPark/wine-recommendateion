@@ -14,7 +14,7 @@
       </div>
     </section>
 
-    <section id="nav-frame" class="real-shadow-box" :class="{ pop: navActive }">
+    <section id="nav-frame" class="real-shadow-box" :class="{ pop: navActive }" @click="clickedMenuFrame">
       <ul id="menu-list">
         <li class="menu-list-item b-desc-e no-drag" @click="clickedRcomm">Recommendation</li>
         <li class="menu-list-item b-desc-e no-drag" @click="clickedWines">Wines</li>
@@ -22,6 +22,7 @@
         <li class="menu-list-item b-desc-e no-drag" @click="clickedChart">Chart</li>
       </ul>
     </section>
+    <div class="bg-close" :class="{ block: navActive }" @click="clickedBackground"></div>
   </div>
 </template>
 
@@ -37,7 +38,7 @@ export default {
     ...mapState('nav', ['navActive']),
   },
   methods: {
-    ...mapMutations('nav', ['SET_NAV_TOGGLE']),
+    ...mapMutations('nav', ['SET_NAV_TOGGLE', 'SET_NAV_CLOSE']),
     clickedMenu() {
       this.SET_NAV_TOGGLE();
     },
@@ -61,6 +62,13 @@ export default {
     clickedLogo() {
       this.$router.push({ name: 'Main' });
     },
+    // 배경 클릭시 메뉴 닫기
+    clickedBackground() {
+      this.SET_NAV_TOGGLE();
+    },
+    clickedMenuFrame() {
+      this.SET_NAV_TOGGLE();
+    },
   },
 };
 </script>
@@ -68,6 +76,13 @@ export default {
 <style scoped>
 #coantainer {
   width: 100%;
+}
+.bg-close {
+  display: none;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
 }
 /* TODO: 기본 프레임 */
 /* FIXME:  */
@@ -172,9 +187,15 @@ export default {
   height: 100vh;
   width: auto;
   border-right: solid 1px var(--basic-color-key);
-  background-color: rgba(255, 255, 255, 0.728);
+  background-color: rgba(100, 100, 100, 0.5);
   transform: translate(-100%, 0);
   transition: transform 0.3s cubic-bezier(0, 1, 0.65, 1);
+
+  /* for iPhone */
+  -webkit-backdrop-filter: saturate(180%) blur(100px);
+  -moz-backdrop-filter: saturate(180%) blur(100px);
+  -o-backdrop-filter: saturate(180%) blur(100px);
+  backdrop-filter: saturate(180%) blur(100px);
 }
 .pop {
   transform: translate(0, 0) !important;

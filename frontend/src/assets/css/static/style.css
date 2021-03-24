@@ -15,13 +15,16 @@ font-family: 'Lobster', cursive;
 /* 공통 적용 활용 */
 /* ------------------------ */
 .none {
-  display: none;
+  display: none !important;
+}
+.block {
+  display: block !important;
 }
 .hidden {
-  visibility: hidden;
+  visibility: hidden !important;
 }
 .clear {
-  opacity: 0;
+  opacity: 0 !important;
 }
 .rounded {
   border-radius: 15px !important;
@@ -31,7 +34,7 @@ font-family: 'Lobster', cursive;
   background-color: var(--basic-color-bg2) !important;
 }
 .shrink {
-  transform: scale(0);
+  transform: scale(0) !important;
 }
 .no-drag {
   -ms-user-select: none;

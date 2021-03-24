@@ -6,7 +6,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class GrapeDTO {
-	private Integer grapeId;
+	private int grapeId;
 	private String kname;
 	private String ename;
 	private String detail;

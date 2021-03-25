@@ -160,9 +160,11 @@ export default {
   cursor: pointer;
 }
 .logo {
+  background: grays;
+  padding: 1rem;
   position: absolute;
   top: 0%;
-  margin-top: 2rem;
+  margin-top: 1rem;
   left: 50vw;
   transform: translate(-50%, 0);
 }
@@ -172,6 +174,8 @@ export default {
   height: auto;
   max-height: 2rem;
   transition: transform 0.3s ease;
+  backdrop-filter: blur(5px);
+  border-radius: 1rem;
 }
 .logo img:hover {
   transform: scale(1.1);
@@ -191,7 +195,6 @@ export default {
   transform: translate(-100%, 0);
   transition: transform 0.3s cubic-bezier(0, 1, 0.65, 1);
 
-  /* for iPhone */
   -webkit-backdrop-filter: saturate(180%) blur(100px);
   -moz-backdrop-filter: saturate(180%) blur(100px);
   -o-backdrop-filter: saturate(180%) blur(100px);

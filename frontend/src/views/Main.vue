@@ -15,46 +15,47 @@
       <span class="title wine-title-sub b-desc-e tilt" ref="titleSub">{{ subtitle }}</span>
     </section>
     <section id="main-section-1">
-      <div class="main-message wine-top">와인종류?아니면 지역 국기</div>
+      <div class="main-message wine-top sticky-elem"></div>
       <div class="main-message wine-name sticky-elem">
-        <h2 class="ename b-desc-e">{{ wine.ename }}</h2>
+        <h2 class="ename b-desc-e real-shadow-text">{{ wine.ename }}</h2>
+      </div>
+      <div class="main-message wine-name-sub sticky-elem">
         <hr />
         <p class="kname">{{ wine.kname }}</p>
       </div>
-      <div class="main-message wine-desc">
-        <P class="r-desc">
+      <div class="main-message wine-desc sticky-elem">
+        <div class="pin"></div>
+        <p class="r-desc">
           <strong>{{ wine.year }}</strong>
           {{ wine.detail }}
-        </P>
+        </p>
       </div>
-      <div class="main-message wine-info">
-        <div class="wine-info-item">
-          <span>지역</span><span>{{ wine.area }}</span
-          >d
+      <div class="main-message wine-info sticky-elem">
+        <div class="wine-info-item a">
+          <span>지역</span><span>{{ wine.area }}</span>
         </div>
         <hr />
-        <div class="wine-info-item">
+        <div class="wine-info-item b">
           <span>품종</span><span>{{ wine.grape_id }}</span>
         </div>
         <hr />
-        <div class="wine-info-item">
+        <div class="wine-info-item c">
           <span>종류</span><span>{{ wine.type }}</span>
         </div>
         <hr />
-        <div class="wine-info-item">
+        <div class="wine-info-item d">
           <span>알코올 도수</span><span>{{ wine.alchol }}</span>
         </div>
         <hr />
-        <div class="wine-info-item">
+        <div class="wine-info-item e">
           <span>음용 온도</span><span>{{ wine.temper }}</span>
         </div>
         <hr />
-        <div class="wine-info-item">
+        <div class="wine-info-item f">
           <span>가격</span><span>{{ wine.price | currency }} 원</span>
         </div>
         <hr />
       </div>
-      <div>맛 수치 값 차트?</div>
     </section>
     <section id="main-section-2">
       <div class="main-message wine-review sticky-elem">
@@ -63,7 +64,9 @@
         <Scrap class="scrap-btn" :scraped="true" />
       </div>
     </section>
-    <section id="main-section-3"></section>
+    <section id="main-section-3">
+      top10
+    </section>
   </div>
 </template>
 
@@ -142,7 +145,7 @@ export default {
 //         var nextIn = Math.floor(Math.random() * 1000);
 //         setTimeout('breath()', nextIn);
 //       }
-//     );
+//     );0
 // };
 </script>
 
@@ -156,12 +159,14 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
+  /* transition: all 0.3s ease; */
 }
 
 #show-scene-0 #main-section-0 .sticky-elem,
 #show-scene-1 #main-section-1 .sticky-elem,
 #show-scene-2 #main-section-2 .sticky-elem,
 #show-scene-3 #main-section-3 .sticky-elem {
+  opacity: 1;
   display: block !important;
 }
 
@@ -169,7 +174,7 @@ export default {
   background-color: var(--basic-color-bg);
 }
 #main-section-1 {
-  background-color: var(--basic-color-bg2);
+  background-color: var(--basic-color-bg);
 }
 #main-section-2 {
   background-color: var(--basic-color-bg3);
@@ -194,6 +199,7 @@ section {
   transform: translate(-50%, -50%);
   width: auto;
   height: 60vh;
+  min-height: 400px;
 }
 .stop {
 }
@@ -245,10 +251,24 @@ section {
   justify-content: center;
   align-items: center;
   padding: 1rem 0.5rem;
-  background-color: #ffffffaa;
+  /* background-color: #ffffffaa; */
   margin: 5px auto;
 }
-.wine-name {
+.wine-top {
+  width: 84px;
+  height: 84px;
+  top: 10% !important;
+  left: calc(50% - 42px);
+  background-image: url(../assets/images/sprite_area.png);
+  background-repeat: no-repeat;
+  background-size: 1360px 864px;
+  background-position: -824px -80px;
+}
+.wine-name,
+.wine-name-sub {
+  display: none;
+  top: 25%;
+  z-index: 6;
   width: 100%;
   font-size: 5vw;
   white-space: nowrap;
@@ -260,21 +280,33 @@ section {
   text-align: center;
   font-size: 5vw;
 }
-.kname {
-  font-size: 1.4vw;
+.wine-name-sub {
+  z-index: 4;
+  padding-top: 6.5vw !important;
 }
-.wine-name hr {
-  width: 1rem;
-  margin-bottom: 10px;
+.kname {
+  z-index: 3;
+  font-size: 1.4vw;
+  margin-left: 30%;
+}
+.wine-name-sub hr {
+  z-index: 3;
+  width: 40%;
+  border: 1px solid var(--basic-color-fill);
+  margin: 0 auto 10px;
 }
 
 .wine-desc {
-  width: 20%;
+  display: none;
   margin: 0 0;
+  top: 50% !important;
+  left: 5vw !important;
 }
 .wine-desc p {
+  width: 20vw;
   font-size: 1rem;
   line-height: 1.2rem;
+  word-break: break-all;
 }
 .wine-desc strong {
   float: left;
@@ -283,24 +315,43 @@ section {
   line-height: 3rem;
   margin: 0 0.2em 0.2rem 0;
 }
+.wine-desc .pin {
+  position: relative;
+  top: 5px;
+  left: 20vw;
+  width: 25avw;
+  height: 1px;
+  background-color: var(--basic-color-fill);
+}
 
 .wine-info {
   width: 70%;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translateX(-50%);
 }
 .wine-info-item {
   width: 100%;
+  margin: 0.5rem auto 0.1rem;
   display: flex;
+  white-space: nowrap;
+  overflow: hidden;
   flex-direction: row;
   justify-content: space-between;
 }
 span {
   font-family: 'Noto Sans KR', sans-serif;
+  font-size: 1.2rem;
 }
-.wine-info-item:nth-child(1) {
-  font-weight: 400;
+.wine-info-item span:nth-child(1) {
+  font-weight: 600;
+}
+.wine-info-item span:nth-child(2) {
+  color: var(--basic-color-key);
 }
 .wine-info hr {
   width: 100%;
+  border: 1px dotted var(--basic-color-fill);
 }
 
 #main-section-2 {

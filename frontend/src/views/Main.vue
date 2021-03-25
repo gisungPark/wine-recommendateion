@@ -87,7 +87,7 @@
 <script>
 import { mapState } from 'vuex';
 import Scrap from '@/components/button/Scrap.vue';
-import * as interaction from '@/scripts/interaction.js';
+import * as interaction from '@/assets/js/interaction.js';
 import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
 import 'swiper/swiper-bundle.css';
 

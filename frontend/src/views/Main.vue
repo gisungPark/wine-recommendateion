@@ -394,7 +394,8 @@ span {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  top: 18vh;
+  top: 50vh;
+  transform: translateY(-50%);
   left: 30vw;
   /* width: 100%; */
 }
@@ -403,9 +404,9 @@ span {
 }
 .wine-review .frame p {
   display: inline-block;
-  font-size: 40vh;
+  font-size: 25vw;
   color: var(--basic-color-key);
-  line-height: 40vh;
+  line-height: 25vw;
 }
 .star-rate {
   width: 50vw;

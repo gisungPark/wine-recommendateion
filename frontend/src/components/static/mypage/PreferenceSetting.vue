@@ -145,7 +145,94 @@
         <!-- ########## end 우측 선택된 아이템 목록  ########### -->
       </div>
       <!-- <div v-show="curStage == 2" class="preference-item2"></div> -->
-      <div v-show="curStage == 3" class="preference-item3"></div>
+      <div v-show="curStage == 3" class="preference-item3">
+        <div class="preference-item3-item">
+          <span>낮다</span>
+          <div id="slider-space">
+            <v-slider
+              v-model="slider1"
+              :max="4"
+              step="1"
+              :thumb-size="24"
+              thumb-label="always | satisfactionEmojis[Math.min(Math.floor(value / 10), 9)] "
+              ticks="always"
+              tick-size="5"
+              color="#e1a957"
+              track-color="#821a33"
+              track-fill-color="#821a33"
+            ></v-slider>
+          </div>
+          <span>높다</span>
+        </div>
+        <div class="preference-item3-item">
+          <span>낮다</span>
+          <div id="slider-space">
+            <v-slider
+              v-model="slider2"
+              :max="4"
+              step="1"
+              :thumb-size="24"
+              thumb-label="always | satisfactionEmojis[Math.min(Math.floor(value / 10), 9)] "
+              ticks="always"
+              tick-size="5"
+              color="#e1a957"
+              track-color="#821a33"
+              track-fill-color="#821a33"
+            ></v-slider>
+          </div>
+          <span>높다</span>
+        </div>
+        <div class="preference-item3-item">
+          <span>낮다</span>
+          <div id="slider-space">
+            <v-slider
+              v-model="slider3"
+              :max="4"
+              step="1"
+              :thumb-size="24"
+              thumb-label="always | satisfactionEmojis[Math.min(Math.floor(value / 10), 9)] "
+              ticks="always"
+              tick-size="5"
+              color="#e1a957"
+              track-color="#821a33"
+              track-fill-color="#821a33"
+            ></v-slider>
+          </div>
+          <span>높다</span>
+        </div>
+        <div class="preference-item3-item">
+          <span>가볍다</span>
+          <div id="slider-space">
+            <v-slider
+              v-model="slider4"
+              :max="4"
+              step="1"
+              :thumb-size="24"
+              thumb-label="always | satisfactionEmojis[Math.min(Math.floor(value / 10), 9)] "
+              ticks="always"
+              tick-size="5"
+              color="#e1a957"
+              track-color="#821a33"
+              track-fill-color="#821a33"
+            ></v-slider>
+          </div>
+          <span>무겁다</span>
+        </div>
+        <div class="preference-item3-item">
+          <span>적다</span>
+          <div id="slider-space">
+            <input
+              type="range"
+              min="1"
+              max="100"
+              value="50"
+              class="slider"
+              id="myRange"
+            />
+          </div>
+          <span>많다</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -186,6 +273,11 @@ export default {
     list5: [],
     likeList: [],
     hateList: [],
+    slider1: 1,
+    slider2: 2,
+    slider3: 2,
+    slider4: 2,
+    slider5: 2,
   }),
   methods: {
     onClickStage(stage) {
@@ -369,6 +461,70 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+.preference-item3 {
+  position: relative;
+  left: -15px;
+  margin-top: 130px;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.preference-item3-item {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.preference-item3-item > span {
+  color: white;
+  font-size: 32px;
+  font-weight: bold;
+}
+#slider-space {
+  width: 500px;
+  margin-left: 45px;
+  margin-right: 40px;
+}
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #4caf50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #4caf50;
+  cursor: pointer;
 }
 
 .lists {

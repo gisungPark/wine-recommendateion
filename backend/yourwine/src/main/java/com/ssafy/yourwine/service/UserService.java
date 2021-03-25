@@ -4,31 +4,34 @@ import com.ssafy.yourwine.config.security.JwtTokenProvider;
 import com.ssafy.yourwine.model.dto.SignInDTO;
 import com.ssafy.yourwine.model.dto.TokenResultDTO;
 import com.ssafy.yourwine.model.dto.UserDTO;
+import com.ssafy.yourwine.model.dto.WineDTO;
+import com.ssafy.yourwine.model.entity.Scrap;
 import com.ssafy.yourwine.model.entity.User;
+import com.ssafy.yourwine.repository.ScrapRepository;
 import com.ssafy.yourwine.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final ScrapRepository scrapRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final KakaoService kakaoService;
-
-	public UserService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider, KakaoService kakaoService) {
-		this.userRepository = userRepository;
-		this.jwtTokenProvider = jwtTokenProvider;
-		this.kakaoService = kakaoService;
-	}
 	
     public void saveUser(UserDTO userDTO) {
-        User user = new User();
+        ModelMapper modelMapper = new ModelMapper();
+
+        User user = modelMapper.map(userDTO, User.class);
+
         user.setUserId(UUID.randomUUID().toString());
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        user.setNickname(userDTO.getNickname());
         user.setFlag(true);
 
         userRepository.save(user);
@@ -80,9 +83,9 @@ public class UserService {
     }
 
     public TokenResultDTO checkUser(String kakaotoken) {
-        String user_id = UUID.randomUUID().toString();
+        String userId = UUID.randomUUID().toString();
         String uid = kakaoService.getKakaoProfile(kakaotoken);
-        String token = jwtTokenProvider.generateToken(user_id);
+        String token = jwtTokenProvider.generateToken(userId);
 
         User user = userRepository.findByEmailAndProvider(uid, 1);
 
@@ -105,7 +108,7 @@ public class UserService {
             } else {
                 user = new User();
 
-                user.setUserId(user_id);
+                user.setUserId(userId);
                 user.setEmail(uid);
                 user.setProvider(1);
                 user.setToken(token);
@@ -155,14 +158,12 @@ public class UserService {
     }
 
     public UserDTO getUserInfo(String token) {
+        ModelMapper modelMapper = new ModelMapper();
+
         String user_id = jwtTokenProvider.getUserId(token);
         User user = userRepository.findByUserId(user_id);
 
-        UserDTO userDTO = new UserDTO();
-        userDTO.setEmail(user.getEmail());
-        userDTO.setNickname(user.getNickname());
-        userDTO.setImg(user.getImg());
-        userDTO.setProvider(user.getProvider());
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
 
         return userDTO;
     }
@@ -187,5 +188,21 @@ public class UserService {
         } else {
             return false;
         }
+    }
+
+    public List<WineDTO> getScrap(String token){
+        ModelMapper modelMapper = new ModelMapper();
+        String userId = jwtTokenProvider.getUserId(token);
+        User user = userRepository.findByUserId(userId);
+        List<Scrap> scrapList = scrapRepository.findScrapByUser(user);
+        List<WineDTO> wineDTOList = new ArrayList<>();
+
+        for(Scrap scrap: scrapList){
+            WineDTO wineDTO = modelMapper.map(scrap.getWine(), WineDTO.class);
+            wineDTOList.add(wineDTO);
+        }
+
+        return wineDTOList;
+
     }
 }

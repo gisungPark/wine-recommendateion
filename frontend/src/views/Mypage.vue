@@ -94,163 +94,163 @@ export default {
     ],
     preferenceList: [
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://blog.kakaocdn.net/dn/berilh/btqGVwR4KHe/pyu7QGH81CoeCdNhFAdx01/img.jpg",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26286D4C590089210C",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6OE8la_DKabhGQmoJZjYtf2RqEU4p5NeNMQ&usqp=CAU",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEjEnTU125CEs7FttDpQcldEX_pJ0_Ck0GIQ&usqp=CAU",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJEabRKkN_8GLvMHApb3-ZjA8CB_fV4t6GA&usqp=CAU",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9979FB445BE9264118",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://lh3.googleusercontent.com/proxy/hBdn90FtERmFWFvtQQKpQsQCAh9hBisfEdowMWShDwlByR5R-wxL3-wRF31WfScmTZnGL99NJqeivj_pHQKVfkWajj8qrhbTIr-zL2UBb5D14lbU0LvCZeAFJ3yjPTgRVZN0TGhUTMRoZJQL4a-477bM0C6pMgkcBGsWj2Y5lI-Oad7O6LVr09c",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://blog.kakaocdn.net/dn/berilh/btqGVwR4KHe/pyu7QGH81CoeCdNhFAdx01/img.jpg",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26286D4C590089210C",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6OE8la_DKabhGQmoJZjYtf2RqEU4p5NeNMQ&usqp=CAU",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEjEnTU125CEs7FttDpQcldEX_pJ0_Ck0GIQ&usqp=CAU",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJEabRKkN_8GLvMHApb3-ZjA8CB_fV4t6GA&usqp=CAU",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9979FB445BE9264118",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://lh3.googleusercontent.com/proxy/hBdn90FtERmFWFvtQQKpQsQCAh9hBisfEdowMWShDwlByR5R-wxL3-wRF31WfScmTZnGL99NJqeivj_pHQKVfkWajj8qrhbTIr-zL2UBb5D14lbU0LvCZeAFJ3yjPTgRVZN0TGhUTMRoZJQL4a-477bM0C6pMgkcBGsWj2Y5lI-Oad7O6LVr09c",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://blog.kakaocdn.net/dn/berilh/btqGVwR4KHe/pyu7QGH81CoeCdNhFAdx01/img.jpg",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26286D4C590089210C",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6OE8la_DKabhGQmoJZjYtf2RqEU4p5NeNMQ&usqp=CAU",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEjEnTU125CEs7FttDpQcldEX_pJ0_Ck0GIQ&usqp=CAU",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJEabRKkN_8GLvMHApb3-ZjA8CB_fV4t6GA&usqp=CAU",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9979FB445BE9264118",
       },
       {
-        idx: 0,
+        flavor_id: 0,
         name: "사과",
         img:
           "https://lh3.googleusercontent.com/proxy/hBdn90FtERmFWFvtQQKpQsQCAh9hBisfEdowMWShDwlByR5R-wxL3-wRF31WfScmTZnGL99NJqeivj_pHQKVfkWajj8qrhbTIr-zL2UBb5D14lbU0LvCZeAFJ3yjPTgRVZN0TGhUTMRoZJQL4a-477bM0C6pMgkcBGsWj2Y5lI-Oad7O6LVr09c",

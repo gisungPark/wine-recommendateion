@@ -1,29 +1,44 @@
 <template>
   <div class="preference-fram">
     <div class="preference-stages">
-      <div class="preference-stages-wrap" @click="onClickStage(1)">
-        <div class="stage" :class="{ 'active-stage': isCurStage(1) }"></div>
+      <div class="preference-stages-wrap">
+        <div
+          class="stage"
+          :class="{ 'active-stage': isCurStage(1) }"
+          @click="onClickStage(1)"
+        ></div>
         <a
           class="stage-name"
           :class="{ 'active-stage-name': isCurStage(1) }"
           href="#"
+          @click="onClickStage(1)"
           >좋아하는 향</a
         >
       </div>
-      <div class="preference-stages-wrap" @click="onClickStage(2)">
-        <div class="stage" :class="{ 'active-stage': isCurStage(2) }"></div>
+      <div class="preference-stages-wrap">
+        <div
+          class="stage"
+          :class="{ 'active-stage': isCurStage(2) }"
+          @click="onClickStage(2)"
+        ></div>
         <a
           class="stage-name"
           :class="{ 'active-stage-name': isCurStage(2) }"
+          @click="onClickStage(2)"
           href="#"
           >싫어하는 향</a
         >
       </div>
-      <div class="preference-stages-wrap" @click="onClickStage(3)">
-        <div class="stage" :class="{ 'active-stage': isCurStage(3) }"></div>
+      <div class="preference-stages-wrap">
+        <div
+          class="stage"
+          :class="{ 'active-stage': isCurStage(3) }"
+          @click="onClickStage(3)"
+        ></div>
         <a
           class="stage-name"
           :class="{ 'active-stage-name': isCurStage(3) }"
+          @click="onClickStage(3)"
           href="#"
           >와인 취향</a
         >
@@ -114,7 +129,7 @@ export default {
   created() {
     for (var i = 0; i < this.preferenceList.length; i++) {
       const item = {
-        idx: this.preferenceList[i].idx,
+        flavor_id: this.preferenceList[i].flavor_id,
         name: this.preferenceList[i].name,
         img: this.preferenceList[i].img,
         isLike: false,
@@ -138,25 +153,39 @@ export default {
     list3: [],
     list4: [],
     list5: [],
+    likeList: [],
+    hateList: [],
   }),
   methods: {
     onClickStage(n) {
       this.curStage = n;
     },
+    // 상단 stage 클릭시 stage 변경 함수
     isCurStage(n) {
       if (this.curStage == n) return true;
       else return false;
     },
+    /*
+     * 현재 stage(좋아하는 또는 싫어하는) 여부에 따라 카드 활성화 여부 체크 함수!
+     * 현재 like 단계시, like 선택된 카드는 크기 1.2배, 투명도 0 설정!!
+     */
     currentCardState(item) {
       if (this.curStage == FIRST_STAGE && item.isLike) return true;
       else if (this.curStage == SECOND_STAGE && item.isHate) return true;
       return false;
     },
+    /*
+     * 현재 stage(좋아하는 또는 싫어하는) 여부에 따라 카드 비활성화 여부 체크 함수!
+     * 현재 like 단계시, hate 선택된 카드는 크기 투명도 0.2 설정!!
+     */
     isInactive(item) {
       if (this.curStage == FIRST_STAGE && item.isHate) return true;
       else if (this.curStage == SECOND_STAGE && item.isLike) return true;
       return false;
     },
+    /*
+     * 현재 stage에서 해당 카드가 선택가능한지 확인
+     */
     isSelectPossible(n) {
       if (n == FIRST_STAGE) {
         if (this.lickCnt <= 2) return true;
@@ -166,6 +195,9 @@ export default {
         else return false;
       }
     },
+    /*
+     * 카드 클릭 이벤트!!
+     */
     onCardActive(item) {
       if (this.curStage == FIRST_STAGE) {
         if (item.isHate) return;
@@ -176,6 +208,7 @@ export default {
             return;
           } else {
             this.lickCnt++;
+            this.likeList.push(item);
             item.isLike = true;
           }
         } else {
@@ -230,6 +263,8 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* 상단 스테이지값 고정시 삭제 요망!!! */
+  /* z-index: 10 !important; */
 }
 
 .stage {

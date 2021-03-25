@@ -1,5 +1,5 @@
 <template>
-  <div id="scrap">
+  <div id="scrap" @click="clickedScrap">
     <svg :class="{ red: scraped }" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
       <path d="M12 4.248c-3.148-5.402-12-3.825-12 2.944 0 4.661 5.571 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-6.792-8.875-8.306-12-2.944z" />
     </svg>
@@ -18,6 +18,11 @@ export default {
       },
     },
   },
+  methods: {
+    clickedScrap() {
+      alert('clicked scrap btn!');
+    },
+  },
 };
 </script>
 
@@ -26,6 +31,7 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  cursor: pointer;
   background-color: #fff;
   padding: 0.5rem;
   width: 6.2rem;

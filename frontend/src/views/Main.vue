@@ -59,13 +59,27 @@
     </section>
     <section id="main-section-2">
       <div class="main-message wine-review sticky-elem">
-        <p class="b-desc">{{ avg }}</p>
+        <div class="frame">
+          <p class="b-desc">{{ avg }}</p>
+          <Scrap class="scrap-btn" :scraped="true" />
+        </div>
         <div class="star-rate" :style="{ width: starRate + 'vw' }"></div>
-        <Scrap class="scrap-btn" :scraped="true" />
       </div>
     </section>
     <section id="main-section-3">
-      top10
+      <swiper class="swiper" :options="swiperOption">
+        <swiper-slide>Slide 1</swiper-slide>
+        <swiper-slide>Slide 2</swiper-slide>
+        <swiper-slide>Slide 3</swiper-slide>
+        <swiper-slide>Slide 4</swiper-slide>
+        <swiper-slide>Slide 5</swiper-slide>
+        <swiper-slide>Slide 6</swiper-slide>
+        <swiper-slide>Slide 7</swiper-slide>
+        <swiper-slide>Slide 8</swiper-slide>
+        <swiper-slide>Slide 9</swiper-slide>
+        <swiper-slide>Slide 10</swiper-slide>
+        <div class="swiper-pagination" slot="pagination"></div>
+      </swiper>
     </section>
   </div>
 </template>
@@ -74,11 +88,15 @@
 import { mapState } from 'vuex';
 import Scrap from '@/components/button/Scrap.vue';
 import * as interaction from '@/scripts/interaction.js';
+import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
+import 'swiper/swiper-bundle.css';
 
 export default {
   name: 'Main',
   components: {
     Scrap,
+    Swiper,
+    SwiperSlide,
   },
   filters: {
     currency(val) {
@@ -109,6 +127,16 @@ export default {
       },
       avg: 4.5,
       starRate: 10,
+      //swiper
+      swiperOption: {
+        slidesPerView: 3,
+        spaceBetween: 30,
+        freeMode: true,
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true,
+        },
+      },
     };
   },
   created() {
@@ -177,7 +205,7 @@ export default {
   background-color: var(--basic-color-bg);
 }
 #main-section-2 {
-  background-color: var(--basic-color-bg3);
+  background-color: var(--basic-color-bg);
 }
 #main-section-3 {
   background-color: var(--basic-color-bg4);
@@ -199,7 +227,7 @@ section {
   transform: translate(-50%, -50%);
   width: auto;
   height: 60vh;
-  min-height: 400px;
+  min-height: 650px;
 }
 .stop {
 }
@@ -366,10 +394,17 @@ span {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  top: 18vh;
+  left: 30vw;
   /* width: 100%; */
 }
-.wine-review p {
+.wine-review .frame {
+  display: flex;
+}
+.wine-review .frame p {
+  display: inline-block;
   font-size: 40vh;
+  color: var(--basic-color-key);
   line-height: 40vh;
 }
 .star-rate {
@@ -380,16 +415,24 @@ span {
   background-repeat: repeat-x;
 }
 .scrap-btn {
+  display: inline-block;
+  align-self: flex-end;
+  margin-left: 1rem;
+  margin-bottom: 2rem;
   transform: scale(1.5);
-  align-self: flex-start;
-  margin-top: 2rem;
-  margin-left: 2rem;
-  margin-bottom: 4rem;
 }
 
 @media (min-width: 1024px) {
   .wine-title-sub {
     top: 58%;
   }
+}
+
+/* TODO: swiper */
+/* FIXME:  */
+.swiper {
+  top: 10%;
+  width: 100%;
+  height: 80%;
 }
 </style>

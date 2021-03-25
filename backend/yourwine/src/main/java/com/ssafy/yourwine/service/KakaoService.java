@@ -21,25 +21,6 @@ import java.util.Map;
 @Service
 public class KakaoService {
 
-//    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-//    private final RestTemplate restTemplate;
-//    private final Environment env;
-//    private final Gson gson;
-//
-//    @Value("${spring.url.base}")
-//    private String baseUrl;
-//    @Value("${spring.social.kakao.client_id}")
-//    private String kakaoClientId;
-//    @Value("${spring.social.kakao.redirect}")
-//    private String kakaoRedirect;
-//    @Value("${spring.social.kakao.url.token}")
-//    private String kakaoTokenUrl;
-//    @Value("${spring.social.kakao.client_secret}")
-//    private String kakaoSecret;
-//    @Value("${spring.social.kakao.url.profile}")
-//    private String kakaoProfileUrl;
-
     public String getKakaoProfile(String token){
         String reqURL = "https://kapi.kakao.com/v2/user/me";
         String Uid = "";

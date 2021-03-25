@@ -1,6 +1,6 @@
 <template>
-  <!-- fram -> container -> wrap -->
-  <div class="fram">
+  <!-- frame -> container -> wrap -->
+  <div class="frame">
     <div class="item">
       <div class="left-wrap">
         <span class="nav-title">Mypage</span>
@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <div class="item" style="background-color: #0f0f0f">
+    <div class="item">
       <div class="right-wrap">
         <div v-show="this.screenState != 4" class="content">
           <div class="imgBox">
@@ -94,104 +94,104 @@ export default {
     ],
     preferenceList: [
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 1,
+        name: "1111",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 2,
+        name: "2222",
         img:
           "https://blog.kakaocdn.net/dn/berilh/btqGVwR4KHe/pyu7QGH81CoeCdNhFAdx01/img.jpg",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 3,
+        name: "3333",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26286D4C590089210C",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 4,
+        name: "4444",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6OE8la_DKabhGQmoJZjYtf2RqEU4p5NeNMQ&usqp=CAU",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 5,
+        name: "55555",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEjEnTU125CEs7FttDpQcldEX_pJ0_Ck0GIQ&usqp=CAU",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 6,
+        name: "66666",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJEabRKkN_8GLvMHApb3-ZjA8CB_fV4t6GA&usqp=CAU",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 7,
+        name: "77777",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 8,
+        name: "88888",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9979FB445BE9264118",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 9,
+        name: "99999",
         img:
           "https://lh3.googleusercontent.com/proxy/hBdn90FtERmFWFvtQQKpQsQCAh9hBisfEdowMWShDwlByR5R-wxL3-wRF31WfScmTZnGL99NJqeivj_pHQKVfkWajj8qrhbTIr-zL2UBb5D14lbU0LvCZeAFJ3yjPTgRVZN0TGhUTMRoZJQL4a-477bM0C6pMgkcBGsWj2Y5lI-Oad7O6LVr09c",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 10,
+        name: "10",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 11,
+        name: "11",
         img:
           "https://blog.kakaocdn.net/dn/berilh/btqGVwR4KHe/pyu7QGH81CoeCdNhFAdx01/img.jpg",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 12,
+        name: "12",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F26286D4C590089210C",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 13,
+        name: "13",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6OE8la_DKabhGQmoJZjYtf2RqEU4p5NeNMQ&usqp=CAU",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 14,
+        name: "14",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEjEnTU125CEs7FttDpQcldEX_pJ0_Ck0GIQ&usqp=CAU",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 15,
+        name: "15",
         img:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFJEabRKkN_8GLvMHApb3-ZjA8CB_fV4t6GA&usqp=CAU",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 16,
+        name: "16",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9966263E5BE5397C2C",
       },
       {
-        flavor_id: 0,
-        name: "사과",
+        flavor_id: 17,
+        name: "17",
         img:
           "https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F9979FB445BE9264118",
       },
@@ -271,10 +271,9 @@ export default {
 </script>
 
 <style scoped>
-.fram {
-  height: 100vh;
+.frame {
   width: 100vw;
-  background-color: white;
+  background-color: var(--basic-color-bg);
   display: flex;
   z-index: 0;
 }

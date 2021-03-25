@@ -47,7 +47,7 @@
     <div class="preference-fillter">
       <div v-show="curStage != 3" class="preference-item1">
         <!-- ######################### CARD LIST ################################## -->
-        <div class="list-1">
+        <div class="lists list-1">
           <div
             class="list-item-cards"
             :class="{
@@ -60,7 +60,7 @@
             :style="{ backgroundImage: `url(${item.img})` }"
           ></div>
         </div>
-        <div class="list-2">
+        <div class="lists list-2">
           <div
             class="list-item-cards"
             :class="{
@@ -73,7 +73,7 @@
             :style="{ backgroundImage: `url(${item.img})` }"
           ></div>
         </div>
-        <div class="list-3">
+        <div class="lists list-3">
           <div
             class="list-item-cards"
             :class="{
@@ -86,7 +86,7 @@
             :style="{ backgroundImage: `url(${item.img})` }"
           ></div>
         </div>
-        <div class="list-4">
+        <div class="lists list-4">
           <div
             class="list-item-cards"
             :class="{
@@ -99,7 +99,7 @@
             :style="{ backgroundImage: `url(${item.img})` }"
           ></div>
         </div>
-        <div class="list-5">
+        <div class="lists list-5">
           <div
             class="list-item-cards"
             :class="{
@@ -112,6 +112,37 @@
             :style="{ backgroundImage: `url(${item.img})` }"
           ></div>
         </div>
+
+        <!-- ############################################ -->
+        <!-- ########## start 우측 선택된 아이템 목록 ########### -->
+
+        <div class="selected-list">
+          <div class="selected-list-title">
+            <span v-show="curStage == 1">Favorite list</span>
+            <span v-show="curStage == 2">Dislike list</span>
+          </div>
+          <div v-show="curStage == 1" class="selected-list-like">
+            <div
+              class="selected-list-item"
+              v-for="(item, idx) in likeList"
+              :key="item + idx"
+            >
+              <h1>{{ item.name }}</h1>
+            </div>
+          </div>
+          <div v-show="curStage == 2" class="selected-list-hate">
+            <div
+              class="selected-list-item"
+              v-for="(item, idx) in hateList"
+              :key="item + idx"
+            >
+              <h1>{{ item.name }}</h1>
+            </div>
+          </div>
+        </div>
+
+        <!-- ############################################ -->
+        <!-- ########## end 우측 선택된 아이템 목록  ########### -->
       </div>
       <!-- <div v-show="curStage == 2" class="preference-item2"></div> -->
       <div v-show="curStage == 3" class="preference-item3"></div>
@@ -157,12 +188,12 @@ export default {
     hateList: [],
   }),
   methods: {
-    onClickStage(n) {
-      this.curStage = n;
+    onClickStage(stage) {
+      this.curStage = stage;
     },
     // 상단 stage 클릭시 stage 변경 함수
-    isCurStage(n) {
-      if (this.curStage == n) return true;
+    isCurStage(stage) {
+      if (this.curStage == stage) return true;
       else return false;
     },
     /*
@@ -186,13 +217,39 @@ export default {
     /*
      * 현재 stage에서 해당 카드가 선택가능한지 확인
      */
-    isSelectPossible(n) {
-      if (n == FIRST_STAGE) {
+    isSelectPossible(stage) {
+      if (stage == FIRST_STAGE) {
         if (this.lickCnt <= 2) return true;
         else return false;
-      } else {
+      } else if (stage == SECOND_STAGE) {
         if (this.hateCnt <= 2) return true;
         else return false;
+      }
+    },
+    /*
+     * 배열에서 해당 객체 삭제 함수!!
+     */
+    removeItemFromList(stage, targe) {
+      let itemToFine = "";
+      let removeIdx = -1;
+      if (stage == FIRST_STAGE) {
+        itemToFine = this.likeList.find(function (item) {
+          return item.flavor_id === targe.flavor_id;
+        });
+        removeIdx = this.likeList.indexOf(itemToFine);
+        if (removeIdx > -1) {
+          this.likeList.splice(removeIdx, 1);
+          this.lickCnt--;
+        }
+      } else if (stage == SECOND_STAGE) {
+        itemToFine = this.hateList.find(function (item) {
+          return item.flavor_id === targe.flavor_id;
+        });
+        removeIdx = this.hateList.indexOf(itemToFine);
+        if (removeIdx > -1) {
+          this.hateCnt--;
+          this.hateList.splice(removeIdx, 1);
+        }
       }
     },
     /*
@@ -207,14 +264,14 @@ export default {
             alert("선택 가능한 갯수를 초과했습니다.");
             return;
           } else {
-            this.lickCnt++;
             this.likeList.push(item);
+            this.lickCnt++;
             item.isLike = true;
           }
         } else {
           // 3. 좋아한다고 했다가 취소하는 경우
           item.isLike = false;
-          this.lickCnt--;
+          this.removeItemFromList(FIRST_STAGE, item);
         }
       }
       // 2. 싫어한다고 선택하는 경우
@@ -223,17 +280,23 @@ export default {
         if (item.isLike) return;
         if (!item.isHate) {
           if (!this.isSelectPossible(SECOND_STAGE)) {
-            alert("선택 가능한 갯수를 초과했습니다.");
+            alert("선택 가능한 갯수를 초과했습니다." + this.hateCnt);
             return;
           } else {
-            item.isHate = true;
+            this.hateList.push(item);
             this.hateCnt++;
+            item.isHate = true;
           }
         } else {
           // 3. 좋아한다고 했다가 취소하는 경우
           item.isHate = false;
-          this.hateCnt--;
+          this.removeItemFromList(SECOND_STAGE, item);
         }
+        console.log("싫어하는 리스트!!!   " + this.hateCnt);
+        for (var i = 0; i < this.hateList.length; i++) {
+          console.log(this.hateList[i]);
+        }
+        console.log();
       }
     },
   },
@@ -301,14 +364,14 @@ export default {
 }
 .preference-item1 {
   position: relative;
-  left: -10px;
+  left: -60px;
   margin-top: 160px;
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-.preference-item1 > div {
+.lists {
   height: auto;
   width: 200px;
   margin: 4px;
@@ -321,6 +384,7 @@ export default {
 .list-4 {
   margin-top: 60px !important;
 }
+
 .list-item-cards {
   width: 100%;
   height: 300px;
@@ -337,5 +401,33 @@ export default {
 
 .list-item-cards-inactive {
   opacity: 0.1 !important;
+}
+
+.selected-list {
+  position: fixed;
+  right: 38px;
+  top: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.selected-list-title {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.selected-list-title > span {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+.selected-list-item {
+  background-color: white;
+  width: 150px;
+  height: 30px;
+  margin: 3px;
+  text-align: center;
 }
 </style>

@@ -23,7 +23,7 @@ public class Grape {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "grape_id")
-	private int grapeId;
+	private Long grapeId;
 	private String kname;
 	private String ename;
 	private String detail;

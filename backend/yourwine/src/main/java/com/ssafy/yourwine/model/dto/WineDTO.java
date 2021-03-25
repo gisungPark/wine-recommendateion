@@ -10,7 +10,7 @@ import lombok.ToString;
 @Data
 public class WineDTO {
 
-	private int wineId;
+	private Long wineId;
 	private String img;
 	private String kname;
 	private String ename;

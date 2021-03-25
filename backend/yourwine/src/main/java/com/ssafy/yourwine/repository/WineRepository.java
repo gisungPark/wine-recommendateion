@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ssafy.yourwine.model.entity.Wine;
 
-public interface WineRepository extends JpaRepository<Wine, Integer>{
+public interface WineRepository extends JpaRepository<Wine, Long>{
 
-	Wine findByWineId(int wineId);
+	Wine findByWineId(Long wineId);
 	
 }

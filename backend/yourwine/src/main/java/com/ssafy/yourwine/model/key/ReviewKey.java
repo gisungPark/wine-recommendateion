@@ -15,5 +15,5 @@ public class ReviewKey implements Serializable{
 	private String userId;
 	
 	@Column(name = "wine_id")
-	private int wineId;
+	private Long wineId;
 }

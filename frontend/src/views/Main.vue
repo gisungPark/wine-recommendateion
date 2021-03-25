@@ -325,19 +325,20 @@ section {
 }
 
 .wine-info {
-  width: 70%;
+  width: 100%;
   top: 50% !important;
   left: 50% !important;
   transform: translateX(-50%);
 }
 .wine-info-item {
-  width: 100%;
+  width: 40%;
   margin: 0.5rem auto 0.1rem;
   display: flex;
   white-space: nowrap;
   overflow: hidden;
   flex-direction: row;
   justify-content: space-between;
+  transition: width 0.15s ease;
 }
 span {
   font-family: 'Noto Sans KR', sans-serif;
@@ -350,8 +351,10 @@ span {
   color: var(--basic-color-key);
 }
 .wine-info hr {
-  width: 100%;
+  width: 40%;
+  margin: 0 auto;
   border: 1px dotted var(--basic-color-fill);
+  transition: width 0.15s ease;
 }
 
 #main-section-2 {

@@ -30,10 +30,8 @@ public class WineService {
 	private final JwtTokenProvider jwtTokenProvider;
 	
 	//와인 상세보기
-	public WineDTO getWine(int wineId) {
-		Wine wine = wineRepository.findByWineId(wineId);
-		if(wine == null)
-			return null;
+	public WineDTO getWine(Long wineId) {
+		Wine wine = wineRepository.findById(wineId).orElseThrow(() -> new IllegalArgumentException("no wine data"));
 		WineDTO wineDto = modelMapper.map(wine, WineDTO.class);
 		return wineDto;
 	}
@@ -41,8 +39,6 @@ public class WineService {
 	//와인 전체 리스트
 	public List<WineDTO> getWineList(){
 		List<Wine> wineList = wineRepository.findAll();
-		if(wineList == null)
-			return null;
 		List<WineDTO> wineDtoList = modelMapper.map(wineList, new TypeToken<List<WineDTO>>() {}.getType());
 		return wineDtoList;
 	}

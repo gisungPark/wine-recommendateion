@@ -21,10 +21,8 @@ public class GrapeService {
 	private final GrapeRepository grapeRepository;
 
 	//품종 상세보기
-	public GrapeDTO getGrape(int grapeId) {	
-		Grape grape = grapeRepository.findByGrapeId(grapeId);
-		if(grape == null)
-			return null;
+	public GrapeDTO getGrape(Long grapeId) {	
+		Grape grape = grapeRepository.findById(grapeId).orElseThrow(() -> new IllegalArgumentException("no grape data"));
 		GrapeDTO grapeDto = modelMapper.map(grape, GrapeDTO.class);
 		return grapeDto;
 	}
@@ -32,8 +30,6 @@ public class GrapeService {
 	//품종 전체 리스트
 	public List<GrapeDTO> getGrapeList(){
 		List<Grape> grapeList = grapeRepository.findAll();
-		if(grapeList == null)
-			return null;
 		List<GrapeDTO> grapeDtoList = modelMapper.map(grapeList, new TypeToken<List<GrapeDTO>>() {}.getType());
 		return grapeDtoList;
 	}

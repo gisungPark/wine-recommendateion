@@ -22,7 +22,7 @@ public class Wine {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "wine_id")
-	private int wineId;
+	private Long wineId;
 	private String img;
 	private String kname;
 	private String ename;

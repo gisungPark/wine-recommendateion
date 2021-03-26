@@ -91,7 +91,7 @@ export const main = () => {
     },
     {
       type: 'sticky',
-      heightNum: 2, //브라우저 높이의 배수
+      heightNum: 1, //브라우저 높이의 배수
       scrollHeight: 0, //최초 1회, 윈도우 리사이즈시 동적 할당
       objs: {
         container: document.querySelector('#main-section-3'),

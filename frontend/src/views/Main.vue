@@ -65,19 +65,21 @@
         </div>
         <div class="star-rate" :style="{ width: starRate + 'vw' }"></div>
       </div>
+      <div class="gradient-bg"></div>
     </section>
     <section id="main-section-3">
+      <p class="topten-title b-title">Top 10</p>
       <swiper class="swiper" :options="swiperOption">
-        <swiper-slide>Slide 1</swiper-slide>
-        <swiper-slide>Slide 2</swiper-slide>
-        <swiper-slide>Slide 3</swiper-slide>
-        <swiper-slide>Slide 4</swiper-slide>
-        <swiper-slide>Slide 5</swiper-slide>
-        <swiper-slide>Slide 6</swiper-slide>
-        <swiper-slide>Slide 7</swiper-slide>
-        <swiper-slide>Slide 8</swiper-slide>
-        <swiper-slide>Slide 9</swiper-slide>
-        <swiper-slide>Slide 10</swiper-slide>
+        <swiper-slide><Topten /></swiper-slide>
+        <swiper-slide><Topten /></swiper-slide>
+        <swiper-slide><Topten /></swiper-slide>
+        <swiper-slide><Topten /></swiper-slide>
+        <swiper-slide><Topten /></swiper-slide>
+        <swiper-slide><Topten /></swiper-slide>
+        <swiper-slide><Topten /></swiper-slide>
+        <swiper-slide><Topten /></swiper-slide>
+        <swiper-slide><Topten /></swiper-slide>
+        <swiper-slide><Topten /></swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
     </section>
@@ -90,6 +92,7 @@ import Scrap from '@/components/button/Scrap.vue';
 import * as interaction from '@/assets/js/interaction.js';
 import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
 import 'swiper/swiper-bundle.css';
+import Topten from '@/components/static/main/Topten.vue';
 
 export default {
   name: 'Main',
@@ -97,6 +100,7 @@ export default {
     Scrap,
     Swiper,
     SwiperSlide,
+    Topten,
   },
   filters: {
     currency(val) {
@@ -129,7 +133,7 @@ export default {
       starRate: 10,
       //swiper
       swiperOption: {
-        slidesPerView: 3,
+        slidesPerView: 4.5,
         spaceBetween: 30,
         freeMode: true,
         pagination: {
@@ -208,7 +212,7 @@ export default {
   background-color: var(--basic-color-bg);
 }
 #main-section-3 {
-  background-color: var(--basic-color-bg4);
+  background-color: #000;
 }
 
 section {
@@ -226,8 +230,8 @@ section {
   top: 50%;
   transform: translate(-50%, -50%);
   width: auto;
-  height: 60vh;
-  min-height: 650px;
+  height: 60%;
+  min-height: 550px;
 }
 .stop {
 }
@@ -381,7 +385,8 @@ span {
 .wine-info hr {
   width: 40%;
   margin: 0 auto;
-  border: 1px dotted var(--basic-color-fill);
+  border-top: none;
+  border-bottom: 1px dotted var(--basic-color-fill);
   transition: width 0.15s ease;
 }
 
@@ -394,7 +399,8 @@ span {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  top: 18vh;
+  top: 50vh;
+  transform: translateY(-50%);
   left: 30vw;
   /* width: 100%; */
 }
@@ -403,9 +409,9 @@ span {
 }
 .wine-review .frame p {
   display: inline-block;
-  font-size: 40vh;
+  font-size: 25vw;
   color: var(--basic-color-key);
-  line-height: 40vh;
+  line-height: 25vw;
 }
 .star-rate {
   width: 50vw;
@@ -421,6 +427,11 @@ span {
   margin-bottom: 2rem;
   transform: scale(1.5);
 }
+.gradient-bg {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(22, 22, 22, 1) 0%, rgba(0, 0, 0, 1) 100%);
+}
 
 @media (min-width: 1024px) {
   .wine-title-sub {
@@ -430,8 +441,16 @@ span {
 
 /* TODO: swiper */
 /* FIXME:  */
+.topten-title {
+  width: 100%;
+  position: absolute;
+  margin: 5% auto;
+  color: var(--basic-color-key);
+  text-align: center;
+  font-size: 5vw;
+}
 .swiper {
-  top: 10%;
+  top: 20%;
   width: 100%;
   height: 80%;
 }

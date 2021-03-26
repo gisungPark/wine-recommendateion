@@ -37,19 +37,21 @@ public class WineService {
 		wineDetailDto.setWineDto(wineDto);
 		//음식에 어울리는 음식 리스트
 		//음식 이유
-		String userId = jwtTokenProvider.getUserId(token);
-		User user = userRepository.findByUserId(userId);
-		//스크랩여부
-		if(scrapRepository.findByUserAndWine(user, wine).isPresent()) {
-			wineDetailDto.setScrap(true);
-		}else {
-			wineDetailDto.setWriteReview(false);
-		}
-		//리뷰작성여부
-		if(reviewRepository.findByUserAndWine(user, wine).isPresent()) {
-			wineDetailDto.setWriteReview(true);
-		}else {
-			wineDetailDto.setWriteReview(false);
+		if(!token.equals("guest")) {
+			String userId = jwtTokenProvider.getUserId(token);
+			User user = userRepository.findByUserId(userId);
+			//스크랩여부
+			if(scrapRepository.findByUserAndWine(user, wine).isPresent()) {
+				wineDetailDto.setScrap(true);
+			}else {
+				wineDetailDto.setWriteReview(false);
+			}
+			//리뷰작성여부
+			if(reviewRepository.findByUserAndWine(user, wine).isPresent()) {
+				wineDetailDto.setWriteReview(true);
+			}else {
+				wineDetailDto.setWriteReview(false);
+			}
 		}
 		return wineDetailDto;
 	}

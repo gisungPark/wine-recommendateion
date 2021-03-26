@@ -22,7 +22,7 @@ public class JwtTokenProvider {
     @Value("spring.jwt.secret")
     private String secretKey;
 
-    public static final long TOKEN_VALIDATION_SECOND = 1000L * 60 * 60; // 1 Hour
+    public static final long TOKEN_VALIDATION_SECOND = 1000L * 60 * 60 * 5; // 1 Hour
 
     private final UserDetailsService userDetailsService;
 

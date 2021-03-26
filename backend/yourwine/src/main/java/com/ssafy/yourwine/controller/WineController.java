@@ -56,7 +56,7 @@ public class WineController {
 
 	@ApiOperation(value = "와인 상세 정보", notes = "와인 id에 해당하는 상세정보 반환한다.")
 	@GetMapping("/{wineId}")
-	public WineDetailDTO getWine(@PathVariable Long wineId, @RequestHeader("TOKEN") String token) {
+	public WineDetailDTO getWine(@PathVariable Long wineId,  @RequestHeader("TOKEN") String token) {
 		return WineService.getWine(wineId,token);
 	}
 

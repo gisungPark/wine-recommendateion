@@ -1,9 +1,6 @@
 package com.ssafy.yourwine.controller;
 
-import com.ssafy.yourwine.model.dto.SignInDTO;
-import com.ssafy.yourwine.model.dto.TokenResultDTO;
-import com.ssafy.yourwine.model.dto.UserDTO;
-import com.ssafy.yourwine.model.dto.WineDTO;
+import com.ssafy.yourwine.model.dto.*;
 import com.ssafy.yourwine.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -150,6 +147,17 @@ public class UserController {
 		List<WineDTO> wineDTOList = userService.getScrap(token);
 
 		return wineDTOList;
+	}
+
+	@GetMapping("/getReview")
+	@ApiOperation(value = "나의 리뷰 리스트", notes="Parameter\n" +
+			"- token(RequestHeader): 액세스 토큰\n" +
+			"Response\n" +
+			"")
+	public List<ReviewDTO> getReview(@RequestHeader("TOKEN") String token) {
+		List<ReviewDTO> reviewDTOList = userService.getReview(token);
+
+		return reviewDTOList;
 	}
 
 }

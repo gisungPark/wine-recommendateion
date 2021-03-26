@@ -82,9 +82,9 @@ export const main = () => {
         wineRate: document.querySelector('#main-section-2 .star-rate'),
       },
       values: {
-        wineImg_left_in: [50, 30, { start: 0.02, end: 0.2 }],
-        wineImg_height_in: [60, 80, { start: 0.05, end: 0.25 }],
-        wineReview_opacity_in: [0, 1, { start: 0.15, end: 0.3 }],
+        wineImg_left_in: [50, 30, { start: 0.02, end: 0.25 }],
+        wineImg_height_in: [60, 80, { start: 0.05, end: 0.3 }],
+        wineReview_opacity_in: [0, 1, { start: 0.15, end: 0.42 }],
         wineAvg_text_in: [0, document.querySelector('#main-section-2 .wine-review> .frame> p').innerText, { start: 0.15, end: 0.4 }],
         wineRate_width_in: [0, document.querySelector('#main-section-2 .wine-review> .frame> p').innerText * 10, { start: 0.15, end: 0.4 }],
       },

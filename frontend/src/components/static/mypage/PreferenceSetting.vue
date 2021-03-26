@@ -128,8 +128,12 @@
               :key="item + idx"
             >
               <h1>{{ item.name }}</h1>
+              <div id="cancleBtn"></div>
             </div>
           </div>
+          <span v-show="curStage == 1" class="count-display"
+            >{{ this.lickCnt }} / 3</span
+          >
           <div v-show="curStage == 2" class="selected-list-hate">
             <div
               class="selected-list-item"
@@ -137,8 +141,12 @@
               :key="item + idx"
             >
               <h1>{{ item.name }}</h1>
+              <div id="cancleBtn"></div>
             </div>
           </div>
+          <span v-show="curStage == 2" class="count-display"
+            >{{ this.hateCnt }} / 3</span
+          >
         </div>
 
         <!-- ############################################ -->
@@ -598,23 +606,59 @@ export default {
   text-align: center;
 }
 .selected-list-title {
-  width: 100%;
+  width: 160px;
   display: flex;
   justify-content: center;
 }
+
 .selected-list-title > span {
   color: white;
   font-size: 28px;
   font-weight: bold;
-  margin-bottom: 2px;
+  margin-bottom: 10px;
   text-align: center;
 }
+.selected-list-like,
+.selected-list-hate {
+  width: 100%;
+  border: 2px solid var(--basic-color-key);
+  border-top: 0px;
+  border-radius: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .selected-list-item {
   background-color: white;
-  width: 150px;
+  width: 100px;
   height: 30px;
   margin: 3px;
   text-align: center;
+  border-radius: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.selected-list-item > h1 {
+  margin-left: 12px;
+}
+
+.count-display {
+  position: relative;
+  left: 45px;
+  font-size: 22px;
+  font-weight: 900;
+  color: white;
+}
+
+#cancleBtn {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+  background-image: url(../../../assets/images/cross-icon.png);
 }
 
 #okBtn {

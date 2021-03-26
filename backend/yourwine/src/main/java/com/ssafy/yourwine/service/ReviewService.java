@@ -47,6 +47,7 @@ public class ReviewService {
 //	}
 	
 	//리뷰 작성	
+	@Transactional
 	public void saveReview(ReviewDTO reviewDto, String token) {
 		String userId = jwtTokenProvider.getUserId(token);
 		Review review = new Review();
@@ -78,6 +79,7 @@ public class ReviewService {
 	}
 	
 	//리뷰 삭제
+	@Transactional
 	public void deleteReview(String token, Long wineId) {
 		String userId = jwtTokenProvider.getUserId(token);
 		Review review = new Review();

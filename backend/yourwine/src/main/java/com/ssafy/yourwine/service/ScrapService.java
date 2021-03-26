@@ -26,7 +26,6 @@ public class ScrapService {
 	private final UserRepository userRepository;
 
 	//스크랩 추가
-	@Transactional
 	public void saveScrap(String token, Long wineId) {
 		Scrap scrap = new Scrap();
 		ScrapKey scrapKey = new ScrapKey();
@@ -38,7 +37,6 @@ public class ScrapService {
 	}
 
 	//스크랩 삭제
-	@Transactional
 	public void deleteScrap(String token, Long wineId) {
 		Scrap scrap = new Scrap();
 		ScrapKey scrapKey = new ScrapKey();
@@ -50,12 +48,4 @@ public class ScrapService {
 		scrapRepository.delete(scrap);
 	}
 	
-	//유저 스크랩 리스트
-	public List<Scrap> getScrapList (String token){
-		String userId = jwtTokenProvider.getUserId(token);
-		User user = userRepository.findByUserId(userId);
-		System.out.println(user.getUserId());
-		List<Scrap> scrapList = scrapRepository.findScrapByUser(user);
-		return scrapList;
-	}
 }

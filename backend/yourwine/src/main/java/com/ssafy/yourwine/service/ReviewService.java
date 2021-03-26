@@ -2,11 +2,11 @@ package com.ssafy.yourwine.service;
 
 import java.sql.Timestamp;
 import java.util.Date;
-
-import javax.transaction.Transactional;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.yourwine.config.security.JwtTokenProvider;
 import com.ssafy.yourwine.model.dto.ReviewDTO;
@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ReviewService {
 
 	private final ModelMapper modelMapper = new ModelMapper();
@@ -30,13 +31,22 @@ public class ReviewService {
 	private final UserRepository userRepository;
 	private final WineRepository wineRepository;
 	
+	//해당 유저 리뷰 전체 리스트
+//	@Transactional
+//	public List<Review> getUserReviewList (String token) {
+//		String userId = jwtTokenProvider.getUserId(token);
+//		User user = userRepository.findByUserId(userId);
+//		List<Review> list = reviewRepository.findByUser(user);
+//		return list;
+//	}
+//	
+//	//해당 와인 리뷰 전체 리스트
+//	public List<Review> getWineReviewList (Long wineId){
+//		Wine wine = wineRepository.findByWineId(wineId);
+//		return reviewRepository.findByWine(wine);
+//	}
 	
-	//유저별 리뷰 전체 리스트
-	
-	//해당 와인 리뷰 전체리스트
-	
-	//리뷰 작성
-	@Transactional
+	//리뷰 작성	
 	public void saveReview(ReviewDTO reviewDto, String token) {
 		String userId = jwtTokenProvider.getUserId(token);
 		Review review = new Review();
@@ -68,7 +78,6 @@ public class ReviewService {
 	}
 	
 	//리뷰 삭제
-	@Transactional
 	public void deleteReview(String token, Long wineId) {
 		String userId = jwtTokenProvider.getUserId(token);
 		Review review = new Review();

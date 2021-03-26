@@ -1,6 +1,5 @@
 package com.ssafy.yourwine.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,12 +10,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.yourwine.model.dto.GrapeDTO;
 import com.ssafy.yourwine.model.dto.ReviewDTO;
 import com.ssafy.yourwine.model.dto.WineDTO;
-import com.ssafy.yourwine.model.entity.Scrap;
+import com.ssafy.yourwine.model.dto.WineDetailDTO;
+import com.ssafy.yourwine.model.entity.Review;
 import com.ssafy.yourwine.service.GrapeService;
 import com.ssafy.yourwine.service.ReviewService;
 import com.ssafy.yourwine.service.ScrapService;
@@ -36,9 +37,9 @@ public class WineController {
 	private final ScrapService ScrapService;
 	private final ReviewService reviewService;
 
-	@PostMapping("/test")
-	public void test(@RequestBody ReviewDTO reviewDto, @RequestHeader("TOKEN") String token) {
-		reviewService.updateReview(reviewDto, token);
+	@PostMapping("/test/{wineId}")
+	public void test(@PathVariable Long wineId) {
+		//return reviewService.getWineReviewList(wineId);
 	}
 
 	@ApiOperation(value = "품종 상세 정보", notes = "품종 id에 해당하는 상세정보 반환한다. 해당하는 id가 없을 경우 no grape data 에러발생")
@@ -53,10 +54,10 @@ public class WineController {
 		return grapeService.getGrapeList();
 	}
 
-	@ApiOperation(value = "와인 상세 정보", notes = "와인 id에 해당하는 상세정보 반환한다. no grape wine 에러발생")
+	@ApiOperation(value = "와인 상세 정보", notes = "와인 id에 해당하는 상세정보 반환한다.")
 	@GetMapping("/{wineId}")
-	public WineDTO getWine(@PathVariable Long wineId) {
-		return WineService.getWine(wineId);
+	public WineDetailDTO getWine(@PathVariable Long wineId, @RequestHeader("TOKEN") String token) {
+		return WineService.getWine(wineId,token);
 	}
 
 	@ApiOperation(value = "와인 검색시 와인 전체 리스트", notes = "와인 검색시 와인 전체 리스트 반환한다. 리스트 없을 경우 null")

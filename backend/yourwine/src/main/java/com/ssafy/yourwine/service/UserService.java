@@ -1,16 +1,16 @@
 package com.ssafy.yourwine.service;
 
 import com.ssafy.yourwine.config.security.JwtTokenProvider;
-import com.ssafy.yourwine.model.dto.SignInDTO;
-import com.ssafy.yourwine.model.dto.TokenResultDTO;
-import com.ssafy.yourwine.model.dto.UserDTO;
-import com.ssafy.yourwine.model.dto.WineDTO;
+import com.ssafy.yourwine.model.dto.*;
+import com.ssafy.yourwine.model.entity.Review;
 import com.ssafy.yourwine.model.entity.Scrap;
 import com.ssafy.yourwine.model.entity.User;
+import com.ssafy.yourwine.repository.ReviewRepository;
 import com.ssafy.yourwine.repository.ScrapRepository;
 import com.ssafy.yourwine.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,6 +25,7 @@ public class UserService {
 	private final ScrapRepository scrapRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final KakaoService kakaoService;
+	private final ReviewRepository reviewRepository;
 	
     public void saveUser(UserDTO userDTO) {
         ModelMapper modelMapper = new ModelMapper();
@@ -203,6 +204,15 @@ public class UserService {
         }
 
         return wineDTOList;
+    }
 
+    public List<ReviewDTO> getReview(String token){
+        ModelMapper modelMapper = new ModelMapper();
+        String userId = jwtTokenProvider.getUserId(token);
+        User user = userRepository.findByUserId(userId);
+        List<Review> reviewList = reviewRepository.findByUser(user);
+        List<ReviewDTO> reviewDTOList = modelMapper.map(reviewList, new TypeToken<List<ReviewDTO>>() {}.getType());
+
+        return reviewDTOList;
     }
 }

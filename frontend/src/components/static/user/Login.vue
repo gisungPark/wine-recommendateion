@@ -92,7 +92,7 @@ import { mapState, mapMutations } from "vuex";
 import KakaoLogin from "vue-kakao-login";
 import { login } from "@/api/login.js";
 
-const API_KEY = process.env.VUE_APP_KAKAO_LOGIN_API_KEY;
+const API_KEY = "ba1e87a869408be092569e9742130104";
 
 export default {
   components: {
@@ -137,8 +137,6 @@ export default {
       };
       const fail = {};
       const userInfo = {};
-
-      login(userInfo, success, fail);
 
       this.SET_LOGIN_TOGGLE();
       this.SET_GUIDEBTN_TOGGLE();

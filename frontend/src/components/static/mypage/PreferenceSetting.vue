@@ -154,7 +154,6 @@
               :max="4"
               step="1"
               :thumb-size="24"
-              thumb-label="always | satisfactionEmojis[Math.min(Math.floor(value / 10), 9)] "
               ticks="always"
               tick-size="5"
               color="#e1a957"
@@ -172,7 +171,6 @@
               :max="4"
               step="1"
               :thumb-size="24"
-              thumb-label="always | satisfactionEmojis[Math.min(Math.floor(value / 10), 9)] "
               ticks="always"
               tick-size="5"
               color="#e1a957"
@@ -190,7 +188,6 @@
               :max="4"
               step="1"
               :thumb-size="24"
-              thumb-label="always | satisfactionEmojis[Math.min(Math.floor(value / 10), 9)] "
               ticks="always"
               tick-size="5"
               color="#e1a957"
@@ -208,7 +205,6 @@
               :max="4"
               step="1"
               :thumb-size="24"
-              thumb-label="always | satisfactionEmojis[Math.min(Math.floor(value / 10), 9)] "
               ticks="always"
               tick-size="5"
               color="#e1a957"
@@ -220,7 +216,7 @@
         </div>
         <div class="preference-item3-item">
           <span>적다</span>
-          <div id="slider-space">
+          <!-- <div id="slider-space">
             <input
               type="range"
               min="1"
@@ -228,7 +224,19 @@
               value="50"
               class="slider"
               id="myRange"
-            />
+            /> -->
+          <div id="slider-space">
+            <v-slider
+              v-model="slider5"
+              :max="4"
+              step="1"
+              :thumb-size="24"
+              ticks="always"
+              tick-size="5"
+              color="#e1a957"
+              track-color="#821a33"
+              track-fill-color="#821a33"
+            ></v-slider>
           </div>
           <span>많다</span>
         </div>
@@ -409,17 +417,18 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  z-index: 10;
+  pointer-events: none;
 }
 .preference-stages-wrap {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
-  flex: 1 1 0;
-  display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  flex: 1 1 0;
   /* 상단 스테이지값 고정시 삭제 요망!!! */
-  /* z-index: 10 !important; */
+  /* position: relative;
+  z-index: 10 !important; */
 }
 
 .stage {
@@ -427,6 +436,7 @@ export default {
   height: 65px;
   border-radius: 70%;
   background-color: white;
+  pointer-events: all;
 }
 
 .active-stage {
@@ -578,6 +588,7 @@ export default {
   font-size: 28px;
   font-weight: bold;
   margin-bottom: 2px;
+  text-align: center;
 }
 .selected-list-item {
   background-color: white;

@@ -38,8 +38,13 @@
               <!-- STRART ################################# -->
               <!-- 로그인 버튼 중앙 정렬 필요 -->
               <v-row>
-                <div id="loginBtn" class="btnBar">
-                  <v-btn style="width: 200px" text @click="onLogin">
+                <div class="btnBar">
+                  <v-btn
+                    id="loginBtn"
+                    style="width: 200px"
+                    text
+                    @click="onLogin"
+                  >
                     CONTINUE
                   </v-btn>
                 </div>
@@ -167,9 +172,12 @@ input {
   border-radius: 25px;
   height: 49px;
   margin: auto;
-  background-color: rgb(226, 43, 134);
 }
 
+#loginBtn {
+  color: white;
+  background-color: #821a33;
+}
 .headline {
   font-size: 40px;
   font-weight: bold;

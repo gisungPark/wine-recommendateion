@@ -12,7 +12,7 @@
         <img src="@/assets/images/star-rating.png" alt="" />
         <img src="@/assets/images/money-icons.png" alt="" />
       </div>
-      <div class="review-writer" style="background-color: pink">
+      <div class="review-writer">
         <div class="writer-img">
           <img :src="userInfo.profile" alt="" />
         </div>

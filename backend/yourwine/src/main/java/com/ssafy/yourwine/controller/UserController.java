@@ -3,20 +3,21 @@ package com.ssafy.yourwine.controller;
 import com.ssafy.yourwine.model.dto.SignInDTO;
 import com.ssafy.yourwine.model.dto.TokenResultDTO;
 import com.ssafy.yourwine.model.dto.UserDTO;
+import com.ssafy.yourwine.model.dto.WineDTO;
 import com.ssafy.yourwine.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.annotations.ApiOperation;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
 
 	private final UserService userService;
-
-	public UserController(UserService userService) {
-		this.userService=userService;
-	}
 	 
 	@PostMapping("/signup")
 	@ApiOperation(value = "일반 회원 가입", notes="Parameter\n" +
@@ -24,7 +25,7 @@ public class UserController {
 			"-- email: 이메일\n" +
 			"-- password: 비밀번호\n" +
 			"-- nickname: 닉네임\n" +
-			"Respnse(x)")
+			"Response(x)")
 	public void signUp(@RequestBody UserDTO userDTO){
 		userService.saveUser(userDTO);
 	}
@@ -32,7 +33,7 @@ public class UserController {
 	@GetMapping("/checkemail/{email}")
 	@ApiOperation(value = "이메일 중복 체크", notes="Parameter\n" +
 			"- email(PathVariable): 이메일\n" +
-			"Respnse\n" +
+			"Response\n" +
 			"- check: 중복인지 아닌지(true 중복x false 중복o")
 	public Boolean checkEmail(@PathVariable String email){
 		boolean check = userService.checkEmail(email);
@@ -43,7 +44,7 @@ public class UserController {
 	@GetMapping("/checknickname/{nickname}")
 	@ApiOperation(value = "닉네임 중복 체크", notes="Parameter\n" +
 			"- nickname(PathVariable): 닉네임\n" +
-			"Respnse\n" +
+			"Response\n" +
 			"- check: 중복인지 아닌지(true 중복x false 중복o")
 	public Boolean checkNickname(@PathVariable String nickname){
 		boolean check = userService.checkNickname(nickname);
@@ -70,7 +71,7 @@ public class UserController {
 	@PutMapping("/logout")
 	@ApiOperation(value = "로그아웃", notes="Parameter\n" +
 			"- token(RequestHeader): 액세스 토큰\n" +
-			"Respnse(x)\n")
+			"Response(x)\n")
 	public void logOut(@RequestHeader("TOKEN") String token){
 		userService.logOut(token);
 	}
@@ -78,7 +79,7 @@ public class UserController {
 	@PostMapping("/checkUser")
 	@ApiOperation(value = "소셜 로그인 회원 체크", notes="Parameter\n" +
 			"- token: 카카오 토큰(RequestParam)\n" +
-			"Respnse\n" +
+			"Response\n" +
 			"- TokenResultDTO\n" +
 			"-- token: 액세스 토큰\n" +
 			"-- nickname: 닉네임(로그인한 유저 닉네임)\n" +
@@ -93,7 +94,7 @@ public class UserController {
 	@ApiOperation(value = "소셜 추가 정보 입력(회원 가입 or 닉네임 변경)", notes="Parameter\n" +
 			"- token(RequestHeader): 액세스 토큰\n" +
 			"- nickname(RequestParam): 사용할 닉네임 입력\n" +
-			"Respnse\n" +
+			"Response\n" +
 			"- TokenResultDTO\n" +
 			"-- token: 액세스 토큰\n" +
 			"-- nickname: 닉네임(로그인한 유저 닉네임)\n" +
@@ -107,7 +108,7 @@ public class UserController {
 	@GetMapping("/getUserInfo")
 	@ApiOperation(value = "회원 정보 가져오기(본인)", notes="Parameter\n" +
 			"- token(RequestHeader): 액세스 토큰\n" +
-			"Respnse\n" +
+			"Response\n" +
 			"- UserDTO\n" +
 			"-- email: 이메일\n" +
 			"-- nickname: 닉네임\n" +
@@ -123,7 +124,7 @@ public class UserController {
 	@ApiOperation(value = "비밀번호 수정(일반 회원)", notes="Parameter\n" +
 			"- token(RequestHeader): 액세스 토큰\n" +
 			"- password(RequestParam): 비밀번호\n" +
-			"Respnse(x)\n")
+			"Response(x)\n")
 	public void update(@RequestHeader("TOKEN") String token, @RequestParam String password){
 		userService.updatePassword(token, password);
 	}
@@ -132,12 +133,23 @@ public class UserController {
 	@ApiOperation(value = "본인 확인(비밀번호를 통해)", notes="Parameter\n" +
 			"- token(RequestHeader): 액세스 토큰\n" +
 			"- password(RequestParam): 비밀번호\n" +
-			"Respnse\n" +
+			"Response\n" +
 			"- check: 비밀번호 맞을때(true), 틀릴때(false)")
 	public boolean checkPassword(@RequestHeader("TOKEN") String token, @RequestParam String password){
 		boolean check = userService.checkPassword(token, password);
 
 		return check;
+	}
+
+	@GetMapping("/getScrap")
+	@ApiOperation(value = "나의 찜하기 리스트", notes="Parameter\n" +
+			"- token(RequestHeader): 액세스 토큰\n" +
+			"Response\n" +
+			"")
+	public List<WineDTO> getScrap(@RequestHeader("TOKEN") String token) {
+		List<WineDTO> wineDTOList = userService.getScrap(token);
+
+		return wineDTOList;
 	}
 
 }

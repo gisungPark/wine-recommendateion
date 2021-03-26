@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -44,6 +46,12 @@ public class User implements UserDetails {
     @Column(name = "flag")
     private Boolean flag;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Scrap> scrap = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Review> review = new ArrayList<Review>();
+    
     @PrePersist
     void preInsert(){
         if(this.flag==null)

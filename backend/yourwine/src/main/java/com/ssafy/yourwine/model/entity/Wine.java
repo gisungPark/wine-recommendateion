@@ -1,20 +1,28 @@
 package com.ssafy.yourwine.model.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import lombok.Data;
+
 @Entity
+@Data
 public class Wine {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "wine_id")
-	private int wineId;
+	private Long wineId;
 	private String img;
 	private String kname;
 	private String ename;
@@ -34,4 +42,11 @@ public class Wine {
 	@OneToOne
 	@JoinColumn(name = "grape_id")
 	private Grape grape;
+	
+	@OneToMany(mappedBy = "wine",cascade = CascadeType.ALL)
+	private List<Scrap> scrap = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "wine", cascade = CascadeType.ALL)
+	private List<Review> review = new ArrayList<Review>();
+	
 }

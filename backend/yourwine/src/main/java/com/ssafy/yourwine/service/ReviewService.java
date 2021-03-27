@@ -3,6 +3,7 @@ package com.ssafy.yourwine.service;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -31,20 +32,13 @@ public class ReviewService {
 	private final UserRepository userRepository;
 	private final WineRepository wineRepository;
 	
-	//해당 유저 리뷰 전체 리스트
-//	@Transactional
-//	public List<Review> getUserReviewList (String token) {
-//		String userId = jwtTokenProvider.getUserId(token);
-//		User user = userRepository.findByUserId(userId);
-//		List<Review> list = reviewRepository.findByUser(user);
-//		return list;
-//	}
-//	
-//	//해당 와인 리뷰 전체 리스트
-//	public List<Review> getWineReviewList (Long wineId){
-//		Wine wine = wineRepository.findByWineId(wineId);
-//		return reviewRepository.findByWine(wine);
-//	}
+
+	//해당 와인 리뷰 전체 리스트
+	public List<ReviewDTO> getWineReviewList (Long wineId){
+		Wine wine = wineRepository.findById(wineId).orElseThrow(() -> new IllegalArgumentException("no wine data"));
+		List<Review> reviewList = reviewRepository.findByWine(wine);
+		return reviewList.stream().map(ReviewDTO::new).collect(Collectors.toList());
+	}
 	
 	//리뷰 작성	
 	@Transactional

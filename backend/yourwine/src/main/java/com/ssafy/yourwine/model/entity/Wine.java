@@ -49,4 +49,6 @@ public class Wine {
 	@OneToMany(mappedBy = "wine", cascade = CascadeType.ALL)
 	private List<Review> review = new ArrayList<Review>();
 	
+	@OneToMany(mappedBy = "wine", cascade = CascadeType.ALL)
+	private List<WineFoodMatch> wineFoodMatch = new ArrayList<WineFoodMatch>();
 }

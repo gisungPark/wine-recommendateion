@@ -13,8 +13,7 @@ public class WineDetailDTO {
 	private WineDTO wineDto;
 	private boolean isScrap;
 	private boolean isWriteReview;
-	private List<Review> reviewList;
-	private List<Food> foodList;
-	private String commnet;
+	private List<ReviewDTO> reviewList;
+	private List<FoodDTO> foodList;
 	
 }

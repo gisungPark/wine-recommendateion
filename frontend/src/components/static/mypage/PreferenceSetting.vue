@@ -1,5 +1,15 @@
 <template>
   <div class="preference-fram">
+    <div id="stage-line">
+      <div
+        id="preference-stages-line1"
+        :class="{ 'active-stage': isCurStage(2) }"
+      ></div>
+      <div
+        id="preference-stages-line2"
+        :class="{ 'active-stage': isCurStage(3) }"
+      ></div>
+    </div>
     <div class="preference-stages">
       <div class="preference-stages-wrap">
         <div
@@ -128,7 +138,7 @@
               :key="item + idx"
             >
               <h1>{{ item.name }}</h1>
-              <div id="cancleBtn"></div>
+              <div id="cancleBtn" @click="removeItemFromList(1, item)"></div>
             </div>
           </div>
           <span v-show="curStage == 1" class="count-display"
@@ -141,7 +151,7 @@
               :key="item + idx"
             >
               <h1>{{ item.name }}</h1>
-              <div id="cancleBtn"></div>
+              <div id="cancleBtn" @click="removeItemFromList(2, item)"></div>
             </div>
           </div>
           <span v-show="curStage == 2" class="count-display"
@@ -318,7 +328,7 @@ export default {
     },
     // 상단 stage 클릭시 stage 변경 함수
     isCurStage(stage) {
-      if (this.curStage == stage) return true;
+      if (this.curStage >= stage) return true;
       else return false;
     },
     /*
@@ -364,6 +374,7 @@ export default {
         removeIdx = this.likeList.indexOf(itemToFine);
         if (removeIdx > -1) {
           this.likeList.splice(removeIdx, 1);
+          targe.isLike = false;
           this.lickCnt--;
         }
       } else if (stage == SECOND_STAGE) {
@@ -373,6 +384,7 @@ export default {
         removeIdx = this.hateList.indexOf(itemToFine);
         if (removeIdx > -1) {
           this.hateCnt--;
+          targe.isHate = false;
           this.hateList.splice(removeIdx, 1);
         }
       }
@@ -395,7 +407,7 @@ export default {
           }
         } else {
           // 3. 좋아한다고 했다가 취소하는 경우
-          item.isLike = false;
+
           this.removeItemFromList(FIRST_STAGE, item);
         }
       }
@@ -414,7 +426,6 @@ export default {
           }
         } else {
           // 3. 좋아한다고 했다가 취소하는 경우
-          item.isHate = false;
           this.removeItemFromList(SECOND_STAGE, item);
         }
         console.log("싫어하는 리스트!!!   " + this.hateCnt);
@@ -433,6 +444,26 @@ export default {
   width: 100%;
   flex-direction: column;
   justify-content: center;
+}
+
+#stage-line {
+  width: 80%;
+  position: fixed;
+  top: 133px;
+  left: 230px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+#preference-stages-line1 {
+  width: 32%;
+  height: 1px;
+  background-color: white;
+}
+#preference-stages-line2 {
+  width: 32%;
+  height: 1px;
+  background-color: white;
 }
 .preference-stages {
   width: 80%;
@@ -461,11 +492,12 @@ export default {
   height: 65px;
   border-radius: 70%;
   background-color: white;
+  z-index: 3;
   pointer-events: all;
 }
 
 .active-stage {
-  background-color: var(--basic-color-key);
+  background-color: var(--basic-color-key) !important;
 }
 .active-stage-name {
   color: var(--basic-color-key) !important;
@@ -664,8 +696,11 @@ export default {
 #okBtn {
   background-color: var(--basic-color-bg2);
   color: white;
+  font-size: 15px;
+  font-weight: bold;
   width: 95px;
-  height: 35px;
-  border-radius: 2em;
+  height: 40px;
+  border-radius: 1em;
+  margin-top: 10px;
 }
 </style>

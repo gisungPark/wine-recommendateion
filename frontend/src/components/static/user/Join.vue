@@ -24,58 +24,98 @@
               />
             </svg>
           </div>
-          <v-card-title>
-            <span class="headline">JOIN</span>
+          <v-card-title align="center">
+            <v-row>
+              <v-col>
+                <span class="modal-name">JOIN</span>
+              </v-col>
+            </v-row>
           </v-card-title>
           <v-card-text>
-            <v-container justify-content: center;>
-              <v-layout column>
-                <v-flex>
-                  <v-text-field
-                    :rules="rules"
-                    placeholder="ID"
-                    maxlength="20"
-                    v-model="userId"
-                  ></v-text-field>
-                </v-flex>
-                <v-flex>
-                  <v-text-field
-                    :rules="[rules.required, rules.min]"
-                    name="input-10-2"
-                    :type="'password'"
-                    placeholder="Password"
-                    hint="최소 길이는 8자 입니다."
-                    maxlength="20"
-                    v-model="password"
-                  ></v-text-field>
-                </v-flex>
-                <v-flex>
-                  <v-text-field
-                    :rules="[
-                      rules.required,
-                      rules.min,
-                      passwordConfirmationRule,
-                    ]"
-                    name="input-10-2"
-                    :type="'password'"
-                    placeholder="Password Check"
-                    maxlength="20"
-                    v-model="passwordCheck"
-                  ></v-text-field>
-                </v-flex>
-                <v-flex>
-                  <v-text-field
-                    placeholder="NickName"
-                    maxlength="20"
-                    v-model="nickname"
-                  ></v-text-field>
-                </v-flex>
-              </v-layout>
+            <v-container>
+              <v-row>
+                <v-col>
+                  <ul>
+                    <li>
+                      <input
+                        class="underline"
+                        type="text"
+                        placeholder="Email"
+                        v-model="userId"
+                        maxlength="20"
+                        @blur="emailCheck"
+                      />
+                    </li>
+                    <li>
+                      <span>{{ this.msg.emailMsg }}</span>
+                    </li>
+                  </ul>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <ul>
+                    <li>
+                      <input
+                        class="underline"
+                        type="password"
+                        placeholder="Password"
+                        v-model="password"
+                        maxlength="20"
+                        @blur="pwCheck"
+                      />
+                    </li>
+                    <li>
+                      <span>{{ this.msg.passwordMsg }}</span>
+                    </li>
+                  </ul>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <ul>
+                    <li>
+                      <input
+                        class="underline"
+                        type="password"
+                        placeholder="Pasword check"
+                        v-model="passwordCheck"
+                        maxlength="20"
+                        @blur="pwCheck2"
+                      />
+                    </li>
+                    <li>
+                      <span>{{ this.msg.passwordCheckMsg }}</span>
+                    </li>
+                  </ul>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <ul>
+                    <li>
+                      <input
+                        class="underline"
+                        type="text"
+                        placeholder="Nickname"
+                        v-model="nickname"
+                        maxlength="20"
+                        @blur="nicknameCheck"
+                      />
+                    </li>
+                    <li>
+                      <span>{{ this.msg.nicknameMsg }}</span>
+                    </li>
+                  </ul>
+                </v-col>
+              </v-row>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="join"> JOIN </v-btn>
+            <v-btn color="blue darken-1" text id="joinBtn" @click="join">
+              JOIN
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -92,18 +132,12 @@ export default {
     password: "",
     passwordCheck: "",
     nickname: "",
-    rules: [
-      (value) => !!value || "필수 요소입니다.",
-      (value) => (value || "").length <= 20 || "최대 길이는 20자 입니다.",
-      (value) => {
-        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return pattern.test(value) || "유효한 이메일 형식이 아닙니다.";
-      },
-      {
-        required: (value) => !!value || "필수 요소입니다.",
-        min: (v) => v.length >= 8 || "최소 길이는 8자 입니다.",
-      },
-    ],
+    msg: {
+      emailMsg: "",
+      passwordMsg: "",
+      passwordCheckMsg: "",
+      nicknameMsg: "",
+    },
   }),
   computed: {
     ...mapState("loginDialog", ["joinDialog"]),
@@ -114,31 +148,62 @@ export default {
   },
   methods: {
     ...mapMutations("loginDialog", ["SET_JOIN_TOGGLE"]),
-    join() {
-      alert(this.userId + " " + this.password + " " + this.nickname);
-    },
     close() {
       this.SET_JOIN_TOGGLE();
     },
+    join() {},
+
+    // #########################################################
+    //start 입력형식 체크
+    emailCheck() {
+      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (!pattern.test(this.userId))
+        this.msg.emailMsg = "이메일 형식이 올바르지 않습니다.";
+      else this.msg.emailMsg = "";
+    },
+    pwCheck() {
+      if (this.password.length < 5)
+        this.msg.passwordMsg = "비밀번호 최소 길이는 5자 입니다.";
+      else this.msg.passwordMsg = "";
+    },
+    pwCheck2() {
+      if (this.password !== this.passwordCheck)
+        this.msg.passwordCheckMsg = "비밀번호가 일치하지 않습니다.";
+      else this.msg.passwordCheckMsg = "";
+    },
+    nicknameCheck() {},
+    //end 입력형식 체크
+    // #########################################################
   },
 };
 </script>
 
 <style scoped>
-.headline {
-  font-size: 40px;
+.modal-name {
+  font-size: 32px;
   font-weight: bold;
-  padding-top: 5px;
-  margin: 0 auto;
+}
+ul {
+  margin-bottom: 15px;
+}
+li > input {
+  width: 90%;
+  font-size: 22px;
+}
+li > span {
+  font-size: 12px;
+  color: #f44336;
+}
+.underline {
+  border: 1px solid black;
+  border-top-width: 0px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 1px;
 }
 
-v-text-field {
-  font-size: 20px;
-}
-
-input {
-  margin: 10px 50px;
-  height: 20px;
-  font-size: 20px;
+#joinBtn {
+  margin-top: 15px;
+  font-size: 15px;
 }
 </style>

@@ -3,15 +3,7 @@
     <v-row justify="center">
       <v-dialog v-model="loginDialog" persistent max-width="600px">
         <v-card>
-          <div
-            style="
-              position: absolute;
-              right: 15px;
-              margin-top: 15px;
-              cursor: pointer;
-            "
-            @click="close"
-          >
+          <div id="closeBtn" @click="close">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -24,62 +16,66 @@
               />
             </svg>
           </div>
-          <v-card-title>
-            <span class="headline">Login</span>
+          <v-card-title align="center">
+            <v-row>
+              <v-col>
+                <span class="modal-name">Login</span>
+              </v-col>
+            </v-row>
           </v-card-title>
           <v-card-text>
-            <v-container justify-content: center;>
-              <v-col cols="12" sm="6" md="4">
-                <input v-model="userId" placeholder="ID" />
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <input v-model="userPw" placeholder="PW" />
-              </v-col>
-              <!-- STRART ################################# -->
-              <!-- 로그인 버튼 중앙 정렬 필요 -->
+            <v-container>
               <v-row>
-                <div class="btnBar">
-                  <v-btn
-                    id="loginBtn"
-                    style="width: 200px"
-                    text
-                    @click="onLogin"
-                  >
-                    CONTINUE
-                  </v-btn>
-                </div>
+                <v-col>
+                  <ul>
+                    <li>
+                      <input
+                        class="underline"
+                        type="text"
+                        placeholder="Email"
+                      />
+                    </li>
+                  </ul>
+                </v-col>
               </v-row>
-              <!-- END ################################# -->
-              <v-spacer></v-spacer>
-              <v-col cols="12">
-                <div
-                  style="
-                    font-size: 30px;
-                    font-weight: bold;
-                    margin: 10px 10px;
-                    text-align: center;
-                  "
-                >
-                  <span>OR</span>
-                </div>
-              </v-col>
-              <v-spacer></v-spacer>
               <v-row>
-                <div class="btnBar">
+                <v-col>
+                  <ul>
+                    <li>
+                      <input
+                        class="underline"
+                        type="password"
+                        placeholder="Password"
+                      />
+                    </li>
+                  </ul>
+                </v-col>
+              </v-row>
+              <v-row style="margin-top: 30px">
+                <v-col cols="auto" id="loginBtn-wrap">
+                  <v-btn text id="loginBtn" @click="onLogin">CONTINUE</v-btn>
+                </v-col>
+              </v-row>
+              <v-row justify="center">
+                <v-col cols="auto" id="btn-range">OR</v-col>
+              </v-row>
+              <v-row justify="center">
+                <v-col cols="auto" id="kakao-login">
                   <KakaoLogin
                     :api-key="getKakaoApiKey"
+                    image="kakao_account_login_btn_medium_wide_ov"
                     :on-success="onSuccess"
                     :on-failure="onFailure"
                   />
-                </div>
+                </v-col>
               </v-row>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="onJoin">
-              JOIN YourWine
-            </v-btn>
+            <v-btn color="blue darken-1" text id="joinBtn" @click="onJoin"
+              >JOIN YourWine</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -116,28 +112,6 @@ export default {
     ]),
 
     onLogin() {
-      const success = (response) => {
-        //1. respose.code
-        switch (response.code) {
-          case 0: // 로그인 성공 => 토큰, 닉네임 저장
-            break;
-          case 1: // 로그인 실패 => 토큰, 닉네임 저장 x
-            break;
-          case 2: // 소셜 로그인 성공 => 토큰, 닉네임 저장
-            break;
-          case 3: // 소셜 최초 로그인 => 회원 가입 이동
-            break;
-          case 4: // 토큰 유효성 검사 실패
-            break;
-          case 5: // 정상 가입 완료
-            break;
-          case 6: // 가입 실패
-            break;
-        }
-      };
-      const fail = {};
-      const userInfo = {};
-
       this.SET_LOGIN_TOGGLE();
       this.SET_GUIDEBTN_TOGGLE();
       this.$router.push({ name: "Mypage" });
@@ -159,27 +133,55 @@ export default {
 </script>
 
 <style scoped>
-input {
-  margin-left: 50px;
-  height: 20px;
-  font-size: 20px;
-}
-
-.btnBar {
-  cursor: pointer;
-  border-radius: 25px;
-  height: 49px;
-  margin: auto;
-}
-
-#loginBtn {
-  color: white;
-  background-color: #821a33;
-}
-.headline {
-  font-size: 40px;
+.modal-name {
+  font-size: 32px;
   font-weight: bold;
-  padding-top: 5px;
   margin: 0 auto;
+}
+ul {
+  margin-left: 15px;
+  margin-bottom: 10px;
+}
+li > input {
+  width: 90%;
+  font-size: 22px;
+}
+li > span {
+  font-size: 12px;
+  color: #f44336;
+}
+.underline {
+  border: 1px solid black;
+  border-top-width: 0px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 1px;
+}
+
+#closeBtn {
+  position: absolute;
+  right: 15px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+#loginBtn-wrap {
+  margin: 0 auto;
+}
+#loginBtn {
+  width: 300px;
+  height: 42px;
+  background-color: var(--basic-color-bg2);
+  color: white;
+}
+#btn-range {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0 auto;
+}
+#kakao-login {
+  margin: 0 auto;
+}
+#joinBtn {
+  font-size: 15px;
 }
 </style>

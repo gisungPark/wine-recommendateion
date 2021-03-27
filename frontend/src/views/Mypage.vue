@@ -48,15 +48,16 @@
             />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>
-          <div class="content-item">
+          <div class="content-item" v-show="this.screenState == 1"></div>
+          <div class="content-item" v-show="this.screenState == 2">
             <MyReviews
               v-for="(review, idx) in reviews"
               :key="idx"
               :review="review"
               :userInfo="userInfo"
             />
-            <div class="content-item"></div>
           </div>
+          <div class="content-item" v-show="this.screenState == 3"></div>
         </div>
         <div v-show="this.screenState == 4" class="content4">
           <PreferenceSetting :preferenceList="preferenceList" />
@@ -429,6 +430,7 @@ export default {
 
 .content-item {
   width: 100%;
+  min-height: 400px;
   margin-top: 100px;
   display: flex;
   flex-direction: column;

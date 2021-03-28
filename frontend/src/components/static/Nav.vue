@@ -8,7 +8,7 @@
         </div>
         <p class="l-desc no-drag" :class="{ move: navActive, pop2: navActive }">MENU</p>
       </div>
-      <div class="logo">
+      <div class="logo" :class="{ left: logoState }">
         <h1 id="title">Your Wine</h1>
         <img src="../../assets/images/logo_w.png" alt="logo image" @click="clickedLogo" />
       </div>
@@ -32,10 +32,31 @@ import { mapMutations, mapState } from 'vuex';
 export default {
   name: 'Nav',
   data() {
-    return {};
+    return {
+      routeWithoutSidebar: ['Main'],
+      routeWithSidebar: ['Mypage', 'Recommendation'],
+      logoState: false, //false => center, true => 사이드바 영역만큼 오른쪽으로 치우침
+    };
   },
   computed: {
     ...mapState('nav', ['navActive']),
+  },
+
+  watch: {
+    $route: {
+      // 초기화가 되는 첫 순간에서도 아래 handler한 번 실행
+      immediate: true,
+      handler(to, from) {
+        let currentRouteName = to.name;
+        this.logoState = true;
+        this.routeWithoutSidebar.forEach((element) => {
+          if (element === currentRouteName) {
+            this.logoState = false;
+            return;
+          }
+        });
+      },
+    },
   },
   methods: {
     ...mapMutations('nav', ['SET_NAV_TOGGLE', 'SET_NAV_CLOSE']),
@@ -167,18 +188,22 @@ export default {
   margin-top: 1rem;
   left: 50vw;
   transform: translate(-50%, 0);
+  transition: left 0.3s ease;
 }
 .logo img {
   cursor: pointer;
   width: auto;
   height: auto;
   max-height: 2rem;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s;
   backdrop-filter: blur(5px);
   border-radius: 1rem;
 }
 .logo img:hover {
   transform: scale(1.1);
+}
+.left {
+  left: calc(50vw + 86px);
 }
 
 /* TODO: 메뉴 리스트 영역 */

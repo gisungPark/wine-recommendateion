@@ -92,7 +92,7 @@ import Scrap from '@/components/button/Scrap.vue';
 import * as interaction from '@/assets/js/interaction.js';
 import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
 import 'swiper/swiper-bundle.css';
-import Topten from '@/components/static/main/Topten.vue';
+import Topten from '@/components/main/Topten.vue';
 
 export default {
   name: 'Main',
@@ -440,7 +440,8 @@ span {
 }
 
 /* TODO: swiper */
-/* FIXME:  */
+/* FIXME: 1. 웹 사이즈 크기에 따른 예기치 못한 뷰 형태 수정
+          2. type과 와인 명을 하나의 wrap으로 감싼 뒤 처리하면 될 것 같음.*/
 .topten-title {
   width: 100%;
   position: absolute;

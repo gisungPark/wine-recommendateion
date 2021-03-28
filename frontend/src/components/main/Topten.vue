@@ -73,7 +73,7 @@ export default {
 .topten-img {
   width: 110%;
   height: 100%;
-  background-image: url('../../../assets/images/wine.png');
+  background-image: url('../../assets/images/wine.png');
   background-size: contain;
   background-position: center;
   filter: drop-shadow(15px 15px 30px rgb(0, 0, 0));

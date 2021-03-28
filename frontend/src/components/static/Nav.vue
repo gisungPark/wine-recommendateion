@@ -64,19 +64,19 @@ export default {
       this.SET_NAV_TOGGLE();
     },
     clickedRcomm() {
-      this.SET_NAV_TOGGLE();
-      alert(`clicked!`);
+      this.$router.push({ name: 'Recommendation' });
+      this.SET_NAV_CLOSE();
     },
     clickedWines() {
-      this.SET_NAV_TOGGLE();
+      this.SET_NAV_CLOSE();
       alert(`clicked!`);
     },
     clickedTopic() {
-      this.SET_NAV_TOGGLE();
+      this.SET_NAV_CLOSE();
       alert(`clicked!`);
     },
     clickedChart() {
-      this.SET_NAV_TOGGLE();
+      this.SET_NAV_CLOSE();
       alert(`clicked!`);
     },
     // 메인 페이지로 이동
@@ -85,10 +85,10 @@ export default {
     },
     // 배경 클릭시 메뉴 닫기
     clickedBackground() {
-      this.SET_NAV_TOGGLE();
+      this.SET_NAV_CLOSE();
     },
     clickedMenuFrame() {
-      this.SET_NAV_TOGGLE();
+      this.SET_NAV_CLOSE();
     },
   },
 };

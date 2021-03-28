@@ -1,4 +1,3 @@
-
 export default [
   {
     path: '',
@@ -10,5 +9,9 @@ export default [
     view: 'Mypage',
     name: 'Mypage',
   },
-  
+  {
+    path: 'recommendation',
+    view: 'Recommendation',
+    name: 'Recommendation',
+  },
 ];

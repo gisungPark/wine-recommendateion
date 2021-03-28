@@ -94,14 +94,23 @@ export default {
       {
         img: "https://img.maisonkorea.com/2020/04/msk_5e8d712726056.jpg",
         wineTitle: "까베르네 소비뇽",
-        reviewTitle: "딸기맛이 나요",
+        reviewTitle:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
         reviewScore: 4,
         date: "2021.03.22",
       },
       {
         img: "https://img.maisonkorea.com/2020/04/msk_5e8d7129f1d53.jpg",
         wineTitle: "샤르도네",
-        reviewTitle: "바나나맛이 나요",
+        reviewTitle: `Nisl tincidunt eget nullam non. 
+        Quis hendrerit dolor magna eget est lorem ipsum 
+        dolor sit. Volutpat odio facilisis mauris sit amet massa. 
+        Commodo odio aenean sed adipiscing diam donec adipiscing tristique. 
+        Mi eget mauris pharetra et. Non tellus orci ac auctor augue. 
+        Elit at imperdiet dui accumsan sit. Ornare arcu dui 
+        vivamus arcu felis. Egestas integer eget aliquet nibh praesent. 
+        In hac habitasse platea dictumst quisque sagittis purus. Pulvinar 
+        elementum integer enim neque volutpat ac.`,
         reviewScore: 4,
         date: "2021.02.18",
       },
@@ -109,7 +118,15 @@ export default {
         img:
           "http://www.sommeliertimes.com/news/photo/201905/13382_26893_4347.jpg",
         wineTitle: "피노 누아",
-        reviewTitle: "사과맛이 나요",
+        reviewTitle: `Nisl tincidunt eget nullam non. 
+        Quis hendrerit dolor magna eget est lorem ipsum 
+        dolor sit. Volutpat odio facilisis mauris sit amet massa. 
+        Commodo odio aenean sed adipiscing diam donec adipiscing tristique. 
+        Mi eget mauris pharetra et. Non tellus orci ac auctor augue. 
+        Elit at imperdiet dui accumsan sit. Ornare arcu dui 
+        vivamus arcu felis. Egestas integer eget aliquet nibh praesent. 
+        In hac habitasse platea dictumst quisque sagittis purus. Pulvinar 
+        elementum integer enim neque volutpat ac.`,
         reviewScore: 4,
         date: "2021.01.29",
       },
@@ -117,7 +134,15 @@ export default {
         img:
           "http://www.sommeliertimes.com/news/photo/201905/13382_26893_4347.jpg",
         wineTitle: "소비뇽 블랑",
-        reviewTitle: "사과맛이 나요",
+        reviewTitle: `Nisl tincidunt eget nullam non. 
+        Quis hendrerit dolor magna eget est lorem ipsum 
+        dolor sit. Volutpat odio facilisis mauris sit amet massa. 
+        Commodo odio aenean sed adipiscing diam donec adipiscing tristique. 
+        Mi eget mauris pharetra et. Non tellus orci ac auctor augue. 
+        Elit at imperdiet dui accumsan sit. Ornare arcu dui 
+        vivamus arcu felis. Egestas integer eget aliquet nibh praesent. 
+        In hac habitasse platea dictumst quisque sagittis purus. Pulvinar 
+        elementum integer enim neque volutpat ac.`,
         date: "2020.12.08",
       },
     ],

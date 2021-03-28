@@ -2,7 +2,7 @@
   <div data-app>
     <v-row justify="center">
       <v-dialog v-model="loginDialog" persistent max-width="600px">
-        <v-card>
+        <v-card height="480">
           <div id="closeBtn" @click="close">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -51,20 +51,23 @@
                   </ul>
                 </v-col>
               </v-row>
-              <v-row style="margin-top: 30px">
+              <v-row no-gutters>
+                <a id="findPw" @click="onFindPw">비밀번호 찾기</a>
+              </v-row>
+              <v-row style="margin-top: 20px">
                 <v-col cols="auto" id="loginBtn-wrap">
                   <v-btn text id="loginBtn" @click="onLogin">CONTINUE</v-btn>
                 </v-col>
               </v-row>
-              <v-row justify="center">
+              <v-row justify="center" no-gutters>
                 <v-col cols="auto" id="btn-range">OR</v-col>
               </v-row>
-              <v-row justify="center">
+              <v-row justify="center" no-gutters>
                 <v-col cols="auto" id="kakao-login">
                   <KakaoLogin
                     :api-key="getKakaoApiKey"
                     image="kakao_account_login_btn_medium_wide_ov"
-                    :on-success="onSuccess"
+                    :on-success="onKakaoCallback"
                     :on-failure="onFailure"
                   />
                 </v-col>
@@ -80,32 +83,48 @@
         </v-card>
       </v-dialog>
     </v-row>
+    <JoinModal />
+    <NicknameModal />
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import * as authApi from "@/api/auth";
 import KakaoLogin from "vue-kakao-login";
-import { login } from "@/api/login.js";
+import JoinModal from "./Join.vue";
+import NicknameModal from "./Nickname.vue";
 
 const API_KEY = "ba1e87a869408be092569e9742130104";
 
 export default {
   components: {
     KakaoLogin,
+    JoinModal,
+    NicknameModal,
   },
   data: () => ({
     userId: "",
     userPw: "",
   }),
   computed: {
-    ...mapState("loginDialog", ["loginDialog", "joinDialog"]),
+    ...mapState("loginDialog", [
+      "loginDialog",
+      "joinDialog",
+      "nicknameDialog",
+      "findPwDialog",
+    ]),
     getKakaoApiKey() {
       return API_KEY;
     },
   },
   methods: {
-    ...mapMutations("loginDialog", ["SET_LOGIN_TOGGLE", "SET_JOIN_TOGGLE"]),
+    ...mapMutations("loginDialog", [
+      "SET_LOGIN_TOGGLE",
+      "SET_JOIN_TOGGLE",
+      "SET_NICKNAME_TOGGLE",
+      "SET_FINDPW_TOGGLE",
+    ]),
     ...mapMutations("guideBtn", [
       "SET_GUIDEBTN_TOGGLE",
       "SET_GUIDEBTNTIP_TOGGLE",
@@ -116,12 +135,25 @@ export default {
       this.SET_GUIDEBTN_TOGGLE();
       this.$router.push({ name: "Mypage" });
     },
+    onFindPw() {
+      this.SET_NICKNAME_TOGGLE();
+    },
 
     close() {
       this.SET_LOGIN_TOGGLE();
     },
-    onSuccess() {
-      alert("로그인 성공");
+    onKakaoCallback(data) {
+      console.log(data);
+      authApi
+        .kakaoCallback(data)
+        .then((response) => {
+          console.log(response);
+          // #######################################
+          // #######################################
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     onFailure() {},
     onJoin() {
@@ -139,8 +171,8 @@ export default {
   margin: 0 auto;
 }
 ul {
-  margin-left: 15px;
-  margin-bottom: 10px;
+  margin-left: 35px;
+  margin-bottom: 5px;
 }
 li > input {
   width: 90%;
@@ -157,7 +189,11 @@ li > span {
   border-right-width: 0px;
   border-bottom-width: 1px;
 }
-
+#findPw {
+  position: relative;
+  top: 3px;
+  left: 390px;
+}
 #closeBtn {
   position: absolute;
   right: 15px;
@@ -174,9 +210,9 @@ li > span {
   color: white;
 }
 #btn-range {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
-  margin: 0 auto;
+  margin: 8px auto;
 }
 #kakao-login {
   margin: 0 auto;

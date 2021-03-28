@@ -458,12 +458,12 @@ export default {
 #preference-stages-line1 {
   width: 32%;
   height: 1px;
-  background-color: white;
+  background-color: #4e4c4c;
 }
 #preference-stages-line2 {
   width: 32%;
   height: 1px;
-  background-color: white;
+  background-color: #4e4c4c;
 }
 .preference-stages {
   width: 80%;
@@ -491,20 +491,20 @@ export default {
   width: 65px;
   height: 65px;
   border-radius: 70%;
-  background-color: white;
+  background-color: #4e4c4c;
   z-index: 3;
   pointer-events: all;
 }
 
 .active-stage {
-  background-color: #4e4c4c !important;
+  background-color: white !important;
 }
 .active-stage-name {
-  color: #4e4c4c !important;
+  color: white !important;
 }
 
 .stage-name {
-  color: white;
+  color: #4e4c4c;
   border: none;
   padding: 15px 0;
   text-align: center;

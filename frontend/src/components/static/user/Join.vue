@@ -2,7 +2,7 @@
   <div data-app>
     <v-row justify="center">
       <v-dialog v-model="joinDialog" persistent max-width="600px">
-        <v-card>
+        <v-card height="480">
           <div
             style="
               position: absolute;
@@ -41,7 +41,7 @@
                         class="underline"
                         type="text"
                         placeholder="Email"
-                        v-model="userId"
+                        v-model="email"
                         maxlength="20"
                         @blur="emailCheck"
                       />
@@ -79,9 +79,9 @@
                         class="underline"
                         type="password"
                         placeholder="Pasword check"
-                        v-model="passwordCheck"
+                        v-model="passwordConfirm"
                         maxlength="20"
-                        @blur="pwCheck2"
+                        @blur="pwConfirmCheck"
                       />
                     </li>
                     <li>
@@ -125,12 +125,13 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import * as authApi from "@/api/auth";
 
 export default {
   data: () => ({
-    userId: "",
+    email: "",
     password: "",
-    passwordCheck: "",
+    passwordConfirm: "",
     nickname: "",
     msg: {
       emailMsg: "",
@@ -143,7 +144,8 @@ export default {
     ...mapState("loginDialog", ["joinDialog"]),
     passwordConfirmationRule() {
       return () =>
-        this.password === this.passwordCheck || "비밀번호가 일치하지 않습니다.";
+        this.password === this.passwordConfirm ||
+        "비밀번호가 일치하지 않습니다.";
     },
   },
   methods: {
@@ -157,21 +159,37 @@ export default {
     //start 입력형식 체크
     emailCheck() {
       const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      if (!pattern.test(this.userId))
+      if (!pattern.test(this.email))
         this.msg.emailMsg = "이메일 형식이 올바르지 않습니다.";
-      else this.msg.emailMsg = "";
+      else {
+        this.msg.emailMsg = "";
+        // ##################### email 중복체크 #####################
+        authApi
+          .duplicate(this.email)
+          .then((response) => {
+            console.log(response);
+            // #######################################
+
+            // #######################################
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     },
     pwCheck() {
       if (this.password.length < 5)
         this.msg.passwordMsg = "비밀번호 최소 길이는 5자 입니다.";
       else this.msg.passwordMsg = "";
     },
-    pwCheck2() {
-      if (this.password !== this.passwordCheck)
+    pwConfirmCheck() {
+      if (this.password !== this.passwordConfirm)
         this.msg.passwordCheckMsg = "비밀번호가 일치하지 않습니다.";
       else this.msg.passwordCheckMsg = "";
     },
-    nicknameCheck() {},
+    nicknameCheck() {
+      this.msg.nicknameMsg = "이미 존재하는 닉네임입니다.";
+    },
     //end 입력형식 체크
     // #########################################################
   },
@@ -184,7 +202,8 @@ export default {
   font-weight: bold;
 }
 ul {
-  margin-bottom: 15px;
+  margin-left: 35px;
+  margin-bottom: 5px;
 }
 li > input {
   width: 90%;
@@ -203,7 +222,9 @@ li > span {
 }
 
 #joinBtn {
-  margin-top: 15px;
-  font-size: 15px;
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+  font-size: 17px;
 }
 </style>

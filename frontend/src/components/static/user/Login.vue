@@ -170,7 +170,7 @@ li > span {
 #loginBtn {
   width: 300px;
   height: 42px;
-  background-color: var(--basic-color-bg2);
+  background-color: var(--basic-color-btn);
   color: white;
 }
 #btn-range {

@@ -24,8 +24,9 @@
               </v-col>
             </v-row>
           </v-card-title>
-          <div style="height: 10px"></div>
+          <div style="height: 15px"></div>
           <v-card-text>
+            <span class="description">와인은 만족스러웠나요?</span>
             <v-row>
               <v-col>
                 <div class="rating-wrap">
@@ -33,25 +34,51 @@
                     v-model="rating"
                     color="#F9DC14"
                     background-color="grey darken-1"
-                    size="64"
+                    size="50"
                     half-increments
                     hover
                   ></v-rating>
                 </div>
               </v-col>
             </v-row>
+            <span class="description">가성비는 만족스러웠나요?</span>
             <v-row>
               <v-col>
                 <div class="rating-wrap price-wrap">
-                  <div>별로에요</div>
-                  <div>그저그래요</div>
-                  <div>최고에요</div>
+                  <div
+                    :class="{
+                      'cost-item-inactive': !getCostRating(1),
+                      'cost-item-active': getCostRating(1),
+                    }"
+                    @click="setCostRating(1)"
+                  >
+                    별로에요
+                  </div>
+                  <div
+                    :class="{
+                      'cost-item-inactive': !getCostRating(2),
+                      'cost-item-active': getCostRating(2),
+                    }"
+                    @click="setCostRating(2)"
+                  >
+                    그저그래요
+                  </div>
+                  <div
+                    :class="{
+                      'cost-item-inactive': !getCostRating(3),
+                      'cost-item-active': getCostRating(3),
+                    }"
+                    @click="setCostRating(3)"
+                  >
+                    최고에요
+                  </div>
                 </div>
               </v-col>
             </v-row>
             <v-row>
               <v-col>
                 <v-textarea
+                  v-model="reviewContent"
                   solo
                   name="input-7-4"
                   height="200px"
@@ -62,7 +89,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn text id="writeBtn">리뷰작성</v-btn>
+            <v-btn text id="writeBtn" @click="writeReivew">리뷰작성</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -84,12 +111,27 @@ export default {
     ...mapState("reviewDialog", ["reviewWriteDialog"]),
   },
   data: () => ({
-    rating: 3.5,
+    rating: 5,
+    costRating: -1,
+    reviewContent: "",
   }),
   methods: {
     ...mapMutations("reviewDialog", ["SET_REVIEW_WRITE_TOGGLE"]),
     close() {
       this.SET_REVIEW_WRITE_TOGGLE();
+    },
+    getCostRating(n) {
+      if (n == this.costRating) return true;
+      else return false;
+    },
+    setCostRating(n) {
+      this.costRating = n;
+    },
+    writeReivew() {
+      if (this.costRating < 0) alert("가성비 점수를 선택해 주세요!!");
+      console.log("별점: " + this.rating);
+      console.log("가성비: " + this.costRating);
+      console.log("리뷰 내용: " + this.reviewContent);
     },
   },
 };
@@ -109,27 +151,42 @@ export default {
   margin: 0 auto;
 }
 
+.description {
+  color: black;
+  font-size: 18px;
+  font-weight: 600;
+}
+
 .rating-wrap {
-  height: 80px;
+  height: 65px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   border: 1px solid darkgrey;
-}
-.price-wrap {
+  margin-top: 8px;
+  margin-bottom: 10px;
 }
 .price-wrap > div {
   background-color: darkgrey;
   width: 85px;
-  height: 45px;
+  height: 35px;
   margin: auto 20px;
 }
+
+.cost-item-inactive {
+  opacity: 0.2;
+}
+.cost-item-active {
+  opacity: 1;
+  transform: scale(1.2) !important;
+}
+
 #writeBtn {
   height: 38px;
   width: 85px;
   color: white;
   font-size: 15px;
-  background-color: #bb3254;
+  background-color: var(--basic-color-btn);
   position: relative;
   bottom: 15px;
   right: 10px;

@@ -497,10 +497,10 @@ export default {
 }
 
 .active-stage {
-  background-color: var(--basic-color-key) !important;
+  background-color: #4e4c4c !important;
 }
 .active-stage-name {
-  color: var(--basic-color-key) !important;
+  color: #4e4c4c !important;
 }
 
 .stage-name {

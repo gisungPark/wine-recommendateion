@@ -56,6 +56,7 @@
               :review="review"
               :userInfo="userInfo"
             />
+            <Reviews />
           </div>
           <div class="content-item" v-show="this.screenState == 3"></div>
         </div>
@@ -70,6 +71,7 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import MyReviews from "@/components/static/mypage/MyReviews.vue";
+import Reviews from "@/components/static/reviews/Reviews.vue";
 import PreferenceSetting from "@/components/static/mypage/PreferenceSetting.vue";
 
 const SCRAP = 1;
@@ -81,6 +83,7 @@ export default {
   name: "Mypage",
   components: {
     MyReviews,
+    Reviews,
     PreferenceSetting,
   },
 

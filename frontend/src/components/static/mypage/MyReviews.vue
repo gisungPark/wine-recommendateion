@@ -27,26 +27,24 @@
     <div class="reviews-item">
       <div class="reviews-btn">
         <a href="#" class="button">와인으로 이동하기</a>
-        <a href="#" class="button" @click="SET_REVIEW_TOGGLE"
-          >리뷰로 이동하기</a
-        >
+        <a href="#" class="button" @click="goToReview">리뷰로 이동하기</a>
       </div>
     </div>
-    <Reviews :review="review" />
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import Reviews from "@/components/static/mypage/Reviews.vue";
 
 export default {
+  name: "MyReviews",
   props: ["review", "userInfo"],
-  components: {
-    Reviews,
-  },
+  components: {},
   methods: {
     ...mapMutations("reviewDialog", ["SET_REVIEW_TOGGLE"]),
+    goToReview() {
+      this.SET_REVIEW_TOGGLE();
+    },
   },
 };
 </script>

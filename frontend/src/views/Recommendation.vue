@@ -5,6 +5,7 @@
       <div class="info">
         임시 영역 || 추천 기반 정보 제공 || 통계자료 확인>
       </div>
+      <Winelist class="winelist" />
     </section>
   </div>
 </template>
@@ -12,11 +13,13 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
 import Sidebar from '@/components/articles/Sidebar.vue';
+import Winelist from '@/components/articles/Winelist.vue';
 
 export default {
   name: 'Recommendation',
   components: {
     Sidebar,
+    Winelist,
   },
 
   data: () => ({}),
@@ -57,5 +60,7 @@ export default {
   font-size: 2rem;
   line-height: 5rem;
   background-color: rgba(0, 0, 0, 0.488);
+}
+.winelist {
 }
 </style>

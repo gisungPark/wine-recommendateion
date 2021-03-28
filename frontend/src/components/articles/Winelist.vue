@@ -3,14 +3,7 @@
 </template>
 
 <script>
-export default {
-  name: 'Sidebar',
-  data() {
-    return {
-      
-    }
-  },
-};
+export default {};
 </script>
 
 <style>

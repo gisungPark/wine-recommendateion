@@ -169,7 +169,7 @@ li > span {
 }
 #loginBtn {
   width: 300px;
-  height: 42px;
+  height: 49px;
   background-color: var(--basic-color-btn);
   color: white;
 }

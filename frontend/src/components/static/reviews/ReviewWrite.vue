@@ -46,32 +46,29 @@
               <v-col>
                 <div class="rating-wrap price-wrap">
                   <div
+                    id="test1"
                     :class="{
                       'cost-item-inactive': !getCostRating(1),
                       'cost-item-active': getCostRating(1),
                     }"
                     @click="setCostRating(1)"
-                  >
-                    별로에요
-                  </div>
+                  ></div>
                   <div
+                    id="test2"
                     :class="{
                       'cost-item-inactive': !getCostRating(2),
                       'cost-item-active': getCostRating(2),
                     }"
                     @click="setCostRating(2)"
-                  >
-                    그저그래요
-                  </div>
+                  ></div>
                   <div
+                    id="test3"
                     :class="{
                       'cost-item-inactive': !getCostRating(3),
                       'cost-item-active': getCostRating(3),
                     }"
                     @click="setCostRating(3)"
-                  >
-                    최고에요
-                  </div>
+                  ></div>
                 </div>
               </v-col>
             </v-row>
@@ -167,12 +164,32 @@ export default {
   margin-bottom: 10px;
 }
 .price-wrap > div {
-  background-color: darkgrey;
-  width: 85px;
-  height: 35px;
+  width: 120px;
+  height: 55px;
   margin: auto 20px;
+  background-position: center;
+  background-size: contain;
 }
 
+#test1 {
+  background-image: url(../../../assets/images/price-rating-3.png);
+}
+#test2 {
+  background-image: url(../../../assets/images/price-rating-2.png);
+}
+#test3 {
+  background-image: url(../../../assets/images/price-rating-1.png);
+}
+
+/* .price-wrap:nth-child(1) {
+  background-image: url(../../../assets/images/price-rating-1.png);
+}
+.price-wrap:nth-child(2) {
+  background-image: url(../../../assets/images/price-rating-2.png);
+}
+.price-wrap:nth-child(3) {
+  background-image: url(../../../assets/images/price-rating-3.png);
+} */
 .cost-item-inactive {
   opacity: 0.2;
 }

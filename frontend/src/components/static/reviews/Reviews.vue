@@ -27,7 +27,12 @@
 
           <div class="writeBtn-wrap"></div>
           <v-card-actions>
-            <v-btn text id="writeBtn" @click="clickWriteBtn"></v-btn>
+            <v-btn
+              text
+              id="writeBtn"
+              class="writePop"
+              @click="clickWriteBtn"
+            ></v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -165,13 +170,14 @@ export default {
 }
 #writeBtn {
   position: fixed;
-  right: 300px;
-  bottom: 55px;
+  right: 20%;
+  bottom: 8%;
   width: 64px;
   height: 64px;
   background-image: url(../../../assets/images/plus-icon.png);
   background-position: center;
   background-size: contain;
+  opacity: 0;
 }
 #writeBtn:hover {
   transform: scale(1.11);

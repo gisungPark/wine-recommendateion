@@ -7,11 +7,22 @@
     </div>
     <div class="reviews-item">
       <div class="wine-title">{{ review.wineTitle }}</div>
-      <div class="review-title">
-        <span>{{ review.reviewTitle }}</span>
-        <img src="@/assets/images/star-rating.png" alt="" />
-        <img src="@/assets/images/money-icons.png" alt="" />
+      <div class="review-content">
+        <span
+          >{{ review.reviewTitle }}
+          <img
+            class="review-rating"
+            src="@/assets/images/star-rating.png"
+            alt=""
+          />
+          <img
+            class="review-rating"
+            src="@/assets/images/money-icons.png"
+            alt=""
+          />
+        </span>
       </div>
+      <div style="height: 20px"></div>
       <div class="review-writer">
         <div class="writer-img">
           <img :src="userInfo.profile" alt="" />
@@ -27,22 +38,32 @@
     <div class="reviews-item">
       <div class="reviews-btn">
         <a href="#" class="button">와인으로 이동하기</a>
-        <a href="#" class="button">리뷰로 이동하기</a>
+        <a href="#" class="button" @click="goToReview">리뷰로 이동하기</a>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex";
+
 export default {
+  name: "MyReviews",
   props: ["review", "userInfo"],
+  components: {},
+  methods: {
+    ...mapMutations("reviewDialog", ["SET_REVIEW_TOGGLE"]),
+    goToReview() {
+      this.SET_REVIEW_TOGGLE();
+    },
+  },
 };
 </script>
 
 <style scoped>
 .reviews-fram {
   width: 90%;
-  height: 130px;
+  min-height: 130px;
   display: flex;
   flex-direction: row;
   margin: 15px;
@@ -87,24 +108,25 @@ export default {
   font-size: 32px;
   font-weight: bold;
 }
-.review-title {
+.review-content {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-top: 8px;
 }
 
-.review-title > span {
-  font-size: 16px;
+.review-content > span {
+  font-size: 18px;
 }
-.review-title > img {
-  margin-left: 8px;
+.review-rating {
+  position: relative;
+  top: 5px;
 }
 
 .review-writer {
-  position: relative;
-  top: 27px;
   display: flex;
+  position: relative;
+  bottom: 8px;
 }
 
 .writer-img {

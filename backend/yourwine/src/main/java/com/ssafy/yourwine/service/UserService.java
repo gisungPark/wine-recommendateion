@@ -16,11 +16,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
+    private final ModelMapper modelMapper = new ModelMapper();
 	private final UserRepository userRepository;
 	private final ScrapRepository scrapRepository;
 	private final JwtTokenProvider jwtTokenProvider;
@@ -28,8 +30,6 @@ public class UserService {
 	private final ReviewRepository reviewRepository;
 	
     public void saveUser(UserDTO userDTO) {
-        ModelMapper modelMapper = new ModelMapper();
-
         User user = modelMapper.map(userDTO, User.class);
 
         user.setUserId(UUID.randomUUID().toString());
@@ -159,8 +159,6 @@ public class UserService {
     }
 
     public UserDTO getUserInfo(String token) {
-        ModelMapper modelMapper = new ModelMapper();
-
         String user_id = jwtTokenProvider.getUserId(token);
         User user = userRepository.findByUserId(user_id);
 
@@ -192,7 +190,6 @@ public class UserService {
     }
 
     public List<WineDTO> getScrap(String token){
-        ModelMapper modelMapper = new ModelMapper();
         String userId = jwtTokenProvider.getUserId(token);
         User user = userRepository.findByUserId(userId);
         List<Scrap> scrapList = scrapRepository.findScrapByUser(user);
@@ -207,11 +204,9 @@ public class UserService {
     }
 
     public List<ReviewDTO> getReview(String token){
-        ModelMapper modelMapper = new ModelMapper();
         String userId = jwtTokenProvider.getUserId(token);
         User user = userRepository.findByUserId(userId);
-        List<Review> reviewList = reviewRepository.findByUser(user);
-        List<ReviewDTO> reviewDTOList = modelMapper.map(reviewList, new TypeToken<List<ReviewDTO>>() {}.getType());
+        List<ReviewDTO> reviewDTOList = reviewRepository.findByUser(user).stream().map(ReviewDTO::new).collect(Collectors.toList());
 
         return reviewDTOList;
     }

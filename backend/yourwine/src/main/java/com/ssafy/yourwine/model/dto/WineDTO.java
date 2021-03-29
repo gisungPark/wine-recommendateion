@@ -18,7 +18,7 @@ public class WineDTO {
 	private String temper;
 	private float avg;
 	private int price;
-	private int year;
+	private String year;
 	private String detail;
 	private String shop;
 	private int sweet;

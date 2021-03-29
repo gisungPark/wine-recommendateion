@@ -20,7 +20,7 @@
           <v-card-title>
             <v-row>
               <v-col>
-                <span class="modal-name">Rate This Wine</span>
+                <span class="modal-name">Review</span>
               </v-col>
             </v-row>
           </v-card-title>

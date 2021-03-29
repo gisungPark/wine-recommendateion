@@ -4,7 +4,12 @@
       <div class="sidebar-container">
         <span class="nav-title b-desc">{{ sidebar.title }}</span>
         <div class="nav-btn b-desc">
-          <button v-for="(name, index) in sidebar.names" :key="index + name" :class="{ active: activeState === index }" @click="clickedBtn(index)">
+          <button
+            v-for="(name, index) in sidebar.names"
+            :key="index + name"
+            :class="{ active: activeState === index }"
+            @click="clickedBtn(index)"
+          >
             <span>{{ name }}</span>
           </button>
         </div>
@@ -14,16 +19,16 @@
 </template>
 
 <script>
-import common from '@/assets/js/common.js';
+import common from "@/assets/js/common.js";
 export default {
-  name: 'Sidebar',
+  name: "Sidebar",
   props: {
     sidebar: {
       type: Object,
-      default: function() {
+      default: function () {
         return {
-          title: 'Error',
-          names: ['Error'],
+          title: "Error",
+          names: ["Error"],
         };
       },
     },
@@ -47,7 +52,7 @@ export default {
       this.emitEvent();
     },
     emitEvent() {
-      this.$emit('clickedBtn', this.activeState);
+      this.$emit("clickedBtn", this.activeState);
     },
   },
 };

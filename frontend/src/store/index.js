@@ -5,6 +5,7 @@ import Vuex from 'vuex';
 import guideBtn from './modules/guideBtn';
 import nav from './modules/nav';
 import loginDialog from './modules/loginDialog';
+import reviewDialog from './modules/reviewDialog';
 import userInfo from './modules/userInfo';
 
 Vue.use(Vuex);
@@ -28,5 +29,6 @@ export default new Vuex.Store({
     nav,
     loginDialog,
     userInfo,
+    reviewDialog
   },
 });

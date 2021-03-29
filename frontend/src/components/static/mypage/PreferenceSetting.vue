@@ -1,5 +1,15 @@
 <template>
   <div class="preference-fram">
+    <div id="stage-line">
+      <div
+        id="preference-stages-line1"
+        :class="{ 'active-stage': isCurStage(2) }"
+      ></div>
+      <div
+        id="preference-stages-line2"
+        :class="{ 'active-stage': isCurStage(3) }"
+      ></div>
+    </div>
     <div class="preference-stages">
       <div class="preference-stages-wrap">
         <div
@@ -128,8 +138,12 @@
               :key="item + idx"
             >
               <h1>{{ item.name }}</h1>
+              <div id="cancleBtn" @click="removeItemFromList(1, item)"></div>
             </div>
           </div>
+          <span v-show="curStage == 1" class="count-display"
+            >{{ this.lickCnt }} / 3</span
+          >
           <div v-show="curStage == 2" class="selected-list-hate">
             <div
               class="selected-list-item"
@@ -137,110 +151,131 @@
               :key="item + idx"
             >
               <h1>{{ item.name }}</h1>
+              <div id="cancleBtn" @click="removeItemFromList(2, item)"></div>
             </div>
           </div>
+          <span v-show="curStage == 2" class="count-display"
+            >{{ this.hateCnt }} / 3</span
+          >
         </div>
 
         <!-- ############################################ -->
         <!-- ########## end 우측 선택된 아이템 목록  ########### -->
+
+        <!-- ############################################ -->
+        <!-- ########## start 와인 취향 ########### -->
       </div>
       <!-- <div v-show="curStage == 2" class="preference-item2"></div> -->
       <div v-show="curStage == 3" class="preference-item3">
         <div class="preference-item3-item">
-          <span>낮다</span>
-          <div id="slider-space">
-            <v-slider
-              v-model="slider1"
-              :max="4"
-              step="1"
-              :thumb-size="24"
-              ticks="always"
-              tick-size="5"
-              color="#e1a957"
-              track-color="#821a33"
-              track-fill-color="#821a33"
-            ></v-slider>
+          <span>Sweetness</span>
+          <div id="item3-item-slider">
+            <div>
+              <span id="slider-left">Dry</span>
+              <v-slider
+                v-model="slider1"
+                :max="4"
+                step="1"
+                ticks="always"
+                tick-size="5"
+                color="#e1a957"
+                track-color="#821a33"
+                track-fill-color="#821a33"
+              ></v-slider>
+              <span id="slider-right">Sweet</span>
+            </div>
+            <div class="slider-value">
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
+              <span>5</span>
+            </div>
           </div>
-          <span>높다</span>
         </div>
         <div class="preference-item3-item">
-          <span>낮다</span>
-          <div id="slider-space">
-            <v-slider
-              v-model="slider2"
-              :max="4"
-              step="1"
-              :thumb-size="24"
-              ticks="always"
-              tick-size="5"
-              color="#e1a957"
-              track-color="#821a33"
-              track-fill-color="#821a33"
-            ></v-slider>
+          <span>Acidity</span>
+          <div id="item3-item-slider">
+            <div>
+              <span id="slider-left">Soft</span>
+              <v-slider
+                v-model="slider2"
+                :max="4"
+                step="1"
+                ticks="always"
+                tick-size="5"
+                color="#e1a957"
+                track-color="#821a33"
+                track-fill-color="#821a33"
+              ></v-slider>
+              <span id="slider-right">Acidic</span>
+            </div>
+            <div class="slider-value">
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
+              <span>5</span>
+            </div>
           </div>
-          <span>높다</span>
         </div>
         <div class="preference-item3-item">
-          <span>낮다</span>
-          <div id="slider-space">
-            <v-slider
-              v-model="slider3"
-              :max="4"
-              step="1"
-              :thumb-size="24"
-              ticks="always"
-              tick-size="5"
-              color="#e1a957"
-              track-color="#821a33"
-              track-fill-color="#821a33"
-            ></v-slider>
+          <span>Tannin</span>
+          <div id="item3-item-slider">
+            <div>
+              <span id="slider-left">Smooth</span>
+              <v-slider
+                v-model="slider3"
+                :max="4"
+                step="1"
+                ticks="always"
+                tick-size="5"
+                color="#e1a957"
+                track-color="#821a33"
+                track-fill-color="#821a33"
+              ></v-slider>
+              <span id="slider-right">Tannic</span>
+            </div>
+            <div class="slider-value">
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
+              <span>5</span>
+            </div>
           </div>
-          <span>높다</span>
         </div>
         <div class="preference-item3-item">
-          <span>가볍다</span>
-          <div id="slider-space">
-            <v-slider
-              v-model="slider4"
-              :max="4"
-              step="1"
-              :thumb-size="24"
-              ticks="always"
-              tick-size="5"
-              color="#e1a957"
-              track-color="#821a33"
-              track-fill-color="#821a33"
-            ></v-slider>
+          <span>Body</span>
+          <div id="item3-item-slider">
+            <div>
+              <span id="slider-left">Light</span>
+              <v-slider
+                v-model="slider4"
+                :max="4"
+                step="1"
+                ticks="always"
+                tick-size="1"
+                color="#e1a957"
+                track-color="#821a33"
+                track-fill-color="#821a33"
+              ></v-slider>
+              <span id="slider-right">Bold</span>
+            </div>
+            <div class="slider-value">
+              <span>1</span>
+              <span>2</span>
+              <span>3</span>
+              <span>4</span>
+              <span>5</span>
+            </div>
           </div>
-          <span>무겁다</span>
         </div>
-        <div class="preference-item3-item">
-          <span>적다</span>
-          <!-- <div id="slider-space">
-            <input
-              type="range"
-              min="1"
-              max="100"
-              value="50"
-              class="slider"
-              id="myRange"
-            /> -->
-          <div id="slider-space">
-            <v-slider
-              v-model="slider5"
-              :max="4"
-              step="1"
-              :thumb-size="24"
-              ticks="always"
-              tick-size="5"
-              color="#e1a957"
-              track-color="#821a33"
-              track-fill-color="#821a33"
-            ></v-slider>
-          </div>
-          <span>많다</span>
-        </div>
+        <button id="okBtn">선택완료</button>
       </div>
+
+      <!-- ############################################ -->
+      <!-- ########## end 와인 취향 ########### -->
     </div>
   </div>
 </template>
@@ -281,7 +316,7 @@ export default {
     list5: [],
     likeList: [],
     hateList: [],
-    slider1: 1,
+    slider1: 2,
     slider2: 2,
     slider3: 2,
     slider4: 2,
@@ -293,7 +328,7 @@ export default {
     },
     // 상단 stage 클릭시 stage 변경 함수
     isCurStage(stage) {
-      if (this.curStage == stage) return true;
+      if (this.curStage >= stage) return true;
       else return false;
     },
     /*
@@ -339,6 +374,7 @@ export default {
         removeIdx = this.likeList.indexOf(itemToFine);
         if (removeIdx > -1) {
           this.likeList.splice(removeIdx, 1);
+          targe.isLike = false;
           this.lickCnt--;
         }
       } else if (stage == SECOND_STAGE) {
@@ -348,6 +384,7 @@ export default {
         removeIdx = this.hateList.indexOf(itemToFine);
         if (removeIdx > -1) {
           this.hateCnt--;
+          targe.isHate = false;
           this.hateList.splice(removeIdx, 1);
         }
       }
@@ -370,7 +407,7 @@ export default {
           }
         } else {
           // 3. 좋아한다고 했다가 취소하는 경우
-          item.isLike = false;
+
           this.removeItemFromList(FIRST_STAGE, item);
         }
       }
@@ -389,7 +426,6 @@ export default {
           }
         } else {
           // 3. 좋아한다고 했다가 취소하는 경우
-          item.isHate = false;
           this.removeItemFromList(SECOND_STAGE, item);
         }
         console.log("싫어하는 리스트!!!   " + this.hateCnt);
@@ -408,6 +444,26 @@ export default {
   width: 100%;
   flex-direction: column;
   justify-content: center;
+}
+
+#stage-line {
+  width: 80%;
+  position: fixed;
+  top: 133px;
+  left: 230px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+#preference-stages-line1 {
+  width: 32%;
+  height: 1px;
+  background-color: #4e4c4c;
+}
+#preference-stages-line2 {
+  width: 32%;
+  height: 1px;
+  background-color: #4e4c4c;
 }
 .preference-stages {
   width: 80%;
@@ -435,19 +491,20 @@ export default {
   width: 65px;
   height: 65px;
   border-radius: 70%;
-  background-color: white;
+  background-color: #4e4c4c;
+  z-index: 3;
   pointer-events: all;
 }
 
 .active-stage {
-  background-color: var(--basic-color-key);
+  background-color: white !important;
 }
 .active-stage-name {
-  color: var(--basic-color-key) !important;
+  color: white !important;
 }
 
 .stage-name {
-  color: white;
+  color: #4e4c4c;
   border: none;
   padding: 15px 0;
   text-align: center;
@@ -481,62 +538,64 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 .preference-item3-item {
   width: 100%;
   height: 80px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 30px;
 }
 .preference-item3-item > span {
-  color: white;
+  position: relative;
+  top: -10px;
+  margin-bottom: 2px;
+  color: var(--basic-color-fill);
   font-size: 32px;
   font-weight: bold;
 }
-#slider-space {
-  width: 500px;
+#item3-item-slider {
+  width: 700px;
   margin-left: 45px;
   margin-right: 40px;
+  display: flex;
+  flex-direction: column;
+}
+#item3-item-slider > div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  color: white;
 }
 
-.slidecontainer {
-  width: 100%;
+#slider-left {
+  font-size: 18px;
+  position: absolute;
+  right: 715px;
+  top: 5px;
 }
 
-.slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 25px;
-  background: #d3d3d3;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: 0.2s;
-  transition: opacity 0.2s;
+#slider-right {
+  font-size: 18px;
+  position: absolute;
+  left: 710px;
+  top: 5px;
 }
-
-.slider:hover {
-  opacity: 1;
+.slider-value {
+  position: absolute;
+  top: -20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  background: #4caf50;
-  cursor: pointer;
+.slider-value > span {
+  color: white;
+  font-size: 18px;
 }
-
-.slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
-  background: #4caf50;
-  cursor: pointer;
-}
-
 .lists {
   height: auto;
   width: 200px;
@@ -579,22 +638,69 @@ export default {
   text-align: center;
 }
 .selected-list-title {
-  width: 100%;
+  width: 160px;
   display: flex;
   justify-content: center;
 }
+
 .selected-list-title > span {
   color: white;
   font-size: 28px;
   font-weight: bold;
-  margin-bottom: 2px;
+  margin-bottom: 10px;
   text-align: center;
 }
+.selected-list-like,
+.selected-list-hate {
+  width: 100%;
+  border: 2px solid var(--basic-color-key);
+  border-top: 0px;
+  border-radius: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .selected-list-item {
   background-color: white;
-  width: 150px;
+  width: 100px;
   height: 30px;
   margin: 3px;
   text-align: center;
+  border-radius: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.selected-list-item > h1 {
+  margin-left: 12px;
+}
+
+.count-display {
+  position: relative;
+  left: 45px;
+  font-size: 22px;
+  font-weight: 900;
+  color: white;
+}
+
+#cancleBtn {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+  background-image: url(../../../assets/images/cross-icon.png);
+}
+
+#okBtn {
+  background-color: var(--basic-color-bg2);
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  width: 95px;
+  height: 40px;
+  border-radius: 1em;
+  margin-top: 10px;
 }
 </style>

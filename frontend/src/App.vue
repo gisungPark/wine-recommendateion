@@ -3,25 +3,22 @@
     <Nav id="navigation" />
     <GuideBtn id="guide-btn" />
     <LoginModal />
-    <JoinModal />
     <router-view id="router-view" />
   </div>
 </template>
 
 <script>
-import './assets/css/static/style.css';
-import Nav from './components/static/Nav.vue';
-import GuideBtn from './components/static/GuideBtn.vue';
-import LoginModal from './components/static/user/Login.vue';
-import JoinModal from './components/static/user/Join.vue';
+import "./assets/css/static/style.css";
+import Nav from "./components/static/Nav.vue";
+import GuideBtn from "./components/static/GuideBtn.vue";
+import LoginModal from "./components/static/user/Login.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     Nav,
     GuideBtn,
     LoginModal,
-    JoinModal,
   },
   date() {
     return {};

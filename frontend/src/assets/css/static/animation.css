@@ -30,6 +30,22 @@ div {
   }
 }
 
+.fadeup {
+  animation-name: fadeup;
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0, 1, 0.65, 1);
+}
+@keyframes fadeup {
+  from {
+    transform: translateY(50%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
 .breath {
   animation-name: breath;
   animation-duration: 0.3s;

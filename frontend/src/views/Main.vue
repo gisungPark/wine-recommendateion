@@ -109,6 +109,7 @@ export default {
   },
   data() {
     return {
+      show: false,
       title: `TODAY'S WINE`,
       subtitle: '',
       wine: {
@@ -147,9 +148,13 @@ export default {
     // 별점에 따라 별 개수 동적 표시를 위해 width값 계산
     this.starRate = this.starRate * this.avg;
     // subtitle 생성, enmae에서 쉼표까지 텍스트 자르기
-    let index = null;
+    let index = -1;
     index = this.wine.ename.indexOf(',');
-    this.subtitle = this.wine.ename.substring(0, index);
+    if (index !== -1) {
+      this.subtitle = this.wine.ename.substring(0, index);
+    } else {
+      this.subtitle = this.wine.ename;
+    }
   },
   mounted() {
     // interaction section 제어

@@ -10,7 +10,7 @@ export default [
     name: 'Mypage',
   },
   {
-    path: 'recommendation',
+    path: '/recommendation',
     view: 'Recommendation',
     name: 'Recommendation',
   },

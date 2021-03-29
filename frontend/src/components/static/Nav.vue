@@ -14,12 +14,12 @@
       </div>
     </section>
 
-    <section id="nav-frame" class="real-shadow-box" :class="{ pop: navActive }" @click="clickedMenuFrame">
+    <section id="nav-frame" class="real-shadow-box" :class="{ pop: navActive, change: changeState, hidden: hiddenState }" @click="clickedMenuFrame">
       <ul id="menu-list">
-        <li class="menu-list-item b-desc-e no-drag" @click="clickedRcomm">Recommendation</li>
-        <li class="menu-list-item b-desc-e no-drag" @click="clickedWines">Wines</li>
-        <li class="menu-list-item b-desc-e no-drag" @click="clickedTopic">Topic</li>
-        <li class="menu-list-item b-desc-e no-drag" @click="clickedChart">Chart</li>
+        <li class="menu-list-item b-desc-e no-drag" @click.stop="clickedRcomm">Recommendation</li>
+        <li class="menu-list-item b-desc-e no-drag" @click.stop="clickedWines">Wines</li>
+        <li class="menu-list-item b-desc-e no-drag" @click.stop="clickedTopic">Topic</li>
+        <li class="menu-list-item b-desc-e no-drag" @click.stop="clickedChart">Chart</li>
       </ul>
     </section>
     <div class="bg-close" :class="{ block: navActive }" @click="clickedBackground"></div>
@@ -36,6 +36,9 @@ export default {
       routeWithoutSidebar: ['Main'],
       routeWithSidebar: ['Mypage', 'Recommendation'],
       logoState: false, //false => center, true => 사이드바 영역만큼 오른쪽으로 치우침
+      // router 전환 상태 관리
+      changeState: false,
+      hiddenState: false,
     };
   },
   computed: {
@@ -48,10 +51,10 @@ export default {
       immediate: true,
       handler(to, from) {
         let currentRouteName = to.name;
-        this.logoState = true;
-        this.routeWithoutSidebar.forEach((element) => {
+        this.logoState = false;
+        this.routeWithSidebar.forEach((element) => {
           if (element === currentRouteName) {
-            this.logoState = false;
+            this.logoState = true;
             return;
           }
         });
@@ -60,24 +63,35 @@ export default {
   },
   methods: {
     ...mapMutations('nav', ['SET_NAV_TOGGLE', 'SET_NAV_CLOSE']),
+    menuTransition() {
+      this.changeState = true;
+      setTimeout(() => {
+        this.hiddenState = true;
+      }, 400);
+      setTimeout(() => {
+        this.changeState = false;
+        this.SET_NAV_CLOSE();
+      }, 500);
+    },
     clickedMenu() {
+      this.hiddenState = false;
       this.SET_NAV_TOGGLE();
     },
     clickedRcomm() {
+      this.menuTransition();
       this.$router.push({ name: 'Recommendation' });
-      this.SET_NAV_CLOSE();
     },
     clickedWines() {
-      this.SET_NAV_CLOSE();
-      alert(`clicked!`);
+      this.menuTransition();
+      this.$router.push({ name: 'Recommendation' });
     },
     clickedTopic() {
-      this.SET_NAV_CLOSE();
-      alert(`clicked!`);
+      this.menuTransition();
+      this.$router.push({ name: 'Recommendation' });
     },
     clickedChart() {
-      this.SET_NAV_CLOSE();
-      alert(`clicked!`);
+      this.menuTransition();
+      this.$router.push({ name: 'Recommendation' });
     },
     // 메인 페이지로 이동
     clickedLogo() {
@@ -95,6 +109,12 @@ export default {
 </script>
 
 <style scoped>
+.change {
+  padding-left: 100%;
+  background-color: var(--basic-color-bg) !important;
+  backdrop-filter: saturate(0%) blur(0px);
+}
+
 #coantainer {
   width: 100%;
 }
@@ -216,9 +236,10 @@ export default {
   height: 100vh;
   width: auto;
   border-right: solid 1px var(--basic-color-key);
+  box-sizing: border-box;
   background-color: rgba(100, 100, 100, 0.5);
   transform: translate(-100%, 0);
-  transition: transform 0.3s cubic-bezier(0, 1, 0.65, 1);
+  transition: padding-left 0.5s, background-color 0.5s, backdrop-filter 0.5s, transform 0.5s cubic-bezier(0, 1, 0.65, 1);
 
   -webkit-backdrop-filter: saturate(180%) blur(100px);
   -moz-backdrop-filter: saturate(180%) blur(100px);
@@ -239,9 +260,9 @@ export default {
 }
 li {
   color: var(--basic-color-fill);
-  font-size: 10vw;
+  font-size: 9vw;
   cursor: pointer;
-  transition: color 0.6s, transform 0.3s ease;
+  transition: color 0.5s, transform 0.3s ease;
 }
 li:hover {
   color: var(--basic-color-key);

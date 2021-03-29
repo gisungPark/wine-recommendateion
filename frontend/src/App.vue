@@ -3,7 +3,10 @@
     <Nav id="navigation" />
     <GuideBtn id="guide-btn" />
     <LoginModal />
-    <router-view id="router-view" />
+    <JoinModal />
+    <transition name="opacity">
+      <router-view id="router-view" />
+    </transition>
   </div>
 </template>
 
@@ -21,12 +24,20 @@ export default {
     LoginModal,
   },
   date() {
-    return {};
+    return {
+      transitionName: 'slide',
+    };
   },
   created() {},
   mounted() {},
   computed: {},
-  watch: {},
+  watch: {
+    // $route(to, from) {
+    //   const toDepth = to.path.split('/').length;
+    //   const fromDepth = from.path.split('/').length;
+    //   this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+    // },
+  },
   methods: {},
 };
 </script>
@@ -34,6 +45,21 @@ export default {
 <style>
 body {
   background-color: var(--basic-color-bg);
+}
+
+.opacity-enter-active {
+  transition: opacity 0.5s cubic-bezier(0, 1, 0.65, 1) 0.5s;
+}
+.opacity-leave-active {
+  transition: opacity 0.5s cubic-bezier(0, 1, 0.65, 1);
+}
+.opacity-enter,
+.opacity-leave-to {
+  opacity: 0;
+}
+.opacity-enter-to,
+.opacity-leave {
+  opacity: 1;
 }
 </style>
 

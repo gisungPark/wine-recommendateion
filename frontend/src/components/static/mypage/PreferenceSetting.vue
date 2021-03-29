@@ -1,74 +1,38 @@
 <template>
   <div class="preference-fram">
     <div id="stage-line">
-      <div
-        id="preference-stages-line1"
-        :class="{ 'active-stage': isCurStage(2) }"
-      ></div>
-      <div
-        id="preference-stages-line2"
-        :class="{ 'active-stage': isCurStage(3) }"
-      ></div>
+      <div id="preference-stages-line1" :class="{ 'active-stage': isCurStage(2) }"></div>
+      <div id="preference-stages-line2" :class="{ 'active-stage': isCurStage(3) }"></div>
     </div>
     <div class="preference-stages">
       <div class="preference-stages-wrap">
-        <div
-          class="stage"
-          :class="{ 'active-stage': isCurStage(1) }"
-          @click="onClickStage(1)"
-        ></div>
-        <a
-          class="stage-name"
-          :class="{ 'active-stage-name': isCurStage(1) }"
-          href="#"
-          @click="onClickStage(1)"
-          >좋아하는 향</a
-        >
+        <div class="stage" :class="{ 'active-stage': isCurStage(1) }" @click="onClickStage(1)"></div>
+        <a class="stage-name" :class="{ 'active-stage-name': isCurStage(1) }" href="#" @click="onClickStage(1)">좋아하는 향</a>
       </div>
       <div class="preference-stages-wrap">
-        <div
-          class="stage"
-          :class="{ 'active-stage': isCurStage(2) }"
-          @click="onClickStage(2)"
-        ></div>
-        <a
-          class="stage-name"
-          :class="{ 'active-stage-name': isCurStage(2) }"
-          @click="onClickStage(2)"
-          href="#"
-          >싫어하는 향</a
-        >
+        <div class="stage" :class="{ 'active-stage': isCurStage(2) }" @click="onClickStage(2)"></div>
+        <a class="stage-name" :class="{ 'active-stage-name': isCurStage(2) }" @click="onClickStage(2)" href="#">싫어하는 향</a>
       </div>
       <div class="preference-stages-wrap">
-        <div
-          class="stage"
-          :class="{ 'active-stage': isCurStage(3) }"
-          @click="onClickStage(3)"
-        ></div>
-        <a
-          class="stage-name"
-          :class="{ 'active-stage-name': isCurStage(3) }"
-          @click="onClickStage(3)"
-          href="#"
-          >와인 취향</a
-        >
+        <div class="stage" :class="{ 'active-stage': isCurStage(3) }" @click="onClickStage(3)"></div>
+        <a class="stage-name" :class="{ 'active-stage-name': isCurStage(3) }" @click="onClickStage(3)" href="#">와인 취향</a>
       </div>
     </div>
     <div class="preference-fillter">
       <div v-show="curStage != 3" class="preference-item1">
         <!-- ######################### CARD LIST ################################## -->
         <div class="lists list-1">
-          <div
+          <Card
             class="list-item-cards"
             :class="{
               'list-item-cards-active': currentCardState(item),
               'list-item-cards-inactive': isInactive(item),
             }"
-            v-for="(item, idx) in list1"
-            :key="item + idx"
+            v-for="(item, index) in list1"
+            :key="item.name + index"
             @click="onCardActive(item)"
-            :style="{ backgroundImage: `url(${item.img})` }"
-          ></div>
+            :item="item"
+          />
         </div>
         <div class="lists list-2">
           <div
@@ -132,31 +96,19 @@
             <span v-show="curStage == 2">Dislike list</span>
           </div>
           <div v-show="curStage == 1" class="selected-list-like">
-            <div
-              class="selected-list-item"
-              v-for="(item, idx) in likeList"
-              :key="item + idx"
-            >
+            <div class="selected-list-item" v-for="(item, idx) in likeList" :key="item + idx">
               <h1>{{ item.name }}</h1>
               <div id="cancleBtn" @click="removeItemFromList(1, item)"></div>
             </div>
           </div>
-          <span v-show="curStage == 1" class="count-display"
-            >{{ this.lickCnt }} / 3</span
-          >
+          <span v-show="curStage == 1" class="count-display">{{ this.lickCnt }} / 3</span>
           <div v-show="curStage == 2" class="selected-list-hate">
-            <div
-              class="selected-list-item"
-              v-for="(item, idx) in hateList"
-              :key="item + idx"
-            >
+            <div class="selected-list-item" v-for="(item, idx) in hateList" :key="item + idx">
               <h1>{{ item.name }}</h1>
               <div id="cancleBtn" @click="removeItemFromList(2, item)"></div>
             </div>
           </div>
-          <span v-show="curStage == 2" class="count-display"
-            >{{ this.hateCnt }} / 3</span
-          >
+          <span v-show="curStage == 2" class="count-display">{{ this.hateCnt }} / 3</span>
         </div>
 
         <!-- ############################################ -->
@@ -281,12 +233,17 @@
 </template>
 
 <script>
+import Card from '@/components/item/Card.vue';
+
 const FIRST_STAGE = 1,
   SECOND_STAGE = 2,
   THIRD_STAGE = 3;
 
 export default {
-  props: ["preferenceList"],
+  props: ['preferenceList'],
+  components: {
+    Card,
+  },
   created() {
     for (var i = 0; i < this.preferenceList.length; i++) {
       const item = {
@@ -365,10 +322,10 @@ export default {
      * 배열에서 해당 객체 삭제 함수!!
      */
     removeItemFromList(stage, targe) {
-      let itemToFine = "";
+      let itemToFine = '';
       let removeIdx = -1;
       if (stage == FIRST_STAGE) {
-        itemToFine = this.likeList.find(function (item) {
+        itemToFine = this.likeList.find(function(item) {
           return item.flavor_id === targe.flavor_id;
         });
         removeIdx = this.likeList.indexOf(itemToFine);
@@ -378,7 +335,7 @@ export default {
           this.lickCnt--;
         }
       } else if (stage == SECOND_STAGE) {
-        itemToFine = this.hateList.find(function (item) {
+        itemToFine = this.hateList.find(function(item) {
           return item.flavor_id === targe.flavor_id;
         });
         removeIdx = this.hateList.indexOf(itemToFine);
@@ -398,7 +355,7 @@ export default {
         // 1. 좋아한다고 선택하는 경우
         if (!item.isLike) {
           if (!this.isSelectPossible(FIRST_STAGE)) {
-            alert("선택 가능한 갯수를 초과했습니다.");
+            alert('선택 가능한 갯수를 초과했습니다.');
             return;
           } else {
             this.likeList.push(item);
@@ -417,7 +374,7 @@ export default {
         if (item.isLike) return;
         if (!item.isHate) {
           if (!this.isSelectPossible(SECOND_STAGE)) {
-            alert("선택 가능한 갯수를 초과했습니다." + this.hateCnt);
+            alert('선택 가능한 갯수를 초과했습니다.' + this.hateCnt);
             return;
           } else {
             this.hateList.push(item);
@@ -428,7 +385,7 @@ export default {
           // 3. 좋아한다고 했다가 취소하는 경우
           this.removeItemFromList(SECOND_STAGE, item);
         }
-        console.log("싫어하는 리스트!!!   " + this.hateCnt);
+        console.log('싫어하는 리스트!!!   ' + this.hateCnt);
         for (var i = 0; i < this.hateList.length; i++) {
           console.log(this.hateList[i]);
         }
@@ -524,7 +481,7 @@ export default {
 .preference-item1 {
   position: relative;
   left: -60px;
-  margin-top: 160px;
+  margin-top: 130px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -612,8 +569,8 @@ export default {
 
 .list-item-cards {
   width: 100%;
-  height: 300px;
-  margin-top: 10px;
+  height: 280px;
+  margin-top: 20px;
   background-size: contain;
   background-position: center;
   opacity: 0.7;

@@ -96,14 +96,11 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import ReviewItem from "@/components/static/reviews/ReviewItem.vue";
 
 export default {
   name: "ReviewWrite",
   props: [],
-  components: {
-    ReviewItem,
-  },
+  components: {},
   computed: {
     ...mapState("reviewDialog", ["reviewWriteDialog"]),
   },

@@ -98,6 +98,7 @@ export default {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
         reviewScore: 4,
         date: "2021.03.22",
+        priceScore: 1,
       },
       {
         img: "https://img.maisonkorea.com/2020/04/msk_5e8d7129f1d53.jpg",
@@ -113,6 +114,7 @@ export default {
         elementum integer enim neque volutpat ac.`,
         reviewScore: 4,
         date: "2021.02.18",
+        priceScore: 3,
       },
       {
         img:
@@ -129,6 +131,7 @@ export default {
         elementum integer enim neque volutpat ac.`,
         reviewScore: 4,
         date: "2021.01.29",
+        priceScore: 3,
       },
       {
         img:
@@ -144,6 +147,7 @@ export default {
         In hac habitasse platea dictumst quisque sagittis purus. Pulvinar 
         elementum integer enim neque volutpat ac.`,
         date: "2020.12.08",
+        priceScore: 2,
       },
     ],
     preferenceList: [

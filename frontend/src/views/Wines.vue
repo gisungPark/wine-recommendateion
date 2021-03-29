@@ -7,13 +7,13 @@
           <div class="nav-btn b-desc">
             <button
               :class="{ active: contentState === 1 }"
-              @click="clickedBtn(1)"
+              @click="[clickedBtn(1), onPriceFillter()]"
             >
               <span>price</span>
             </button>
             <button
               :class="{ active: contentState === 2 }"
-              @click="clickedBtn(2)"
+              @click="[clickedBtn(2), onScoreFillter()]"
             >
               <span>Point</span>
             </button>
@@ -40,9 +40,9 @@
           type="text"
           placeholder="search your wine"
           v-model="keyword"
-          @keyup.enter="onSearch"
+          @keyup.enter="this.onSearch"
         />
-        <div class="search-icon-wrap" @click="onSearch">
+        <div class="search-icon-wrap" @click="this.onSearch">
           <svg
             id="search-icon"
             xmlns="http://www.w3.org/2000/svg"
@@ -63,6 +63,12 @@
         <Winelist class="winelist" key="2" :wines="wines1" v-if="contentState === 2" />
         <Winelist class="winelist" key="3" :wines="wines2" v-if="contentState === 3" /> -->
       </transition-group>
+      <div v-show="this.priceFillter" id="priceModal">
+        <v-range-slider hint="Im a hint" max="50" min="0"></v-range-slider>
+      </div>
+      <div v-show="this.scoreFillter" id="scoreModal">
+        <v-range-slider hint="Im a hint" max="50" min="0"></v-range-slider>
+      </div>
     </section>
   </div>
 </template>
@@ -80,6 +86,8 @@ export default {
   data: () => ({
     contentState: 1,
     keyword: "",
+    priceFillter: false,
+    scoreFillter: false,
   }),
   computed: {
     ...mapState("userInfo", ["userInfo"]),
@@ -91,6 +99,12 @@ export default {
     },
     onSearch() {
       alert(this.keyword + " 를 검색하셨습니다.");
+    },
+    onPriceFillter() {
+      this.priceFillter = !this.priceFillter;
+    },
+    onScoreFillter() {
+      this.scoreFillter = !this.scoreFillter;
     },
   },
 };
@@ -217,4 +231,28 @@ export default {
 }
 
 /* #################################################### */
+/* 각종 필터 */
+#priceModal {
+  width: 350px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  left: 160px;
+  bottom: 75px;
+  background-color: rgb(231, 93, 93);
+  opacity: 0.7;
+}
+
+#scoreModal {
+  width: 350px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  left: 160px;
+  bottom: 210px;
+  background-color: rgb(97, 147, 223);
+  opacity: 0.7;
+}
 </style>

@@ -38,25 +38,25 @@
                 d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
               />
             </svg>
-            <span style="font-weight: 600">4.5</span>
+            <span style="color: #626262">4.5</span>
           </div>
           <div v-show="this.review.priceScore == 1" class="cost-rating">
             <div class="cost-rating-icon blue">
               <img src="@/assets/images/smiley-1.png" />
             </div>
-            <span style="font-weight: 600">가성비</span>
+            <span>가성비</span>
           </div>
           <div v-show="this.review.priceScore == 2" class="cost-rating">
             <div class="cost-rating-icon orange">
               <img src="@/assets/images/smiley-2.png" />
             </div>
-            <span style="font-weight: 600">가성비</span>
+            <span>가성비</span>
           </div>
           <div v-show="this.review.priceScore == 3" class="cost-rating">
             <div class="cost-rating-icon red">
               <img src="@/assets/images/smiley-3.png" />
             </div>
-            <span style="font-weight: 600">가성비</span>
+            <span>가성비</span>
           </div>
         </div>
       </div>
@@ -207,6 +207,11 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.cost-rating > span {
+  font-size: 13px;
+  color: #626262;
+  font-weight: 900;
 }
 
 .cost-rating-icon {

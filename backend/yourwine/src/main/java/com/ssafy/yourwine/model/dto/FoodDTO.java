@@ -15,14 +15,12 @@ public class FoodDTO {
 	
 	private Long foodId;
     private String name;
-    private String img;
     private String detail;
     
     
 	public FoodDTO(WineFoodMatch wineFoodMatch) {
 		this.foodId = wineFoodMatch.getFood().getFoodId();
 		this.name = wineFoodMatch.getFood().getName();
-		this.img = wineFoodMatch.getFood().getImg();
 		this.detail = wineFoodMatch.getFood().getDetail();
 	}
 

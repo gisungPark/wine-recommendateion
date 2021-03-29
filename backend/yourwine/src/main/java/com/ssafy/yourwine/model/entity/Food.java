@@ -19,7 +19,6 @@ public class Food {
     @Column(name = "food_id")
     private Long foodId;
     private String name;
-    private String img;
     private String detail;
     
     @OneToMany(mappedBy = "food", cascade = CascadeType.ALL)

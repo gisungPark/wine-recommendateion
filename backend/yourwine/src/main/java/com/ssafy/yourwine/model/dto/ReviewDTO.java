@@ -16,7 +16,6 @@ public class ReviewDTO {
 
 	private Long wineId;
 	private String wineName;
-	private String wineImg;
 	private String nickname;
 	private String userImg;
 	private String contents;
@@ -27,7 +26,6 @@ public class ReviewDTO {
 	public ReviewDTO (Review review) {
 		this.wineId = review.getWine().getWineId();
 		this.wineName = review.getWine().getKname();
-		this.wineImg = review.getWine().getImg();
 		this.nickname = review.getUser().getNickname();
 		this.userImg = review.getUser().getImg();
 		this.contents = review.getContents();

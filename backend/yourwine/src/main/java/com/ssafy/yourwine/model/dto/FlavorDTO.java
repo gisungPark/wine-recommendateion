@@ -8,6 +8,5 @@ import lombok.ToString;
 public class FlavorDTO {
     private Long flavorId;
     private String name;
-    private String img;
 
 }

@@ -6,34 +6,29 @@
       </div>
     </div>
     <div class="reviews-item">
-      <div class="wine-title">{{ review.wineTitle }}</div>
+      <div class="wine-name">{{ review.wineName }}</div>
       <div class="review-content">
-        <span
-          >{{ review.reviewTitle }}
-          <img
-            class="review-rating"
-            src="@/assets/images/star-rating.png"
-            alt=""
-          />
-          <img
-            class="review-rating"
-            src="@/assets/images/money-icons.png"
-            alt=""
-          />
-        </span>
+        <span>{{ review.reviewTitle }} </span>
       </div>
       <div style="height: 20px"></div>
+
+      <!-- ######################################################## -->
       <div class="review-writer">
-        <div class="writer-img">
-          <img :src="userInfo.profile" alt="" />
+        <div class="writer-info">
+          <div class="writer-img">
+            <img :src="userInfo.profile" alt="" />
+          </div>
+          <span class="writer-nickname">
+            {{ userInfo.nickname }}
+          </span>
+          <span class="writing-date">{{ review.date }}</span>
         </div>
-        <div class="addition-info">
-          <span class="addition-info-usernickname">{{
-            userInfo.nickname
-          }}</span>
-          <span class="addition-info-date">{{ review.date }}</span>
+        <div>
+          <!-- <img class="review-rating" src="@/assets/images/soso.png" /> -->
+          <!-- <img class="review-rating" src="@/assets/images/good.png" /> -->
         </div>
       </div>
+      <!-- ######################################################## -->
     </div>
     <div class="reviews-item">
       <div class="reviews-btn">
@@ -89,14 +84,14 @@ export default {
 }
 .reviews-Img {
   position: absolute;
-  width: 150px;
-  height: 150px;
+  width: 180px;
+  height: 180px;
 }
 
 .wineImg {
   position: absolute;
   top: -15px;
-  left: 10px;
+  left: 0px;
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -104,7 +99,8 @@ export default {
 
 /* ###########  리뷰정보 중간지점!!  ################# */
 /* ################################################# */
-.wine-title {
+.wine-name {
+  margin-top: 5px;
   font-size: 32px;
   font-weight: bold;
 }
@@ -117,16 +113,20 @@ export default {
 
 .review-content > span {
   font-size: 18px;
+  line-height: 150%;
 }
-.review-rating {
-  position: relative;
-  top: 5px;
+.writer-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 2px;
 }
 
 .review-writer {
   display: flex;
-  position: relative;
-  bottom: 8px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .writer-img {
@@ -141,18 +141,21 @@ export default {
   height: 100%;
   object-fit: cover;
 }
-.addition-info {
-  margin-left: 5px;
-  display: flex;
-  flex-direction: column;
-}
-.addition-info-usernickname {
+.writer-nickname {
   font-size: 20px;
   font-weight: 550;
+  margin-left: 3px;
   color: var(--basic-color-bg2);
 }
-.addition-info-date {
+.writing-date {
+  margin-left: 3px;
+  margin-top: 6px;
+  font-size: 16px;
   color: #808080;
+}
+.review-rating {
+  height: 80px;
+  widows: 80px;
 }
 /* ###########  리뷰정보 마지막 지점!!  ################# */
 /* ##################################################### */

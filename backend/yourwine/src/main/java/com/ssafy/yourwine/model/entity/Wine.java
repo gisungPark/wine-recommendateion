@@ -23,7 +23,6 @@ public class Wine {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "wine_id")
 	private Long wineId;
-	private String img;
 	private String kname;
 	private String ename;
 	private String alcohol;
@@ -49,4 +48,6 @@ public class Wine {
 	@OneToMany(mappedBy = "wine", cascade = CascadeType.ALL)
 	private List<Review> review = new ArrayList<Review>();
 	
+	@OneToMany(mappedBy = "wine", cascade = CascadeType.ALL)
+	private List<WineFoodMatch> wineFoodMatch = new ArrayList<WineFoodMatch>();
 }

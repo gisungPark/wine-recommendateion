@@ -11,7 +11,6 @@ import lombok.ToString;
 public class WineDTO {
 
 	private Long wineId;
-	private String img;
 	private String kname;
 	private String ename;
 	private String alcohol;

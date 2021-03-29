@@ -50,7 +50,7 @@ public class UserController {
 		return check;
 	}
 
-	@PutMapping("/login")
+	@PostMapping("/login")
 	@ApiOperation(value = "일반 로그인", notes="Parameter\n" +
 			"- SignInDTO(RequestBody)\n" +
 			"-- email: 이메일(아이디)\n" +
@@ -66,7 +66,7 @@ public class UserController {
 		return tokenResultDTO;
 	}
 
-	@PutMapping("/logout")
+	@PostMapping("/logout")
 	@ApiOperation(value = "로그아웃", notes="Parameter\n" +
 			"- token(RequestHeader): 액세스 토큰\n" +
 			"Response(x)\n")

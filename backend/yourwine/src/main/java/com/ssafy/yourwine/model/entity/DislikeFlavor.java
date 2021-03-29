@@ -16,7 +16,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @Table(name = "DislikeFlavor")
-public class DislikeFlavor implements Serializable {
+public class DislikeFlavor {
 
     @EmbeddedId
     @Column(name = "dislike_id", unique = true)

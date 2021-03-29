@@ -2,6 +2,7 @@ package com.ssafy.yourwine.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +18,6 @@ import com.ssafy.yourwine.model.dto.GrapeDTO;
 import com.ssafy.yourwine.model.dto.ReviewDTO;
 import com.ssafy.yourwine.model.dto.WineDTO;
 import com.ssafy.yourwine.model.dto.WineDetailDTO;
-import com.ssafy.yourwine.model.entity.Review;
 import com.ssafy.yourwine.service.GrapeService;
 import com.ssafy.yourwine.service.ReviewService;
 import com.ssafy.yourwine.service.ScrapService;
@@ -29,6 +29,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/wine")

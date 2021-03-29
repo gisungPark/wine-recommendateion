@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor

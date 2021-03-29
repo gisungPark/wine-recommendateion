@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.websocket.Decoder.Text;
 
 import lombok.Data;
 
@@ -30,7 +31,8 @@ public class Wine {
 	private String temper;
 	private float avg;
 	private int price;
-	private int year;
+	private String year;
+	@Column(name = "detail", columnDefinition = "text")
 	private String detail;
 	private String shop;
 	private int sweet;

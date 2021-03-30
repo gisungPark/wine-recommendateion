@@ -5,7 +5,7 @@
       v-for="(wine, index) in wines"
       :key="index + wine.ename + wine.marginTop"
       :style="{ marginTop: wine.marginTop }"
-      :class="{ 'margin-top': wineStyles[index], red: wine.type === '레드', white: wine.type === '화이트', rose: wine.type === '로제' }"
+      :class="{ 'margin-top': wineStyles[index], red: wine.type === '레드', white: wine.type === '화이트', rose: wine.type === '스파클링' }"
       @click="clickedWine(index)"
     >
       <img class="wineitem-img" :src="wine.img" alt="와인 이미지" />
@@ -32,7 +32,7 @@
         <div class="info-thumb-part">
           <div class="info-thumb-type">
             <div class="circle"></div>
-            <span>{{ wine.type }}</span>
+            <span>{{ wineType[index] }}</span>
           </div>
           <p class="info-thumb-subtitle">{{ wine.subtitle }}</p>
         </div>
@@ -71,6 +71,7 @@ export default {
       wineListType: true,
       wineStyles: [],
       wineSubtitle: [],
+      wineType: [],
       itemCountInLine: 0,
     };
   },
@@ -97,7 +98,7 @@ export default {
   watch: {
     wines: {
       deep: true,
-      handler(wines) {
+      handler() {
         const beforeSize = this.wineStyles.length;
         this.pushMarginTop(beforeSize);
       },
@@ -107,20 +108,36 @@ export default {
     setMarginTop() {
       // item 위치에 따른 margin-top 설정
       const winelistWidth = this.$refs.winelist.offsetWidth;
-      console.log(winelistWidth);
       this.itemCountInLine = Math.floor(winelistWidth / 300);
       this.wineStyles = [];
       for (let i = 0; i < this.wines.length; i++) {
+        // 엇갈려 배치하기
         let nth = (i % this.itemCountInLine) + 1;
         if (nth % 2 === 0) {
           this.wineStyles.push(false);
         } else {
           this.wineStyles.push(true);
         }
-        // wrap의 padding 동적 계산
-        const blank = winelistWidth - this.itemCountInLine * 300;
-        this.$refs.winelist.style.paddingLeft = `${blank / 2}px`;
+        // 와인 type 영문화
+        switch (this.wines[i].type) {
+          case '레드':
+            this.wineType.push('Red Wine');
+            break;
+          case '화이트':
+            this.wineType.push('White wine');
+            break;
+          case '스파클링':
+            this.wineType.push('Sparkling');
+            break;
+          default:
+            this.wineType.push('error');
+            console.log('wine type error!');
+            break;
+        }
       }
+      // wrap의 padding 동적 계산
+      const blank = winelistWidth - this.itemCountInLine * 300;
+      this.$refs.winelist.style.paddingLeft = `${blank / 2}px`;
     },
     pushMarginTop(index) {
       const winelistWidth = this.$refs.winelist.offsetWidth;
@@ -158,13 +175,9 @@ export default {
   width: 300px;
   border-radius: 150px;
   height: 500px;
-  border: 3px solid var(--basic-color-fill);
+  border: 1px solid var(--basic-color-key);
   transition: border 0.3s ease;
 }
-.wineitem:hover {
-  border: 3px solid var(--basic-color-key);
-}
-
 .margin-top {
   margin-top: -250px;
 }
@@ -202,6 +215,7 @@ export default {
   border-radius: 150px;
   background-color: rgba(0, 0, 0, 0.3);
   opacity: 0;
+  border: 4px solid var(--basic-color-key);
   transition: opacity 0.5s ease;
 }
 .wineitem:hover .wineitem-info {
@@ -249,7 +263,12 @@ export default {
 }
 /* top 영역 */
 .info-thumb-type {
-  margin-left: 100px;
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  top: 100px;
+  left: 350px;
+  width: 110px;
   font-size: 1rem;
 }
 .info-thumb-type span {
@@ -267,11 +286,19 @@ export default {
 }
 .info-thumb-subtitle {
   margin-left: 60px;
+  margin-top: 10px;
   font-size: 1.3rem;
+  padding-right: 30px;
+  word-break: break-all;
 }
 /* bottom 영역 */
 .info-thumb-ave {
-  margin-left: 100px;
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  top: 185px;
+  left: 350px;
+  width: 110px;
 }
 .star {
   fill: #f9ba01;
@@ -281,7 +308,9 @@ export default {
 .info-thumb-price {
   font-size: 1.1rem;
   margin-left: 60px;
-  margin-bottom: 5px;
+  margin-right: 32px;
+  margin-bottom: 40px;
+  align-self: flex-end;
 }
 
 .wineitem:hover .info-thumb {

@@ -11,6 +11,14 @@
             @click="clickedBtn(index)"
           >
             <span>{{ name }}</span>
+            <div class="tab-desc-container">
+              <div class="tab-desc-item m-desc">
+                <div class="pin"></div>
+                <div class="desc-btn">
+                  <span>{{ descBtnReverse[index] }}</span>
+                </div>
+              </div>
+            </div>
           </button>
         </div>
       </div>
@@ -27,8 +35,9 @@ export default {
       type: Object,
       default: function () {
         return {
-          title: "Error",
-          names: ["Error"],
+          title: 'Error',
+          names: ['Error'],
+          descBtn: ['btn1설명', 'btn2설명', 'btn3설명', 'btn4설명'],
         };
       },
     },
@@ -37,11 +46,14 @@ export default {
     return {
       show: false,
       activeState: 0,
+      descBtnReverse: [],
     };
   },
-
   mounted() {
     this.show = true;
+    for (let i = this.sidebar.descBtn.length - 1; i >= 0; i--) {
+      this.descBtnReverse.push(this.sidebar.descBtn[i]);
+    }
   },
   beforeDestroy() {
     this.show = false;
@@ -75,10 +87,12 @@ export default {
   transform: translate(0, 0);
 }
 .sidebar-container {
-  position: relative;
+  position: fixed;
+  left: 56px;
+  bottom: -30px;
   width: 95vh;
   height: 58px;
-  transform: rotate(-90deg) translate(-102%, 100%);
+  transform: rotate(-90deg);
   transform-origin: top left;
 }
 .nav-title {
@@ -87,6 +101,7 @@ export default {
 }
 .nav-btn {
   padding-top: 1rem;
+  white-space: nowrap;
 }
 .nav-btn button {
   width: 120px;
@@ -118,5 +133,52 @@ export default {
   height: 100vh;
   border-right: 1px solid var(--basic-color-key);
   background-color: var(--basic-color-fill2);
+}
+
+/* 탭 hover시 나타나는 탭 정보, 도움말 */
+.tab-desc-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  transform-origin: top left;
+  transform: rotate(90deg);
+  width: 500px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.nav-btn button:hover div {
+  opacity: 1;
+}
+.tab-desc-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 3rem;
+  margin-top: -82px;
+  line-height: 1rem;
+  font-size: 1rem;
+}
+.tab-desc-item .pin {
+  display: inline-block;
+  width: 1px;
+  height: 2px;
+  background-color: var(--basic-color-key);
+  transition: width 0.3s ease;
+}
+.nav-btn button:hover .pin {
+  width: 50px;
+}
+.tab-desc-item .desc-btn {
+  display: inline-block;
+  color: var(--basic-color-bg);
+  height: 3rem;
+  border-radius: 3rem;
+  border: 2px solid var(--basic-color-key);
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, 0.6);
+}
+.tab-desc-item .desc-btn span {
+  line-height: 2.8rem;
+  margin: 0 1rem;
 }
 </style>

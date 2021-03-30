@@ -7,14 +7,9 @@
 <script>
 export default {
   name: 'WineDetails',
-  props: {
-    wineId: {
-      typs: String,
-      default: function() {
-        return 0;
-      },
-    },
-  },
+  props: [
+    'wineId'
+  ],
   data() {
     return {
       type: '레드',

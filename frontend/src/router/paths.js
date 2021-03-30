@@ -19,4 +19,10 @@ export default [
     view: 'Wines',
     name: 'Wines',
   },
+  {
+  path:'/detail/:wineId',
+    view:'WineDetails',
+    name:'WineDetials',
+    props:true,
+  }
 ];

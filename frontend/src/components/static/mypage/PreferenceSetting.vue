@@ -1,21 +1,57 @@
 <template>
   <div class="preference-fram">
     <div id="stage-line">
-      <div id="preference-stages-line1" :class="{ 'active-stage': isCurStage(2) }"></div>
-      <div id="preference-stages-line2" :class="{ 'active-stage': isCurStage(3) }"></div>
+      <div
+        id="preference-stages-line1"
+        :class="{ 'active-stage': isCurStage(2) }"
+      ></div>
+      <div
+        id="preference-stages-line2"
+        :class="{ 'active-stage': isCurStage(3) }"
+      ></div>
     </div>
     <div class="preference-stages">
       <div class="preference-stages-wrap">
-        <div class="stage" :class="{ 'active-stage': isCurStage(1) }" @click="onClickStage(1)"></div>
-        <a class="stage-name" :class="{ 'active-stage-name': isCurStage(1) }" href="#" @click="onClickStage(1)">좋아하는 향</a>
+        <div
+          class="stage"
+          :class="{ 'active-stage': isCurStage(1) }"
+          @click="onClickStage(1)"
+        ></div>
+        <a
+          class="stage-name"
+          :class="{ 'active-stage-name': isCurStage(1) }"
+          href="#"
+          @click="onClickStage(1)"
+          >좋아하는 향</a
+        >
       </div>
       <div class="preference-stages-wrap">
-        <div class="stage" :class="{ 'active-stage': isCurStage(2) }" @click="onClickStage(2)"></div>
-        <a class="stage-name" :class="{ 'active-stage-name': isCurStage(2) }" @click="onClickStage(2)" href="#">싫어하는 향</a>
+        <div
+          class="stage"
+          :class="{ 'active-stage': isCurStage(2) }"
+          @click="onClickStage(2)"
+        ></div>
+        <a
+          class="stage-name"
+          :class="{ 'active-stage-name': isCurStage(2) }"
+          @click="onClickStage(2)"
+          href="#"
+          >싫어하는 향</a
+        >
       </div>
       <div class="preference-stages-wrap">
-        <div class="stage" :class="{ 'active-stage': isCurStage(3) }" @click="onClickStage(3)"></div>
-        <a class="stage-name" :class="{ 'active-stage-name': isCurStage(3) }" @click="onClickStage(3)" href="#">와인 취향</a>
+        <div
+          class="stage"
+          :class="{ 'active-stage': isCurStage(3) }"
+          @click="onClickStage(3)"
+        ></div>
+        <a
+          class="stage-name"
+          :class="{ 'active-stage-name': isCurStage(3) }"
+          @click="onClickStage(3)"
+          href="#"
+          >와인 취향</a
+        >
       </div>
     </div>
     <div class="preference-fillter">
@@ -30,12 +66,12 @@
             }"
             v-for="(item, index) in list1"
             :key="item.name + index"
-            @click="onCardActive(item)"
+            @onClickCart="onCardActive(item)"
             :item="item"
           />
         </div>
         <div class="lists list-2">
-          <div
+          <Card
             class="list-item-cards"
             :class="{
               'list-item-cards-active': currentCardState(item),
@@ -43,12 +79,12 @@
             }"
             v-for="(item, idx) in list2"
             :key="item + idx"
-            @click="onCardActive(item)"
-            :style="{ backgroundImage: `url(${item.img})` }"
-          ></div>
+            @onClickCart="onCardActive(item)"
+            :item="item"
+          />
         </div>
         <div class="lists list-3">
-          <div
+          <Card
             class="list-item-cards"
             :class="{
               'list-item-cards-active': currentCardState(item),
@@ -56,12 +92,12 @@
             }"
             v-for="(item, idx) in list3"
             :key="item + idx"
-            @click="onCardActive(item)"
-            :style="{ backgroundImage: `url(${item.img})` }"
-          ></div>
+            @onClickCart="onCardActive(item)"
+            :item="item"
+          />
         </div>
         <div class="lists list-4">
-          <div
+          <Card
             class="list-item-cards"
             :class="{
               'list-item-cards-active': currentCardState(item),
@@ -69,12 +105,12 @@
             }"
             v-for="(item, idx) in list4"
             :key="item + idx"
-            @click="onCardActive(item)"
-            :style="{ backgroundImage: `url(${item.img})` }"
-          ></div>
+            @onClickCart="onCardActive(item)"
+            :item="item"
+          />
         </div>
         <div class="lists list-5">
-          <div
+          <Card
             class="list-item-cards"
             :class="{
               'list-item-cards-active': currentCardState(item),
@@ -82,9 +118,9 @@
             }"
             v-for="(item, idx) in list5"
             :key="item + idx"
-            @click="onCardActive(item)"
-            :style="{ backgroundImage: `url(${item.img})` }"
-          ></div>
+            @onClickCart="onCardActive(item)"
+            :item="item"
+          />
         </div>
 
         <!-- ############################################ -->
@@ -96,19 +132,31 @@
             <span v-show="curStage == 2">Dislike list</span>
           </div>
           <div v-show="curStage == 1" class="selected-list-like">
-            <div class="selected-list-item" v-for="(item, idx) in likeList" :key="item + idx">
+            <div
+              class="selected-list-item"
+              v-for="(item, idx) in likeList"
+              :key="item + idx"
+            >
               <h1>{{ item.name }}</h1>
               <div id="cancleBtn" @click="removeItemFromList(1, item)"></div>
             </div>
           </div>
-          <span v-show="curStage == 1" class="count-display">{{ this.lickCnt }} / 3</span>
+          <span v-show="curStage == 1" class="count-display"
+            >{{ this.lickCnt }} / 3</span
+          >
           <div v-show="curStage == 2" class="selected-list-hate">
-            <div class="selected-list-item" v-for="(item, idx) in hateList" :key="item + idx">
+            <div
+              class="selected-list-item"
+              v-for="(item, idx) in hateList"
+              :key="item + idx"
+            >
               <h1>{{ item.name }}</h1>
               <div id="cancleBtn" @click="removeItemFromList(2, item)"></div>
             </div>
           </div>
-          <span v-show="curStage == 2" class="count-display">{{ this.hateCnt }} / 3</span>
+          <span v-show="curStage == 2" class="count-display"
+            >{{ this.hateCnt }} / 3</span
+          >
         </div>
 
         <!-- ############################################ -->
@@ -233,14 +281,14 @@
 </template>
 
 <script>
-import Card from '@/components/item/Card.vue';
+import Card from "@/components/item/Card.vue";
 
 const FIRST_STAGE = 1,
   SECOND_STAGE = 2,
   THIRD_STAGE = 3;
 
 export default {
-  props: ['preferenceList'],
+  props: ["preferenceList"],
   components: {
     Card,
   },
@@ -322,10 +370,10 @@ export default {
      * 배열에서 해당 객체 삭제 함수!!
      */
     removeItemFromList(stage, targe) {
-      let itemToFine = '';
+      let itemToFine = "";
       let removeIdx = -1;
       if (stage == FIRST_STAGE) {
-        itemToFine = this.likeList.find(function(item) {
+        itemToFine = this.likeList.find(function (item) {
           return item.flavor_id === targe.flavor_id;
         });
         removeIdx = this.likeList.indexOf(itemToFine);
@@ -335,7 +383,7 @@ export default {
           this.lickCnt--;
         }
       } else if (stage == SECOND_STAGE) {
-        itemToFine = this.hateList.find(function(item) {
+        itemToFine = this.hateList.find(function (item) {
           return item.flavor_id === targe.flavor_id;
         });
         removeIdx = this.hateList.indexOf(itemToFine);
@@ -355,7 +403,7 @@ export default {
         // 1. 좋아한다고 선택하는 경우
         if (!item.isLike) {
           if (!this.isSelectPossible(FIRST_STAGE)) {
-            alert('선택 가능한 갯수를 초과했습니다.');
+            alert("선택 가능한 갯수를 초과했습니다.");
             return;
           } else {
             this.likeList.push(item);
@@ -374,7 +422,7 @@ export default {
         if (item.isLike) return;
         if (!item.isHate) {
           if (!this.isSelectPossible(SECOND_STAGE)) {
-            alert('선택 가능한 갯수를 초과했습니다.' + this.hateCnt);
+            alert("선택 가능한 갯수를 초과했습니다." + this.hateCnt);
             return;
           } else {
             this.hateList.push(item);
@@ -385,7 +433,7 @@ export default {
           // 3. 좋아한다고 했다가 취소하는 경우
           this.removeItemFromList(SECOND_STAGE, item);
         }
-        console.log('싫어하는 리스트!!!   ' + this.hateCnt);
+        console.log("싫어하는 리스트!!!   " + this.hateCnt);
         for (var i = 0; i < this.hateList.length; i++) {
           console.log(this.hateList[i]);
         }
@@ -407,7 +455,6 @@ export default {
   width: 80%;
   position: fixed;
   top: 133px;
-  left: 230px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -426,7 +473,6 @@ export default {
   width: 80%;
   position: fixed;
   top: 100px;
-  left: 230px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -436,8 +482,8 @@ export default {
 .preference-stages-wrap {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   flex: 1 1 0;
   /* 상단 스테이지값 고정시 삭제 요망!!! */
   /* position: relative;
@@ -477,21 +523,23 @@ export default {
 .preference-fillter {
   height: 100%;
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 .preference-item1 {
-  position: relative;
-  left: -60px;
   margin-top: 130px;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  position: relative;
 }
 
 .preference-item3 {
-  position: relative;
-  left: -15px;
+  width: 100%;
+  height: 100%;
   margin-top: 130px;
-  height: 90%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -505,7 +553,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: 50px;
 }
 .preference-item3-item > span {
   position: relative;
@@ -516,9 +564,7 @@ export default {
   font-weight: bold;
 }
 #item3-item-slider {
-  width: 700px;
-  margin-left: 45px;
-  margin-right: 40px;
+  width: 900px;
   display: flex;
   flex-direction: column;
 }
@@ -530,16 +576,16 @@ export default {
 }
 
 #slider-left {
-  font-size: 18px;
+  font-size: 20px;
   position: absolute;
-  right: 715px;
+  right: 905px;
   top: 5px;
 }
 
 #slider-right {
-  font-size: 18px;
+  font-size: 20px;
   position: absolute;
-  left: 710px;
+  left: 905px;
   top: 5px;
 }
 .slider-value {
@@ -555,8 +601,7 @@ export default {
 }
 .lists {
   height: auto;
-  width: 200px;
-  margin: 4px;
+  width: 240px;
   display: flex;
   flex-direction: column;
   transform: scale(1.1);

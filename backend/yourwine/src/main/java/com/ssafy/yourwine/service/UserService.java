@@ -14,6 +14,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -206,8 +207,8 @@ public class UserService {
     public List<ReviewDTO> getReview(String token){
         String userId = jwtTokenProvider.getUserId(token);
         User user = userRepository.findByUserId(userId);
-        List<ReviewDTO> reviewDTOList = reviewRepository.findByUser(user).stream().map(ReviewDTO::new).collect(Collectors.toList());
-
+        List<ReviewDTO> reviewDTOList = reviewRepository.findByUser(user).stream().map(ReviewDTO::new).sorted(Comparator.comparing(ReviewDTO::getTime).reversed()).collect(Collectors.toList());
+       //리뷰 최신순으로 정렬시킴. 코드추가
         return reviewDTOList;
     }
 }

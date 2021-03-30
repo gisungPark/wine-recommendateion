@@ -38,7 +38,7 @@ export default {
     wines0: [
       {
         type: '레드',
-        ename: 'wine name',
+        ename: 'wine name wine wine wine winewine name wine wine wine wine',
         kname: '와인 명',
         avg: '5.0',
         year: '2021',
@@ -47,7 +47,7 @@ export default {
       },
       {
         type: '화이트',
-        ename: 'wine name',
+        ename: 'wine name, wine wine wine wine',
         kname: '와인 명',
         avg: '5.0',
         year: '2021',
@@ -56,7 +56,7 @@ export default {
       },
       {
         type: '로제',
-        ename: 'wine name',
+        ename: 'wine name, wine wine wine wine',
         kname: '와인 명',
         avg: '5.0',
         year: '2021',
@@ -65,7 +65,7 @@ export default {
       },
       {
         type: '레드',
-        ename: 'wine name',
+        ename: 'wine name, wine wine wine wine',
         kname: '와인 명',
         avg: '5.0',
         year: '2021',
@@ -74,7 +74,7 @@ export default {
       },
       {
         type: '레드',
-        ename: 'wine name',
+        ename: 'wine name, wine wine wine wine',
         kname: '와인 명',
         avg: '5.0',
         year: '2021',
@@ -83,7 +83,7 @@ export default {
       },
       {
         type: '레드',
-        ename: 'wine name',
+        ename: 'wine name, wine wine wine wine',
         kname: '와인 명',
         avg: '5.0',
         year: '2021',

@@ -32,7 +32,7 @@
         <div class="info-thumb-part">
           <div class="info-thumb-type">
             <div class="circle"></div>
-            <span>{{ wine.type }}</span>
+            <span>{{ wineType[index] }}</span>
           </div>
           <p class="info-thumb-subtitle">{{ wine.subtitle }}</p>
         </div>
@@ -71,6 +71,7 @@ export default {
       wineListType: true,
       wineStyles: [],
       wineSubtitle: [],
+      wineType: [],
       itemCountInLine: 0,
     };
   },
@@ -97,7 +98,7 @@ export default {
   watch: {
     wines: {
       deep: true,
-      handler(wines) {
+      handler() {
         const beforeSize = this.wineStyles.length;
         this.pushMarginTop(beforeSize);
       },
@@ -111,16 +112,32 @@ export default {
       this.itemCountInLine = Math.floor(winelistWidth / 300);
       this.wineStyles = [];
       for (let i = 0; i < this.wines.length; i++) {
+        // 엇갈려 배치하기
         let nth = (i % this.itemCountInLine) + 1;
         if (nth % 2 === 0) {
           this.wineStyles.push(false);
         } else {
           this.wineStyles.push(true);
         }
-        // wrap의 padding 동적 계산
-        const blank = winelistWidth - this.itemCountInLine * 300;
-        this.$refs.winelist.style.paddingLeft = `${blank / 2}px`;
+        // 와인 type 영문화
+        switch (this.wines[i].type) {
+          case '레드':
+            this.wineType.push('Red Wine');
+            break;
+          case '화이트':
+            this.wineType.push('White wine');
+            break;
+          case '스파클링':
+            this.wineType.push('Sparkling');
+            break;
+          default:
+            console.log('wine type error!');
+            break;
+        }
       }
+      // wrap의 padding 동적 계산
+      const blank = winelistWidth - this.itemCountInLine * 300;
+      this.$refs.winelist.style.paddingLeft = `${blank / 2}px`;
     },
     pushMarginTop(index) {
       const winelistWidth = this.$refs.winelist.offsetWidth;
@@ -249,7 +266,12 @@ export default {
 }
 /* top 영역 */
 .info-thumb-type {
-  margin-left: 100px;
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  top: 100px;
+  left: 350px;
+  width: 110px;
   font-size: 1rem;
 }
 .info-thumb-type span {
@@ -267,11 +289,19 @@ export default {
 }
 .info-thumb-subtitle {
   margin-left: 60px;
+  margin-top: 10px;
   font-size: 1.3rem;
+  padding-right: 30px;
+  word-break: break-all;
 }
 /* bottom 영역 */
 .info-thumb-ave {
-  margin-left: 100px;
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  top: 185px;
+  left: 350px;
+  width: 110px;
 }
 .star {
   fill: #f9ba01;
@@ -281,7 +311,9 @@ export default {
 .info-thumb-price {
   font-size: 1.1rem;
   margin-left: 60px;
-  margin-bottom: 5px;
+  margin-right: 32px;
+  margin-bottom: 40px;
+  align-self: flex-end;
 }
 
 .wineitem:hover .info-thumb {

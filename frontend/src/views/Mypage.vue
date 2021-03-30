@@ -98,6 +98,7 @@ export default {
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
         reviewScore: 4,
         date: "2021.03.22",
+        priceScore: 1,
       },
       {
         img: "https://img.maisonkorea.com/2020/04/msk_5e8d7129f1d53.jpg",
@@ -113,6 +114,7 @@ export default {
         elementum integer enim neque volutpat ac.`,
         reviewScore: 4,
         date: "2021.02.18",
+        priceScore: 3,
       },
       {
         img:
@@ -129,6 +131,7 @@ export default {
         elementum integer enim neque volutpat ac.`,
         reviewScore: 4,
         date: "2021.01.29",
+        priceScore: 3,
       },
       {
         img:
@@ -144,6 +147,7 @@ export default {
         In hac habitasse platea dictumst quisque sagittis purus. Pulvinar 
         elementum integer enim neque volutpat ac.`,
         date: "2020.12.08",
+        priceScore: 2,
       },
     ],
     preferenceList: [
@@ -316,12 +320,12 @@ export default {
     ...mapState("nav", ["navActive"]),
   },
   methods: {
-    isBtnClick(pageNum) {
-      if (pageNum == this.screenState) return true;
+    isBtnClick(index) {
+      if (index == this.screenState) return true;
       else return false;
     },
-    onPreferenceSetting(pageNum) {
-      this.screenState = pageNum;
+    onPreferenceSetting(index) {
+      this.screenState = index;
     },
   },
 };
@@ -329,7 +333,7 @@ export default {
 
 <style scoped>
 .frame {
-  width: 100vw;
+  width: 100%;
   background-color: var(--basic-color-bg);
   display: flex;
   z-index: 0;
@@ -344,14 +348,15 @@ export default {
   flex: 14 1 0;
 } */
 .item:nth-child(1) {
-  width: 173px;
+  width: 172px;
+  height: 100%;
+  border-right: 1px solid var(--basic-color-key);
+  background-color: var(--basic-color-fill2);
   display: flex;
   flex-direction: column;
-  background-color: #242323;
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
 }
 .item:nth-child(2) {
   flex-grow: 1;
@@ -367,13 +372,12 @@ export default {
 }
 
 .nav-title {
-  font-size: 40px;
+  font-size: 3rem;
   font-weight: bold;
-  color: #9b9191;
-  margin: 5px;
+  color: var(--basic-color-fill);
   position: absolute;
-  bottom: 75px;
-  left: 10px;
+  bottom: 98px;
+  right: 2px;
   transform: rotate(-90deg);
 }
 .nav-btn {
@@ -381,19 +385,25 @@ export default {
   flex-flow: row nowrap;
 }
 .nav-btn > button {
-  border: 1px solid black;
-  background: black;
-  border-radius: 20px;
-  font-weight: bold;
-  color: #a3a1a1;
   width: 120px;
-  height: 25px;
-  left: 80px;
+  height: 2rem;
+  line-height: 2rem;
+  margin-right: 1rem;
+
+  border-radius: 1rem;
+  font-weight: bold;
+  border: 1px solid var(--basic-color-bg);
+  background: var(--basic-color-bg);
+  color: #a3a1a1;
+  left: 85px;
   transform: rotate(-90deg);
   /* width: 150px; */
 }
-.nav-btn > button:hover {
-  transform: rotate(-90deg) scale(1.2) !important;
+
+.nav-btn > button:hover,
+.nav-btn > button:active {
+  background-color: #e1a95744;
+  border: 1px solid var(--basic-color-key);
 }
 
 .nav-btn-item1 {
@@ -408,7 +418,6 @@ export default {
   position: absolute;
   bottom: 330px;
 }
-
 .nav-btn-item4 {
   position: absolute;
   bottom: 460px;

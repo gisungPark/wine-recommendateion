@@ -3,7 +3,6 @@
     <Nav id="navigation" />
     <GuideBtn id="guide-btn" />
     <LoginModal />
-    <JoinModal />
     <transition name="opacity">
       <router-view id="router-view" />
     </transition>
@@ -25,7 +24,7 @@ export default {
   },
   date() {
     return {
-      transitionName: 'slide',
+      transitionName: "slide",
     };
   },
   created() {},

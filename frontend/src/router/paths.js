@@ -14,4 +14,9 @@ export default [
     view: 'Recommendation',
     name: 'Recommendation',
   },
+  {
+    path: '/wines',
+    view: 'Wines',
+    name: 'Wines',
+  },
 ];

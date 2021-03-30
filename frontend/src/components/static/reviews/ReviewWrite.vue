@@ -20,7 +20,7 @@
           <v-card-title>
             <v-row>
               <v-col>
-                <span class="modal-name">Rate This Wine</span>
+                <span class="modal-name">Review</span>
               </v-col>
             </v-row>
           </v-card-title>
@@ -96,14 +96,11 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import ReviewItem from "@/components/static/reviews/ReviewItem.vue";
 
 export default {
   name: "ReviewWrite",
   props: [],
-  components: {
-    ReviewItem,
-  },
+  components: {},
   computed: {
     ...mapState("reviewDialog", ["reviewWriteDialog"]),
   },

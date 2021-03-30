@@ -24,7 +24,7 @@ export default {
   },
   date() {
     return {
-      transitionName: 'slide',
+      transitionName: "slide",
     };
   },
   created() {},

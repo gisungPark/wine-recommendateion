@@ -52,4 +52,7 @@ public class Wine {
 	
 	@OneToMany(mappedBy = "wine", cascade = CascadeType.ALL)
 	private List<WineFoodMatch> wineFoodMatch = new ArrayList<WineFoodMatch>();
+	
+	@OneToMany(mappedBy = "wine", cascade = CascadeType.ALL)
+	private List<WineFlavor> wineFlavor = new ArrayList<WineFlavor>();
 }

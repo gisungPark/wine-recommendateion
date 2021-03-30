@@ -41,16 +41,31 @@ public class WineService {
 	public WineDetailDTO getWine(Long wineId, String token) {
 		Wine wine = wineRepository.findById(wineId).orElseThrow(() -> new IllegalArgumentException("no wine data"));
 		WineDTO wineDto = modelMapper.map(wine, WineDTO.class);
-		List<ReviewDTO> reviewDtoList = reviewRepository.findByWine(wine).stream().map(ReviewDTO::new).limit(3)
+		List<ReviewDTO> reviewDtoList = reviewRepository.findByWine(wine).stream().map(ReviewDTO::new)
 				.collect(Collectors.toList());
 		List<FoodDTO> foodDtoList = wineFoodMatchRepository.findByWine(wine).stream().map(FoodDTO::new)
 				.collect(Collectors.toList());
-
+		List<WineDTO> moreWineDtoList = wineRepository.findByGrape(wine.getGrape()).stream()
+				.filter(s -> s.getWineId() != wineId).map(WineDTO::new).sorted(Comparator.comparing(WineDTO::getAvg).reversed())
+				.limit(6).collect(Collectors.toList());
+		
+		int[] costArray = new int[3];
+		for (ReviewDTO reviewDto : reviewDtoList) {
+			if (reviewDto.getCost() == 1) //가성비 별로
+				costArray[0]++;
+			if (reviewDto.getCost() == 2) //가성비 소소
+				costArray[1]++;
+			if (reviewDto.getCost() == 3) //가성비 굿
+				costArray[2]++;
+		}
+		reviewDtoList = reviewDtoList.stream().sorted(Comparator.comparing(ReviewDTO::getTime).reversed()).limit(3).collect(Collectors.toList());
 		WineDetailDTO wineDetailDto = new WineDetailDTO();
 		wineDetailDto.setWineDto(wineDto);// 와인정보
 		wineDetailDto.setReviewList(reviewDtoList); // 리뷰리스트 3개
 		wineDetailDto.setFoodList(foodDtoList); // 음식리스트
-
+		wineDetailDto.setCostArray(costArray); // 가성비 인원수 cnt
+		wineDetailDto.setMoreWineList(moreWineDtoList);// morewine
+		
 		if (!token.equals("guest")) { // 로그인 안 했을 경우
 			String userId = jwtTokenProvider.getUserId(token);
 			User user = userRepository.findByUserId(userId);
@@ -70,7 +85,7 @@ public class WineService {
 
 	// 와인 검색 리스트
 	public List<WineDTO> getWineList(String typeFilter, String grapeFilter, int pointFilter, int startPrice,
-			int endPrice, int sort, String keyword) {
+			int endPrice, int sort, String keyword, int page) {
 		List<Wine> wineList = wineRepository.findAll();
 		List<WineDTO> wineDtoList = modelMapper.map(wineList, new TypeToken<List<WineDTO>>() {
 		}.getType());
@@ -119,7 +134,21 @@ public class WineService {
 			break;
 		}
 		}
-		return wineDtoList;
+		
+		//페이징
+		List<WineDTO> returnList = new ArrayList<WineDTO>();
+		int item = 8;
+		int size = wineDtoList.size();
+		int startIdx = (page - 1 ) * item;
+		int endIdx = startIdx + item - 1;
+		endIdx = (endIdx < wineDtoList.size())? endIdx : size-1;
+		if(startIdx < size) {
+			for (int i = startIdx; i <= endIdx; i++) {
+				returnList.add(wineDtoList.get(i));
+			}	
+		}
+			return returnList;
+		
 	}
 
 	// 와인삭제

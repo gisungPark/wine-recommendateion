@@ -30,5 +30,6 @@ public class Flavor {
     private Long flavorId;
     private String name;
   
-
+    @OneToMany(mappedBy = "flavor", cascade = CascadeType.ALL)
+	private List<WineFlavor> wineFlavor = new ArrayList<WineFlavor>();
 }

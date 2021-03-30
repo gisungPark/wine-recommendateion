@@ -305,7 +305,7 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
-  right: 3px;
+  right: 5px;
 }
 .star {
   fill: #f9ba01;
@@ -324,6 +324,7 @@ export default {
   font-size: 13px;
   color: #626262;
   font-weight: 900;
+  margin-top: 2px;
 }
 
 .cost-rating-icon {
@@ -344,8 +345,8 @@ export default {
   background-color: #eb3763;
 }
 .cost-rating-icon > img {
-  width: 100%;
   height: 100%;
+  width: 100%;
   object-fit: cover;
 }
 

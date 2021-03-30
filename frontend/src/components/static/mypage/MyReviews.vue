@@ -25,7 +25,7 @@
         </div>
         <!-- ######################################################## -->
         <!-- 가성비 아이콘, 별점 아이콘  -->
-        <div style="display: flex; margin-bottom: 1px">
+        <div style="display: flex; margin-bottom: 5px">
           <div class="star-rating">
             <svg
               class="star"
@@ -193,15 +193,16 @@ export default {
   justify-content: center;
   align-items: center;
   position: relative;
-  right: 3px;
+  right: 8px;
 }
 .star {
   fill: #f9ba01;
-  width: 38px;
-  height: 38px;
+  width: 33px;
+  height: 33px;
 }
 /* ########################## */
 /* 가성비!! */
+
 .cost-rating {
   display: flex;
   flex-direction: column;
@@ -212,11 +213,12 @@ export default {
   font-size: 13px;
   color: #626262;
   font-weight: 900;
+  margin-top: 2px;
 }
 
 .cost-rating-icon {
-  height: 38px;
-  width: 38px;
+  height: 33px;
+  width: 33px;
   border-radius: 70%;
   overflow: hidden;
   /* background-color: #faad50; */
@@ -234,7 +236,9 @@ export default {
 .cost-rating-icon > img {
   width: 100%;
   height: 100%;
+  margin-top: 0.3px;
   object-fit: cover;
+  transform: scale(1.5) !important;
 }
 /* 가성비 end */
 /* ########################## */

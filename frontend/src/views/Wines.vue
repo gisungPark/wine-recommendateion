@@ -21,28 +21,28 @@
               :class="{ active: contentState === 3 }"
               @click="clickedBtn(3)"
             >
-              <span>Red Wine</span>
+              <span>Wine Kind</span>
             </button>
             <button
               :class="{ active: contentState === 4 }"
               @click="clickedBtn(4)"
             >
-              <span>White Wine</span>
+              <span>Grape</span>
             </button>
           </div>
         </div>
       </div>
     </transition>
-    <section class="content">
+    <div class="content">
       <div class="search">
         <input
           id="searchInput"
           type="text"
           placeholder="search your wine"
           v-model="keyword"
-          @keyup.enter="this.onSearch"
+          @keyup.enter="onSearch"
         />
-        <div class="search-icon-wrap" @click="this.onSearch">
+        <div class="search-icon-wrap" @click="onSearch">
           <svg
             id="search-icon"
             xmlns="http://www.w3.org/2000/svg"
@@ -56,6 +56,15 @@
           </svg>
         </div>
       </div>
+      <div id="select-box">
+        <select v-model="selected" class="style-chooser">
+          <option disabled value="">Sort</option>
+          <option>낮은 가격순</option>
+          <option>높은 가격순</option>
+          <option>낮은 별점순</option>
+          <option>높은 별점순</option>
+        </select>
+      </div>
 
       <transition-group name="slideup" mode="out-in">
         <!-- <Winelist class="winelist" key="0" :wines="wines0" v-if="contentState === 0" />
@@ -63,13 +72,61 @@
         <Winelist class="winelist" key="2" :wines="wines1" v-if="contentState === 2" />
         <Winelist class="winelist" key="3" :wines="wines2" v-if="contentState === 3" /> -->
       </transition-group>
+      <div
+        v-for="(item, index) in 5"
+        :key="index"
+        style="
+          width: 90%;
+          height: 150px;
+          background-color: #707070;
+          margin: 5px;
+        "
+      ></div>
+
+      <!-- ################################ -->
+      <!-- 필터링 모달 ###################### -->
+
+      <!-- 1. 가격 필터링!!!  -->
       <div v-show="this.priceFillter" id="priceModal">
-        <v-range-slider hint="Im a hint" max="50" min="0"></v-range-slider>
+        <div id="scoreModal-info">
+          <span id="scoreModal-info-item1">Price?</span>
+          <span id="scoreModal-info-item2">
+            {{ this.priceRange[0] }} ~ {{ this.priceRange[1] }}
+          </span>
+        </div>
+        <div id="price-slider">
+          <v-range-slider
+            v-model="priceRange"
+            max="50000"
+            min="0"
+            step="10000"
+            color="#821a33"
+            track-fill-color="#821a33"
+          ></v-range-slider>
+        </div>
+        <div id="price-slider-label">
+          <span id="label-left">0</span>
+          <span id="label-right">50000</span>
+        </div>
       </div>
+
+      <!-- 2. 별점 필터링!!!  -->
       <div v-show="this.scoreFillter" id="scoreModal">
-        <v-range-slider hint="Im a hint" max="50" min="0"></v-range-slider>
+        <div id="scoreModal-info">
+          <span id="scoreModal-info-item1">Point?</span>
+          <span id="scoreModal-info-item2">{{ this.rating }} 점대</span>
+        </div>
+        <v-rating
+          v-model="rating"
+          color="#F9DC14"
+          background-color="grey darken-1"
+          size="50"
+          hover
+        ></v-rating>
       </div>
-    </section>
+      <!-- end 필터링 모달 ###################### -->
+      <!-- ################################ -->
+    </div>
   </div>
 </template>
 
@@ -88,6 +145,9 @@ export default {
     keyword: "",
     priceFillter: false,
     scoreFillter: false,
+    priceRange: [0, 50000],
+    rating: 5,
+    selected: "",
   }),
   computed: {
     ...mapState("userInfo", ["userInfo"]),
@@ -128,22 +188,21 @@ export default {
 }
 
 #wines {
-  width: 100vw;
+  width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: row;
 }
 .content {
+  width: 100%;
+  padding-left: 172px;
+  padding-top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  height: 100%;
-  padding-left: 172px;
-  padding-top: 100px;
 }
 .search {
   width: 75%;
-  height: 5rem;
   display: flex;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.488);
@@ -230,29 +289,103 @@ export default {
   left: 1px;
 }
 
+#select-box {
+  position: relative;
+  left: 32%;
+  top: 5px;
+  margin-bottom: 30px;
+}
+
+select {
+  width: 180px; /* 원하는 너비설정 */
+  height: 45px;
+  font-size: 18px;
+  /* padding: 0.8em 0.5em; 여백으로 높이 설정 */
+  padding-left: 5px;
+  background: url(../assets/images/arrow.png) no-repeat 95% 50%; /* 네이티브 화살표 대체 */
+  color: white;
+  background-color: var(--basic-color-bg);
+  border: 1px solid var(--basic-color-bg);
+  border-radius: 3px; /* iOS 둥근모서리 제거 */
+  -webkit-appearance: none; /* 네이티브 외형 감추기 */
+  -moz-appearance: none;
+  appearance: none;
+}
+
 /* #################################################### */
 /* 각종 필터 */
 #priceModal {
   width: 350px;
   height: 180px;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   position: fixed;
   left: 160px;
   bottom: 75px;
-  background-color: rgb(231, 93, 93);
+  background-color: #f4f4f4;
+  border-radius: 2em;
   opacity: 0.7;
+}
+#price-slider {
+  width: 85%;
+  display: flex;
+  flex-direction: row;
+}
+#price-slider-label {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+#label-left {
+  position: relative;
+  top: -20px;
+  font-size: 15px;
+  margin-left: 30px;
+  color: var(--basic-color-fill);
+}
+#label-right {
+  position: relative;
+  top: -20px;
+  font-size: 15x;
+  margin-right: 10px;
+  color: var(--basic-color-fill);
 }
 
 #scoreModal {
   width: 350px;
   height: 180px;
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   position: fixed;
   left: 160px;
   bottom: 210px;
-  background-color: rgb(97, 147, 223);
+  background-color: #f4f4f4;
+  border-radius: 2em;
   opacity: 0.7;
+}
+#scoreModal-info {
+  width: 100%;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+#scoreModal-info-item1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-left: 25px;
+  color: var(--basic-color-bg2);
+}
+#scoreModal-info-item2 {
+  font-size: 23px;
+  margin-right: 10px;
+  color: var(--basic-color-fill);
 }
 </style>

@@ -333,7 +333,7 @@ export default {
 
 <style scoped>
 .frame {
-  width: 100vw;
+  width: 100%;
   background-color: var(--basic-color-bg);
   display: flex;
   z-index: 0;
@@ -349,7 +349,7 @@ export default {
 } */
 .item:nth-child(1) {
   width: 172px;
-  height: 100vh;
+  height: 100%;
   border-right: 1px solid var(--basic-color-key);
   background-color: var(--basic-color-fill2);
   display: flex;

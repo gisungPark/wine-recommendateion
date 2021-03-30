@@ -5,28 +5,16 @@
         <div class="sidebar-container">
           <span class="nav-title b-desc">Wines</span>
           <div class="nav-btn b-desc">
-            <button
-              :class="{ active: contentState === 1 }"
-              @click="[clickedBtn(1), onPriceFillter()]"
-            >
+            <button @click="clickedBtn(1)">
               <span>price</span>
             </button>
-            <button
-              :class="{ active: contentState === 2 }"
-              @click="[clickedBtn(2), onScoreFillter()]"
-            >
+            <button @click="clickedBtn(2)">
               <span>Point</span>
             </button>
-            <button
-              :class="{ active: contentState === 3 }"
-              @click="clickedBtn(3)"
-            >
+            <button @click="clickedBtn(3)">
               <span>Wine Kind</span>
             </button>
-            <button
-              :class="{ active: contentState === 4 }"
-              @click="clickedBtn(4)"
-            >
+            <button @click="clickedBtn(4)">
               <span>Grape</span>
             </button>
           </div>
@@ -87,7 +75,11 @@
       <!-- 필터링 모달 ###################### -->
 
       <!-- 1. 가격 필터링!!!  -->
-      <div v-show="this.priceFillter" id="priceModal">
+      <div
+        v-show="this.contentState === 1"
+        id="priceModal"
+        class="fillter-modal"
+      >
         <div id="scoreModal-info">
           <span id="scoreModal-info-item1">Price?</span>
           <span id="scoreModal-info-item2">
@@ -111,7 +103,11 @@
       </div>
 
       <!-- 2. 별점 필터링!!!  -->
-      <div v-show="this.scoreFillter" id="scoreModal">
+      <div
+        v-show="this.contentState === 2"
+        id="scoreModal"
+        class="fillter-modal"
+      >
         <div id="scoreModal-info">
           <span id="scoreModal-info-item1">Point?</span>
           <span id="scoreModal-info-item2">{{ this.rating }} 점대</span>
@@ -124,6 +120,39 @@
           hover
         ></v-rating>
       </div>
+
+      <!-- 3. 와인 종류 필터링!!!  -->
+      <div
+        v-show="this.contentState === 3"
+        id="kindModal"
+        class="fillter-modal"
+      >
+        <div id="kindModal-item">
+          <div class="checks">
+            <input type="radio" id="red" value="레드" v-model="wineKind" />
+            <label for="red">Red</label>
+          </div>
+          <div class="checks">
+            <input type="radio" id="white" value="화이트" v-model="wineKind" />
+            <label for="white">White</label>
+          </div>
+          <div class="checks">
+            <input
+              type="radio"
+              id="sparkling"
+              value="스파클링"
+              v-model="wineKind"
+            />
+            <label for="sparkling">Sparkling</label>
+          </div>
+        </div>
+      </div>
+
+      <div
+        v-show="this.contentState === 4"
+        id="grapeModal"
+        class="fillter-modal"
+      ></div>
       <!-- end 필터링 모달 ###################### -->
       <!-- ################################ -->
     </div>
@@ -141,13 +170,14 @@ export default {
   },
 
   data: () => ({
-    contentState: 1,
+    contentState: -1,
     keyword: "",
     priceFillter: false,
     scoreFillter: false,
     priceRange: [0, 50000],
     rating: 5,
     selected: "",
+    wineKind: "",
   }),
   computed: {
     ...mapState("userInfo", ["userInfo"]),
@@ -155,7 +185,8 @@ export default {
   },
   methods: {
     clickedBtn(index) {
-      this.contentState = index;
+      if (this.contentState === index) this.contentState = -1;
+      else this.contentState = index;
     },
     onSearch() {
       alert(this.keyword + " 를 검색하셨습니다.");
@@ -275,9 +306,6 @@ export default {
   position: relative;
   top: -0.15em;
 }
-.active {
-  border: 1px solid var(--basic-color-key) !important;
-}
 
 #btnLogo {
   width: 12px;
@@ -314,19 +342,23 @@ select {
 
 /* #################################################### */
 /* 각종 필터 */
-#priceModal {
+
+.fillter-modal {
   width: 350px;
   height: 180px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  left: 160px;
-  bottom: 75px;
   background-color: #f4f4f4;
   border-radius: 2em;
   opacity: 0.7;
+}
+
+#priceModal {
+  position: fixed;
+  left: 160px;
+  bottom: 75px;
 }
 #price-slider {
   width: 85%;
@@ -354,20 +386,11 @@ select {
   margin-right: 10px;
   color: var(--basic-color-fill);
 }
-
+/* 점수 모달 #################################### */
 #scoreModal {
-  width: 350px;
-  height: 180px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   position: fixed;
   left: 160px;
   bottom: 210px;
-  background-color: #f4f4f4;
-  border-radius: 2em;
-  opacity: 0.7;
 }
 #scoreModal-info {
   width: 100%;
@@ -387,5 +410,87 @@ select {
   font-size: 23px;
   margin-right: 10px;
   color: var(--basic-color-fill);
+}
+/* 와인 종류 모달 #################################### */
+#kindModal {
+  position: fixed;
+  left: 160px;
+  bottom: 345px;
+}
+#kindModal-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.checks {
+  position: relative;
+}
+.checks input[type="radio"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.checks input[type="radio"] + label {
+  display: inline-block;
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+}
+.checks input[type="radio"] + label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -4px;
+  width: 21px;
+  height: 21px;
+  text-align: center;
+  background: #fafafa;
+  border: 1px solid #cacece;
+  border-radius: 100%;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+}
+.checks input[type="radio"] + label:active:before,
+.checks input[type="radio"]:checked + label:active:before {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+.checks input[type="radio"]:checked + label:before {
+  background: #e9ecee;
+  border-color: #adb8c0;
+}
+.checks input[type="radio"]:checked + label:after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  width: 13px;
+  height: 13px;
+  /* background: #99a1a7; */
+  /* background: var(--basic-color-bg2); */
+  border-radius: 100%;
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+#red:checked + label:after {
+  background: var(--basic-color-bg2);
+}
+
+#white:checked + label:after {
+  background: var(--basic-color-bg3);
+}
+#sparkling:checked + label:after {
+  background: var(--basic-color-bg4);
+}
+
+#grapeModal {
+  position: fixed;
+  left: 160px;
+  bottom: 480px;
 }
 </style>

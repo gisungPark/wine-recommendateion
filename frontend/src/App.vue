@@ -3,7 +3,6 @@
     <Nav id="navigation" />
     <GuideBtn id="guide-btn" />
     <LoginModal />
-    <JoinModal />
     <transition name="opacity">
       <router-view id="router-view" />
     </transition>
@@ -11,13 +10,13 @@
 </template>
 
 <script>
-import "./assets/css/static/style.css";
-import Nav from "./components/static/Nav.vue";
-import GuideBtn from "./components/static/GuideBtn.vue";
-import LoginModal from "./components/static/user/Login.vue";
+import './assets/css/static/style.css';
+import Nav from './components/static/Nav.vue';
+import GuideBtn from './components/static/GuideBtn.vue';
+import LoginModal from './components/static/user/Login.vue';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
     Nav,
     GuideBtn,

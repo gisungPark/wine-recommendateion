@@ -5,7 +5,7 @@
       v-for="(wine, index) in wines"
       :key="index + wine.ename + wine.marginTop"
       :style="{ marginTop: wine.marginTop }"
-      :class="{ 'margin-top': wineStyles[index], red: wine.type === '레드', white: wine.type === '화이트', rose: wine.type === '로제' }"
+      :class="{ 'margin-top': wineStyles[index], red: wine.type === '레드', white: wine.type === '화이트', rose: wine.type === '스파클링' }"
       @click="clickedWine(index)"
     >
       <img class="wineitem-img" :src="wine.img" alt="와인 이미지" />
@@ -108,7 +108,6 @@ export default {
     setMarginTop() {
       // item 위치에 따른 margin-top 설정
       const winelistWidth = this.$refs.winelist.offsetWidth;
-      console.log(winelistWidth);
       this.itemCountInLine = Math.floor(winelistWidth / 300);
       this.wineStyles = [];
       for (let i = 0; i < this.wines.length; i++) {
@@ -131,6 +130,7 @@ export default {
             this.wineType.push('Sparkling');
             break;
           default:
+            this.wineType.push('error');
             console.log('wine type error!');
             break;
         }
@@ -175,13 +175,9 @@ export default {
   width: 300px;
   border-radius: 150px;
   height: 500px;
-  border: 3px solid var(--basic-color-fill);
+  border: 1px solid var(--basic-color-key);
   transition: border 0.3s ease;
 }
-.wineitem:hover {
-  border: 3px solid var(--basic-color-key);
-}
-
 .margin-top {
   margin-top: -250px;
 }
@@ -219,6 +215,7 @@ export default {
   border-radius: 150px;
   background-color: rgba(0, 0, 0, 0.3);
   opacity: 0;
+  border: 4px solid var(--basic-color-key);
   transition: opacity 0.5s ease;
 }
 .wineitem:hover .wineitem-info {

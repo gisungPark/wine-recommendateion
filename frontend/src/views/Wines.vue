@@ -45,12 +45,12 @@
         </div>
       </div>
       <div id="select-box">
-        <select v-model="selected" class="style-chooser">
-          <option disabled value="">Sort</option>
-          <option>낮은 가격순</option>
-          <option>높은 가격순</option>
-          <option>낮은 별점순</option>
-          <option>높은 별점순</option>
+        <select v-model="sort" class="style-chooser">
+          <option disabled value="0">Sort</option>
+          <option value="1">낮은 가격순</option>
+          <option value="2">높은 가격순</option>
+          <option value="3">낮은 별점순</option>
+          <option value="4">높은 별점순</option>
         </select>
       </div>
 
@@ -60,6 +60,9 @@
         <Winelist class="winelist" key="2" :wines="wines1" v-if="contentState === 2" />
         <Winelist class="winelist" key="3" :wines="wines2" v-if="contentState === 3" /> -->
       </transition-group>
+      <button style="width: 150px; height: 30px; color: white" @click="print">
+        클릭하세요!!
+      </button>
       <div
         v-for="(item, index) in 5"
         :key="index"
@@ -110,10 +113,10 @@
       >
         <div id="scoreModal-info">
           <span id="scoreModal-info-item1">Point?</span>
-          <span id="scoreModal-info-item2">{{ this.rating }} 점대</span>
+          <span id="scoreModal-info-item2">{{ this.pointFilter }} 점대</span>
         </div>
         <v-rating
-          v-model="rating"
+          v-model="pointFilter"
           color="#F9DC14"
           background-color="grey darken-1"
           size="50"
@@ -127,13 +130,22 @@
         id="kindModal"
         class="fillter-modal"
       >
+        <div id="scoreModal-info">
+          <span id="scoreModal-info-item1">What kind?</span>
+          <span id="scoreModal-info-item2"></span>
+        </div>
         <div id="kindModal-item">
           <div class="checks">
-            <input type="radio" id="red" value="레드" v-model="wineKind" />
+            <input type="radio" id="red" value="레드" v-model="typeFilter" />
             <label for="red">Red</label>
           </div>
           <div class="checks">
-            <input type="radio" id="white" value="화이트" v-model="wineKind" />
+            <input
+              type="radio"
+              id="white"
+              value="화이트"
+              v-model="typeFilter"
+            />
             <label for="white">White</label>
           </div>
           <div class="checks">
@@ -141,18 +153,37 @@
               type="radio"
               id="sparkling"
               value="스파클링"
-              v-model="wineKind"
+              v-model="typeFilter"
             />
             <label for="sparkling">Sparkling</label>
           </div>
         </div>
       </div>
 
+      <!-- 4. 품종 필터링!!!  -->
       <div
         v-show="this.contentState === 4"
         id="grapeModal"
         class="fillter-modal"
-      ></div>
+      >
+        <div id="scoreModal-info">
+          <span id="scoreModal-info-item1">Grape?</span>
+          <span id="scoreModal-info-item2"></span>
+        </div>
+        <div style="height: 10px"></div>
+        <select v-model="grapeFilter" class="grape-chooser">
+          <option disabled value="전체">품종을 선택하세요</option>
+          <option value="피노누아">피노누아</option>
+          <option value="쉬라즈">쉬라즈</option>
+          <option value="소비뇽블랑">소비뇽블랑</option>
+          <option value="카베르네 소비뇽">카베르네 소비뇽</option>
+          <option value="샤르도네">샤르도네</option>
+          <option value="메를로">메를로</option>
+          <option value="모스카토">모스카토</option>
+          <option value="말벡">말벡</option>
+          <option value="카르메네르">카르메네르</option>
+        </select>
+      </div>
       <!-- end 필터링 모달 ###################### -->
       <!-- ################################ -->
     </div>
@@ -171,13 +202,12 @@ export default {
 
   data: () => ({
     contentState: -1,
-    keyword: "",
-    priceFillter: false,
-    scoreFillter: false,
-    priceRange: [0, 50000],
-    rating: 5,
-    selected: "",
-    wineKind: "",
+    keyword: "", // 검색어
+    sort: 0, // 정렬 조건
+    pointFilter: 5, // 별점 조건
+    priceRange: [0, 50000], //startPrice, endPrice
+    grapeFilter: "전체", //품종 조건
+    typeFilter: "전체", // 와인 종류 조건
   }),
   computed: {
     ...mapState("userInfo", ["userInfo"]),
@@ -191,11 +221,13 @@ export default {
     onSearch() {
       alert(this.keyword + " 를 검색하셨습니다.");
     },
-    onPriceFillter() {
-      this.priceFillter = !this.priceFillter;
-    },
-    onScoreFillter() {
-      this.scoreFillter = !this.scoreFillter;
+    print() {
+      console.log(this.sort);
+      console.log(this.pointFilter);
+      console.log(this.priceRange[0] + " ~ " + this.priceRange[1]);
+      console.log(this.grapeFilter);
+      console.log(this.typeFilter);
+      console.log("#######################");
     },
   },
 };
@@ -320,11 +352,11 @@ export default {
 #select-box {
   position: relative;
   left: 32%;
-  top: 5px;
+  top: 10px;
   margin-bottom: 30px;
 }
 
-select {
+.style-chooser {
   width: 180px; /* 원하는 너비설정 */
   height: 45px;
   font-size: 18px;
@@ -394,7 +426,7 @@ select {
 }
 #scoreModal-info {
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -419,6 +451,7 @@ select {
 }
 #kindModal-item {
   width: 100%;
+  height: 55px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -441,6 +474,8 @@ select {
   position: relative;
   padding-left: 30px;
   cursor: pointer;
+  font-size: 18px;
+  font-weight: 520;
 }
 .checks input[type="radio"] + label:before {
   content: "";
@@ -492,5 +527,21 @@ select {
   position: fixed;
   left: 160px;
   bottom: 480px;
+}
+
+.grape-chooser {
+  width: 85%; /* 원하는 너비설정 */
+  height: 45px;
+  font-size: 18px;
+  /* padding: 0.8em 0.5em; 여백으로 높이 설정 */
+  padding-left: 5px;
+  background: url(../assets/images/arrow.png) no-repeat 95% 50%; /* 네이티브 화살표 대체 */
+  color: white;
+  background-color: var(--basic-color-bg);
+  border: 1px solid var(--basic-color-bg);
+  border-radius: 5px; /* iOS 둥근모서리 제거 */
+  -webkit-appearance: none; /* 네이티브 외형 감추기 */
+  -moz-appearance: none;
+  appearance: none;
 }
 </style>

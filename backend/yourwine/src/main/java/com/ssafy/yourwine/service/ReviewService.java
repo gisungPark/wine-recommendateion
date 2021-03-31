@@ -37,7 +37,7 @@ public class ReviewService {
 	private final UserRepository userRepository;
 	private final WineRepository wineRepository;
 
-	// 해당 와인 리뷰 전체 리스트
+	// 해당 와인 리뷰 전체 리스트 -> 수정해보기
 	public List<ReviewDTO> getWineReviewList(Long wineId, int page, String time) throws ParseException {
 		Wine wine = wineRepository.findById(wineId).orElseThrow(() -> new IllegalArgumentException("no wine data"));
 		List<Review> reviewList = reviewRepository.findByWine(wine);

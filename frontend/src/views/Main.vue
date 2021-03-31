@@ -421,7 +421,7 @@ span {
 .star-rate {
   width: 50vw;
   height: 10vw;
-  background-image: url(../assets/images/start.png);
+  background-image: url(../assets/images/star.png);
   background-size: contain;
   background-repeat: repeat-x;
 }

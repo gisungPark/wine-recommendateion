@@ -32,6 +32,7 @@ export default {
   justify-content: space-around;
   align-items: center;
   cursor: pointer;
+  color: black;
   background-color: #fff;
   padding: 0.5rem;
   width: 6.2rem;

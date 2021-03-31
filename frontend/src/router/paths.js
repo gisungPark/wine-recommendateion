@@ -20,9 +20,8 @@ export default [
     name: 'Wines',
   },
   {
-  path:'/detail/:wineId',
-    view:'WineDetails',
-    name:'WineDetials',
-    props:true,
-  }
+    path: '/detail/:id',
+    view: 'WineDetails',
+    name: 'WineDetials',
+  },
 ];

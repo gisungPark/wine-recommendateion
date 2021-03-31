@@ -15,6 +15,8 @@ import Nav from './components/static/Nav.vue';
 import GuideBtn from './components/static/GuideBtn.vue';
 import LoginModal from './components/static/user/Login.vue';
 
+import * as Scroll from '@/assets/js/Scroll.js';
+
 export default {
   name: 'App',
   components: {
@@ -24,10 +26,12 @@ export default {
   },
   date() {
     return {
-      transitionName: "slide",
+      transitionName: 'slide',
     };
   },
-  created() {},
+  created() {
+    Scroll.smoothScroll();
+  },
   mounted() {},
   computed: {},
   watch: {
@@ -44,6 +48,7 @@ export default {
 <style>
 body {
   background-color: var(--basic-color-bg);
+  scroll-behavior: smooth;
 }
 
 .opacity-enter-active {

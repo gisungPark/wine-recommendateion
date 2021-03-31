@@ -10,6 +10,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.yourwine.config.security.JwtTokenProvider;
+import com.ssafy.yourwine.model.dto.FlavorDTO;
 import com.ssafy.yourwine.model.dto.FoodDTO;
 import com.ssafy.yourwine.model.dto.ReviewDTO;
 import com.ssafy.yourwine.model.dto.WineDTO;
@@ -20,6 +21,7 @@ import com.ssafy.yourwine.model.entity.WineFoodMatch;
 import com.ssafy.yourwine.repository.ReviewRepository;
 import com.ssafy.yourwine.repository.ScrapRepository;
 import com.ssafy.yourwine.repository.UserRepository;
+import com.ssafy.yourwine.repository.WineFlavorRepository;
 import com.ssafy.yourwine.repository.WineFoodMatchRepository;
 import com.ssafy.yourwine.repository.WineRepository;
 
@@ -34,6 +36,7 @@ public class WineService {
 	private final UserRepository userRepository;
 	private final ScrapRepository scrapRepository;
 	private final ReviewRepository reviewRepository;
+	private final WineFlavorRepository wineFlavorRepository;
 	private final WineFoodMatchRepository wineFoodMatchRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 
@@ -48,6 +51,7 @@ public class WineService {
 		List<WineDTO> moreWineDtoList = wineRepository.findByGrape(wine.getGrape()).stream()
 				.filter(s -> s.getWineId() != wineId).map(WineDTO::new).sorted(Comparator.comparing(WineDTO::getAvg).reversed())
 				.limit(6).collect(Collectors.toList());
+		List<FlavorDTO> flavorDtoList = wineFlavorRepository.findByWine(wine).stream().map(FlavorDTO::new).collect(Collectors.toList());
 		
 		int[] costArray = new int[3];
 		for (ReviewDTO reviewDto : reviewDtoList) {
@@ -58,13 +62,15 @@ public class WineService {
 			if (reviewDto.getCost() == 3) //가성비 굿
 				costArray[2]++;
 		}
+		
 		reviewDtoList = reviewDtoList.stream().sorted(Comparator.comparing(ReviewDTO::getTime).reversed()).limit(3).collect(Collectors.toList());
 		WineDetailDTO wineDetailDto = new WineDetailDTO();
 		wineDetailDto.setWineDto(wineDto);// 와인정보
 		wineDetailDto.setReviewList(reviewDtoList); // 리뷰리스트 3개
 		wineDetailDto.setFoodList(foodDtoList); // 음식리스트
 		wineDetailDto.setCostArray(costArray); // 가성비 인원수 cnt
-		wineDetailDto.setMoreWineList(moreWineDtoList);// morewine
+		wineDetailDto.setMoreWineList(moreWineDtoList);// morewine 리스트
+		wineDetailDto.setFlavorList(flavorDtoList); //와인향 정보 리스트
 		
 		if (!token.equals("guest")) { // 로그인 안 했을 경우
 			String userId = jwtTokenProvider.getUserId(token);

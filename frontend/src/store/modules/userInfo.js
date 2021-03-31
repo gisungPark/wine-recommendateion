@@ -5,19 +5,14 @@ const INIT_USER = () => {
   return {
     userInfo: {
       token: localStorage.getItem('token'),
-      email: localStorage.getItem('email'),
       nickname: localStorage.getItem('nickname'),
-      profile: localStorage.getItem('profile'),
+      profile: 'https://t1.daumcdn.net/cfile/tistory/99DBE73359AAC5D224',
     }
   };
 };
 
 const state = {
-  userInfo: {
-    email: '',
-    nickname: '와인좋아!!',
-    profile: 'https://t1.daumcdn.net/cfile/tistory/99DBE73359AAC5D224',
-  }
+  userInfo: INIT_USER(),
 };
 // STATE 값 변경 X
 const getters = {
@@ -28,13 +23,13 @@ const getters = {
 // STATE 갑 변경 O + 동기
 const mutations = {
   SET_USER_INFO(state, payload) {
-    state.userInfo = payload;
+    state.userInfo = payload.userInfo;
     //로컬 저장
-    localStorage.email = state.userInfo.email;
-    localStorage.nickname = state.userInfo.nickname;
-    localStorage.profile = state.userInfo.profile;
+    localStorage.setItem("email", state.userInfo.email);
+    localStorage.setItem("nickname", state.userInfo.nickname);
+    localStorage.setItem("profile", state.userInfo.profile);
   },
-  CLEAR_USER_INFO(state) {
+  SET_LOGOUT(state) {
     localStorage.clear();
     state.userInfo = INIT_USER();
   }
@@ -47,16 +42,15 @@ const mutations = {
     try {
       const response = await authApi.login(email, password);
       // 로그인 성공!!
-      if (response.data.message === 'SUCCESS') {
+      if (response.data.code === 0) {
         context.commit('SET_USER_INFO', {
           userInfo: {
             token: response.data.token,
-            email: response.data.user.user_email,
-            nickname: response.data.user.user_nickname,
-            prifile: response.data.user.user_prifile,
+            nickname: response.data.nickname,
+            profile: 'https://t1.daumcdn.net/cfile/tistory/99DBE73359AAC5D224'
           }
         });
-      }
+      } 
       return response;
 
     } catch (error) {

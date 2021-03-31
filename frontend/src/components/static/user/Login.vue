@@ -33,6 +33,7 @@
                         class="underline"
                         type="text"
                         placeholder="Email"
+                        v-model="email"
                       />
                     </li>
                   </ul>
@@ -46,6 +47,7 @@
                         class="underline"
                         type="password"
                         placeholder="Password"
+                        v-model="password"
                       />
                     </li>
                   </ul>
@@ -104,10 +106,11 @@ export default {
     NicknameModal,
   },
   data: () => ({
-    userId: "",
-    userPw: "",
+    email: "",
+    password: "",
   }),
   computed: {
+    ...mapState("userInfo", ["userInfo"]),
     ...mapState("loginDialog", [
       "loginDialog",
       "joinDialog",
@@ -129,11 +132,27 @@ export default {
       "SET_GUIDEBTN_TOGGLE",
       "SET_GUIDEBTNTIP_TOGGLE",
     ]),
+    loginAPI(email, password) {
+      return authApi.login(email, password);
+    },
 
     onLogin() {
-      this.SET_LOGIN_TOGGLE();
-      this.SET_GUIDEBTN_TOGGLE();
-      this.$router.push({ name: "Mypage" });
+      const response = this.$store
+        .dispatch("userInfo/login", {
+          email: this.email,
+          password: this.password,
+        })
+        .then((result) => {
+          if (result.data.code === 1) {
+            alert("아이디 비밀번호를 확인하세요!!");
+          } else if (result.data.code === 0) {
+            alert(this.email + "님 환영합니다.");
+
+            this.SET_LOGIN_TOGGLE();
+            this.SET_GUIDEBTN_TOGGLE();
+            this.$router.push({ name: "Mypage" });
+          }
+        });
     },
     onFindPw() {
       this.SET_NICKNAME_TOGGLE();

@@ -16,6 +16,7 @@ public class WineDetailDTO {
 	private List<ReviewDTO> reviewList;
 	private List<FoodDTO> foodList;
 	private List<WineDTO> moreWineList;
-	private int[] costArray; 
+	private int[] costArray;
+	private List<FlavorDTO> flavorList;
 	
 }

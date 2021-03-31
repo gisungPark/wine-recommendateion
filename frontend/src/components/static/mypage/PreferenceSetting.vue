@@ -452,7 +452,7 @@ export default {
 }
 
 #stage-line {
-  width: 80%;
+  width: 100%;
   position: fixed;
   top: 133px;
   display: flex;
@@ -470,12 +470,14 @@ export default {
   background-color: #4e4c4c;
 }
 .preference-stages {
-  width: 80%;
-  position: fixed;
-  top: 100px;
+  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-evenly;
+  position: fixed;
+  top: 100px;
+  left: calc(50% + 86px);
+  transform: translateX(-50%);
   z-index: 10;
   pointer-events: none;
 }
@@ -484,7 +486,6 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex: 1 1 0;
   /* 상단 스테이지값 고정시 삭제 요망!!! */
   /* position: relative;
   z-index: 10 !important; */

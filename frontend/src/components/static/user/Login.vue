@@ -142,22 +142,9 @@ export default {
     close() {
       this.SET_LOGIN_TOGGLE();
     },
-    onKakaoCallback(data) {
-      console.log(data);
-      authApi
-        .kakaoCallback(data)
-        .then((response) => {
-          console.log(response);
-          // #######################################
-          // #######################################
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
+    onKakaoCallback(data) {},
     onFailure() {},
     onJoin() {
-      console.log("click join btn!!");
       this.SET_JOIN_TOGGLE();
     },
   },

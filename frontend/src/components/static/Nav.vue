@@ -116,7 +116,7 @@ export default {
     },
     clickedTopic() {
       this.menuTransition();
-      this.$router.push({ name: "Recommendation" });
+      this.$router.push({ name: "Topic" });
     },
     clickedChart() {
       this.menuTransition();

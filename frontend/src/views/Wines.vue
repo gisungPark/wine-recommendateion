@@ -256,14 +256,6 @@ export default {
   display: flex;
   flex-direction: row;
 }
-.content {
-  width: 100%;
-  padding-left: 172px;
-  padding-top: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 .search {
   width: 75%;
   display: flex;
@@ -339,23 +331,8 @@ export default {
   top: -0.15em;
 }
 
-#btnLogo {
-  width: 12px;
-  height: 12px;
-  background-color: var(--basic-color-bg2);
-  border-radius: 70%;
-  position: relative;
-  top: 10px;
-  left: 1px;
-}
-
-#select-box {
-  position: relative;
-  left: 32%;
-  top: 10px;
-  margin-bottom: 30px;
-}
-
+/* end 사이드 바 */
+/* #################################################### */
 .style-chooser {
   width: 180px; /* 원하는 너비설정 */
   height: 45px;

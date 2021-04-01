@@ -1,20 +1,20 @@
 package com.ssafy.yourwine.service;
 
 import com.ssafy.yourwine.config.security.JwtTokenProvider;
-import com.ssafy.yourwine.model.dto.FlavorDTO;
-import com.ssafy.yourwine.model.dto.PreferenceDTO;
-import com.ssafy.yourwine.model.dto.TasteDTO;
-import com.ssafy.yourwine.model.dto.WineDTO;
+import com.ssafy.yourwine.model.dto.*;
 import com.ssafy.yourwine.model.entity.*;
 import com.ssafy.yourwine.model.key.FlavorKey;
 import com.ssafy.yourwine.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,6 +29,10 @@ public class RecoService {
 	private final LikeFlavorRepository likeFlavorRepository;
 	private final DislikeFlavorRepository dislikeFlavorRepository;
 	private final UserRepository userRepository;
+	//배치
+	private final TopTenRepository topTenRepository;
+	private final WineRepository wineRepository;
+	private final ReviewRepository reviewRepository;
 	
 	public boolean checkPreference(String token) {
 		String userId = jwtTokenProvider.getUserId(token);
@@ -135,6 +139,7 @@ public class RecoService {
 
 		return preferenceDTO;
 	}
+
 	
 	//선호도 추천
 	public List<WineDTO> getWineListByPreference (String token) {
@@ -148,6 +153,52 @@ public class RecoService {
 		//System.out.println(userDisLikeList.toString());
 		//와인리스트 뿌려
 		
-		return null;
+		return null;}
+
+
+	public List<WineDTO> getTopten(int min, int max){
+		//배치
+		List<Wine> wineList = wineRepository.findAll();
+
+		for(Wine wine: wineList){
+			TopTen topTen = new TopTen();
+
+			List<Review> reviewList = reviewRepository.findByWine(wine);
+			int sum = 0;
+			double devSqvSum = 0;
+			double avg;
+			double std;
+			for(Review review: reviewList)
+				sum += review.getPoint();
+
+			avg = sum / reviewList.size();
+
+			for(Review review: reviewList)
+				devSqvSum += Math.pow(avg - review.getPoint(), 2);
+
+			std = Math.sqrt(devSqvSum/reviewList.size());
+
+			double score = wine.getAvg()/(5 + Math.pow(std,2));
+			topTen.setWineId(wine.getWineId());
+			topTen.setScore(score);
+			topTen.setPrice(wine.getPrice());
+
+			topTenRepository.save(topTen);
+		}
+		//
+
+		PageRequest pageRequest = PageRequest.of(0,10, Sort.by("score").descending());
+		List<TopTen> topTenList = topTenRepository.findByPriceGreaterThanEqualAndPriceLessThanEqual(min, max, pageRequest);
+		List<WineDTO> wineDTOList = new ArrayList<>();
+
+		for(TopTen topTen: topTenList){
+			Wine wine = wineRepository.findByWineId(topTen.getWineId());
+			WineDTO wineDTO = modelMapper.map(wine, WineDTO.class);
+
+			wineDTOList.add(wineDTO);
+		}
+
+		return wineDTOList;
+
 	}
 }

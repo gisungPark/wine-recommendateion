@@ -3,6 +3,7 @@ package com.ssafy.yourwine.model.entity;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -25,11 +26,11 @@ public class WineFoodMatch {
 	@Column(name = "winefood_id", unique = true)
 	private WineFoodKey wineFoodId = new WineFoodKey(); 
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY) 
 	@JoinColumn(name = "wine_id", insertable=false, updatable=false)
 	private Wine wine;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY) 
 	@JoinColumn(name = "food_id", insertable=false, updatable=false)
 	private Food food;
 	

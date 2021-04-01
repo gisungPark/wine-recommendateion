@@ -25,11 +25,11 @@ public class Scrap {
 	@Column(name = "scrap_id", unique = true)
 	private ScrapKey scrapId = new ScrapKey();
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", insertable=false, updatable=false)
 	private User user;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wine_id", insertable=false, updatable=false)
 	private Wine wine;
 	

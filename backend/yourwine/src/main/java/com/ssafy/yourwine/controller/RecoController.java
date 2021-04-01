@@ -111,4 +111,16 @@ public class RecoController {
     public List<WineDTO> getWineListByFood (@PathVariable Long foodId){
     	return foodService.getWineListByFood(foodId);
     }
+
+    @GetMapping("/getTopten/{min}/{max}")
+    @ApiOperation(value = "Top 10 가져오기", notes="Parameter\n" +
+            "- token(RequestHeader): 액세스 토큰\n" +
+            "- min(PathVariable): 가격 최소 값 범위\n" +
+            "- max(PathVariable): 가격 최대 값 범위\n" +
+            "Respnse(x)\n" +
+            "- PreferenceDTO\n" +
+            "--- flavorImg: 향 이미지 경로\n")
+    public List<WineDTO> getTopten(@PathVariable Integer min, @PathVariable Integer max){
+        return recoService.getTopten(min, max);
+    }
 }

@@ -31,6 +31,7 @@ public class RecoService {
 	private final UserRepository userRepository;
 	private final TopTenRepository topTenRepository;
 	private final WineRepository wineRepository;
+	private final TodayWineRepository todayWineRepository;
 	
 	public boolean checkPreference(String token) {
 		String userId = jwtTokenProvider.getUserId(token);
@@ -170,5 +171,12 @@ public class RecoService {
 
 		return wineDTOList;
 
+	}
+
+	public WineDTO getTodayWine() {
+
+		Wine wine = wineRepository.findByWineId(todayWineRepository.findAll().get(0).getWineId());
+		WineDTO wineDTO = modelMapper.map(wine, WineDTO.class);
+		return wineDTO;
 	}
 }

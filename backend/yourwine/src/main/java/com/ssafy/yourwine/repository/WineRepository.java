@@ -12,4 +12,5 @@ public interface WineRepository extends JpaRepository<Wine, Long>{
 	Wine findByWineId(Long wineId);
 	
 	List<Wine> findByGrape (Grape grape);
+	List<Wine> findByAvgGreaterThanEqual(float avg);
 }

@@ -1,9 +1,11 @@
 package com.ssafy.yourwine;
 
 import com.ssafy.yourwine.model.entity.Review;
+import com.ssafy.yourwine.model.entity.TodayWine;
 import com.ssafy.yourwine.model.entity.TopTen;
 import com.ssafy.yourwine.model.entity.Wine;
 import com.ssafy.yourwine.repository.ReviewRepository;
+import com.ssafy.yourwine.repository.TodayWineRepository;
 import com.ssafy.yourwine.repository.TopTenRepository;
 import com.ssafy.yourwine.repository.WineRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +24,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class ScheduleTask {
-	//배치
 	private final TopTenRepository topTenRepository;
 	private final WineRepository wineRepository;
 	private final ReviewRepository reviewRepository;
+	private final TodayWineRepository todayWineRepository;
 
 	// 매일 밤 12시기준 배치작업
 	@Scheduled(cron = "0 0 0 * * ? ", zone = "Asia/Seoul")
@@ -61,6 +63,14 @@ public class ScheduleTask {
 		}
 		//Top 10 score 계산
 
+		//오늘의 와인
+		List<Wine> wines = wineRepository.findByAvgGreaterThanEqual((float)4.0);
+		int select = (int) (Math.random() * wines.size());
+		todayWineRepository.deleteAll();
+		TodayWine todayWine = new TodayWine();
+		todayWine.setWineId(wines.get(select).getWineId());
+		todayWineRepository.save(todayWine);
+		//
 	}
 
 	// 매일 1시간마다 배치작업
@@ -72,18 +82,21 @@ public class ScheduleTask {
 
 		for(Wine wine: wineList){
 			List<Review> reviewList = reviewRepository.findByWine(wine);
-			int sum = 0;
-			double avg;
+			float sum = 0;
 			for(Review review: reviewList)
-				sum += review.getPoint();
+				sum += (float)review.getPoint();
+			float avg = sum / reviewList.size();
+			System.out.println(avg);
 
-			wine.setAvg(sum / reviewList.size());
+			wine.setAvg(avg);
+
+			wineRepository.save(wine);
 		}
 		//Wine별 평균 평점 계산
 	}
 	
 	//test 10초마다 배치작업 - 테스트용
-//	@Scheduled(cron = "0/10 * * * * ? ", zone = "Asia/Seoul")
+//	@Scheduled(cron = "0/30 * * * * ? ", zone = "Asia/Seoul")
 //	private void test() {
 //
 //	}

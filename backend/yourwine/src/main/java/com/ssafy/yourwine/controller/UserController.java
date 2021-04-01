@@ -155,8 +155,8 @@ public class UserController {
 			"- token(RequestHeader): 액세스 토큰\n" +
 			"Response\n" +
 			"")
-	public List<ReviewDTO> getReview(@RequestHeader("TOKEN") String token) {
-		List<ReviewDTO> reviewDTOList = userService.getReview(token);
+	public List<ReviewDTO> getReview(@RequestHeader("TOKEN") String token, @RequestParam int page) {
+		List<ReviewDTO> reviewDTOList = userService.getReview(token,page);
 
 		return reviewDTOList;
 	}

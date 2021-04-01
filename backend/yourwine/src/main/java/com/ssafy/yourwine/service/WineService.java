@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.yourwine.config.security.JwtTokenProvider;
 import com.ssafy.yourwine.model.dto.FlavorDTO;
@@ -27,6 +28,7 @@ import com.ssafy.yourwine.repository.WineRepository;
 
 import lombok.RequiredArgsConstructor;
 
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class WineService {

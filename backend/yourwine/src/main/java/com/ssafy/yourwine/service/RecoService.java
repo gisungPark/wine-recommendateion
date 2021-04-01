@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class RecoService {
 
 	ModelMapper modelMapper = new ModelMapper();
@@ -44,7 +45,7 @@ public class RecoService {
 			return false;
 	}
 
-	@Transactional
+	
 	public void updatePreference(String token, PreferenceDTO preferenceDTO) {
 		String userId = jwtTokenProvider.getUserId(token);
 		User user = userRepository.findByUserId(userId);
@@ -139,6 +140,22 @@ public class RecoService {
 		return preferenceDTO;
 	}
 
+	
+	//선호도 추천
+	public List<WineDTO> getWineListByPreference (String token) {
+		String userId = jwtTokenProvider.getUserId(token);
+		User user = userRepository.findByUserId(userId);
+		//유저 선호도 id 리스트로 가져와
+		List<Flavor> userFlavorLikeList = likeFlavorRepository.findByUser(user).stream().map(LikeFlavor::getFlavor).collect(Collectors.toList());
+		List<Flavor> userFlavorDisLikeList = dislikeFlavorRepository.findByUser(user).stream().map(DislikeFlavor::getFlavor).collect(Collectors.toList());
+		//List<Long> userLikeList = modelMapper.map()
+		//System.out.println(userLikeList.toString());
+		//System.out.println(userDisLikeList.toString());
+		//와인리스트 뿌려
+		
+		return null;}
+
+
 	public List<WineDTO> getTopten(int min, int max){
 		//배치
 		List<Wine> wineList = wineRepository.findAll();
@@ -182,5 +199,6 @@ public class RecoService {
 		}
 
 		return wineDTOList;
+
 	}
 }

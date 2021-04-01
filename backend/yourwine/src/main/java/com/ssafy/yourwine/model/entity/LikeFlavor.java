@@ -22,11 +22,11 @@ public class LikeFlavor {
     @Column(name = "like_id", unique = true)
     private FlavorKey likeId = new FlavorKey();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable=false, updatable=false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flavor_id", insertable=false, updatable=false)
     private Flavor flavor;
 

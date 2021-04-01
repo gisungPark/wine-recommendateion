@@ -3,6 +3,7 @@ package com.ssafy.yourwine.service;
 import com.ssafy.yourwine.config.security.JwtTokenProvider;
 import com.ssafy.yourwine.model.dto.*;
 import com.ssafy.yourwine.model.entity.Review;
+
 import com.ssafy.yourwine.model.entity.Scrap;
 import com.ssafy.yourwine.model.entity.User;
 import com.ssafy.yourwine.repository.ReviewRepository;
@@ -11,6 +12,8 @@ import com.ssafy.yourwine.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,8 +22,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional //이거 추가했어요
 public class UserService {
 
     private final ModelMapper modelMapper = new ModelMapper();
@@ -204,10 +210,12 @@ public class UserService {
         return wineDTOList;
     }
 
-    public List<ReviewDTO> getReview(String token){
+    
+    public List<ReviewDTO> getReview(String token, int page){
         String userId = jwtTokenProvider.getUserId(token);
         User user = userRepository.findByUserId(userId);
-        List<ReviewDTO> reviewDTOList = reviewRepository.findByUser(user).stream().map(ReviewDTO::new).sorted(Comparator.comparing(ReviewDTO::getTime).reversed()).collect(Collectors.toList());
+        PageRequest pageRequest = PageRequest.of(page-1,5,Sort.by("time").descending());
+        List<ReviewDTO> reviewDTOList = reviewRepository.findByUser(user, pageRequest).stream().map(ReviewDTO::new).collect(Collectors.toList());
        //리뷰 최신순으로 정렬시킴. 코드추가
         return reviewDTOList;
     }

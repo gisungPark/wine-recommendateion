@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +27,10 @@ import com.ssafy.yourwine.repository.WineRepository;
 
 import lombok.RequiredArgsConstructor;
 
+
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class ReviewService {
 
 	private final ModelMapper modelMapper = new ModelMapper();
@@ -37,32 +39,16 @@ public class ReviewService {
 	private final UserRepository userRepository;
 	private final WineRepository wineRepository;
 
-	// 해당 와인 리뷰 전체 리스트 -> 수정해보기
+	// 해당 와인 리뷰 전체 리스트
 	public List<ReviewDTO> getWineReviewList(Long wineId, int page, String time) throws ParseException {
 		Wine wine = wineRepository.findById(wineId).orElseThrow(() -> new IllegalArgumentException("no wine data"));
-		List<Review> reviewList = reviewRepository.findByWine(wine);
-		SimpleDateFormat stringToDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-		Date dateTime = stringToDate.parse(time);
-		List<ReviewDTO> reviewDtoList = reviewList.stream().map(ReviewDTO::new).filter(s -> s.getTime().before(dateTime))
-				.sorted(Comparator.comparing(ReviewDTO::getTime).reversed())
-				.collect(Collectors.toList());
-		// 페이징
-		List<ReviewDTO> returnList = new ArrayList<ReviewDTO>();
-		int item = 5;
-		int size = reviewDtoList.size();
-		int startIdx = (page - 1) * item;
-		int endIdx = startIdx + item - 1;
-		endIdx = (endIdx < reviewDtoList.size()) ? endIdx : size - 1;
-		if (startIdx < size) {
-			for (int i = startIdx; i <= endIdx; i++) {
-				returnList.add(reviewDtoList.get(i));
-			}
-		}
-		return returnList;
+		PageRequest pageRequest = PageRequest.of(page-1,5);
+		List<Review> reviewList = reviewRepository.findAllByWine(wine, time, pageRequest);
+		List<ReviewDTO> reviewDtoList = reviewList.stream().map(ReviewDTO::new).collect(Collectors.toList());
+		return reviewDtoList;
 	}
 
 	// 리뷰 작성
-	@Transactional
 	public void saveReview(ReviewDTO reviewDto, String token) {
 		String userId = jwtTokenProvider.getUserId(token);
 		Review review = new Review();
@@ -80,7 +66,6 @@ public class ReviewService {
 	}
 
 	// 리뷰 수정
-	@Transactional
 	public void updateReview(ReviewDTO reviewDto, String token) {
 		String userId = jwtTokenProvider.getUserId(token);
 		User user = userRepository.findByUserId(userId);
@@ -96,7 +81,6 @@ public class ReviewService {
 	}
 
 	// 리뷰 삭제
-	@Transactional
 	public void deleteReview(String token, Long wineId) {
 		String userId = jwtTokenProvider.getUserId(token);
 		Review review = new Review();

@@ -22,11 +22,11 @@ public class DislikeFlavor {
     @Column(name = "dislike_id", unique = true)
     private FlavorKey dislikeId = new FlavorKey();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) 
     @JoinColumn(name = "user_id", insertable=false, updatable=false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY) 
     @JoinColumn(name = "flavor_id", insertable=false, updatable=false)
     private Flavor flavor;
 

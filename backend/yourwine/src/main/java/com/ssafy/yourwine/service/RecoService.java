@@ -29,10 +29,8 @@ public class RecoService {
 	private final LikeFlavorRepository likeFlavorRepository;
 	private final DislikeFlavorRepository dislikeFlavorRepository;
 	private final UserRepository userRepository;
-	//배치
 	private final TopTenRepository topTenRepository;
 	private final WineRepository wineRepository;
-	private final ReviewRepository reviewRepository;
 	
 	public boolean checkPreference(String token) {
 		String userId = jwtTokenProvider.getUserId(token);
@@ -157,35 +155,6 @@ public class RecoService {
 
 
 	public List<WineDTO> getTopten(int min, int max){
-		//배치
-		List<Wine> wineList = wineRepository.findAll();
-
-		for(Wine wine: wineList){
-			TopTen topTen = new TopTen();
-
-			List<Review> reviewList = reviewRepository.findByWine(wine);
-			int sum = 0;
-			double devSqvSum = 0;
-			double avg;
-			double std;
-			for(Review review: reviewList)
-				sum += review.getPoint();
-
-			avg = sum / reviewList.size();
-
-			for(Review review: reviewList)
-				devSqvSum += Math.pow(avg - review.getPoint(), 2);
-
-			std = Math.sqrt(devSqvSum/reviewList.size());
-
-			double score = wine.getAvg()/(5 + Math.pow(std,2));
-			topTen.setWineId(wine.getWineId());
-			topTen.setScore(score);
-			topTen.setPrice(wine.getPrice());
-
-			topTenRepository.save(topTen);
-		}
-		//
 
 		PageRequest pageRequest = PageRequest.of(0,10, Sort.by("score").descending());
 		List<TopTen> topTenList = topTenRepository.findByPriceGreaterThanEqualAndPriceLessThanEqual(min, max, pageRequest);
@@ -194,6 +163,7 @@ public class RecoService {
 		for(TopTen topTen: topTenList){
 			Wine wine = wineRepository.findByWineId(topTen.getWineId());
 			WineDTO wineDTO = modelMapper.map(wine, WineDTO.class);
+			System.out.println(wineDTO);
 
 			wineDTOList.add(wineDTO);
 		}

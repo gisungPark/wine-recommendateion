@@ -27,4 +27,9 @@ public class FlavorDTO {
         this.name = flavor.getName();
     }
     
+    public FlavorDTO (Flavor flavor) {
+    	this.flavorId = flavor.getFlavorId();
+    	this.name = flavor.getName();
+    }
+    
 }

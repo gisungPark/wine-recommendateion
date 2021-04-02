@@ -2,6 +2,7 @@ package com.ssafy.yourwine.model.dto;
 
 import com.ssafy.yourwine.model.entity.Grape;
 import com.ssafy.yourwine.model.entity.Wine;
+import com.ssafy.yourwine.model.entity.WineFlavor;
 import com.ssafy.yourwine.model.entity.WineFoodMatch;
 
 import lombok.AccessLevel;
@@ -73,4 +74,23 @@ public class WineDTO {
 		this.grape = wineFoodMatch.getWine().getGrape();
 	}
 	
+//	public WineDTO (WineFlavor wineFlavor) {
+//		this.wineId = wineFlavor.getWine().getWineId();
+//		this.kname = wineFlavor.getWine().getKname();
+//		this.ename = wineFlavor.getWine().getEname();
+//		this.alcohol = wineFlavor.getWine().getAlcohol();
+//		this.type = wineFlavor.getWine().getType();
+//		this.temper = wineFlavor.getWine().getTemper();
+//		this.avg = wineFlavor.getWine().getAvg();
+//		this.price = wineFlavor.getWine().getPrice();
+//		this.year = wineFlavor.getWine().getYear();
+//		this.detail = wineFlavor.getWine().getDetail();
+//		this.shop = wineFlavor.getWine().getShop();
+//		this.sweet = wineFlavor.getWine().getSweet();
+//		this.acidity = wineFlavor.getWine().getAcidity();
+//		this.body = wineFlavor.getWine().getBody();
+//		this.tannin = wineFlavor.getWine().getTannin();
+//		this.area = wineFlavor.getWine().getArea();
+//		this.grape = wineFlavor.getWine().getGrape();
+//	}
 }

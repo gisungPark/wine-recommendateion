@@ -45,11 +45,6 @@ public class RecoController {
     @ApiOperation(value = "선호도 변경", notes="Parameter\n" +
             "- token(RequestHeader): 액세스 토큰\n" +
             "- PreferenceDTO\n" +
-            "-- flavorDTO\n" +
-            "--- sweet: 당도\n" +
-            "--- body: 바디감\n" +
-            "--- tannin: 탄닌\n" +
-            "--- acidity: 산도\n" +
             "-- likeList(List(FlavorDTO)): 좋아하는 향 ID 리스트\n" +
             "--- flavorId: 향 ID\n" +
             "--- flavorName: 향 이름\n" +
@@ -67,11 +62,6 @@ public class RecoController {
     @ApiOperation(value = "선호도 입력", notes="Parameter\n" +
             "- token(RequestHeader): 액세스 토큰\n" +
             "- PreferenceDTO\n" +
-            "-- flavorDTO\n" +
-            "--- sweet: 당도\n" +
-            "--- body: 바디감\n" +
-            "--- tannin: 탄닌\n" +
-            "--- acidity: 산도\n" +
             "-- likeList(List(FlavorDTO)): 좋아하는 향 ID 리스트\n" +
             "--- flavorId: 향 ID\n" +
             "--- flavorName: 향 이름\n" +
@@ -90,11 +80,6 @@ public class RecoController {
             "- token(RequestHeader): 액세스 토큰\n" +
             "Respnse(x)\n" +
             "- PreferenceDTO\n" +
-            "-- flavorDTO\n" +
-            "--- sweet: 당도\n" +
-            "--- body: 바디감\n" +
-            "--- tannin: 탄닌\n" +
-            "--- acidity: 산도\n" +
             "-- likeList(List(FlavorDTO)): 좋아하는 향 ID 리스트\n" +
             "--- flavorId: 향 ID\n" +
             "--- flavorName: 향 이름\n" +
@@ -121,7 +106,6 @@ public class RecoController {
 
     @GetMapping("/getTopten/{min}/{max}")
     @ApiOperation(value = "Top 10 가져오기", notes="Parameter\n" +
-            "- token(RequestHeader): 액세스 토큰\n" +
             "- min(PathVariable): 가격 최소 값 범위\n" +
             "- max(PathVariable): 가격 최대 값 범위\n" +
             "Respnse(x)\n" +
@@ -130,4 +114,14 @@ public class RecoController {
     public List<WineDTO> getTopten(@PathVariable Integer min, @PathVariable Integer max){
         return recoService.getTopten(min, max);
     }
+
+    @GetMapping("/getTodayWine")
+    @ApiOperation(value = "오늘의 와인 가져오기", notes="Parameter(x)\n" +
+            "Respnse(x)\n" +
+            "- PreferenceDTO\n" +
+            "--- flavorImg: 향 이미지 경로\n")
+    public WineDTO getTodayWine(){
+        return recoService.getTodayWine();
+    }
+
 }

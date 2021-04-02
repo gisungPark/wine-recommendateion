@@ -25,7 +25,7 @@ const mutations = {
   SET_USER_INFO(state, payload) {
     state.userInfo = payload.userInfo;
     //로컬 저장
-    localStorage.setItem("email", state.userInfo.email);
+    localStorage.setItem("token", state.userInfo.token);
     localStorage.setItem("nickname", state.userInfo.nickname);
     localStorage.setItem("profile", state.userInfo.profile);
   },

@@ -39,20 +39,6 @@
           >싫어하는 향</a
         >
       </div>
-      <div class="preference-stages-wrap">
-        <div
-          class="stage"
-          :class="{ 'active-stage': isCurStage(3) }"
-          @click="onClickStage(3)"
-        ></div>
-        <a
-          class="stage-name"
-          :class="{ 'active-stage-name': isCurStage(3) }"
-          @click="onClickStage(3)"
-          href="#"
-          >와인 취향</a
-        >
-      </div>
     </div>
     <div class="preference-fillter">
       <div v-show="curStage != 3" class="preference-item1">
@@ -164,124 +150,19 @@
 
         <!-- ############################################ -->
         <!-- ########## start 와인 취향 ########### -->
+        <button id="okBtn" @click="submit()">선택완료</button>
       </div>
       <!-- <div v-show="curStage == 2" class="preference-item2"></div> -->
-      <div v-show="curStage == 3" class="preference-item3">
-        <div class="preference-item3-item">
-          <span>Sweetness</span>
-          <div id="item3-item-slider">
-            <div>
-              <span id="slider-left">Dry</span>
-              <v-slider
-                v-model="slider1"
-                :max="4"
-                step="1"
-                ticks="always"
-                tick-size="5"
-                color="#e1a957"
-                track-color="#821a33"
-                track-fill-color="#821a33"
-              ></v-slider>
-              <span id="slider-right">Sweet</span>
-            </div>
-            <div class="slider-value">
-              <span>1</span>
-              <span>2</span>
-              <span>3</span>
-              <span>4</span>
-              <span>5</span>
-            </div>
-          </div>
-        </div>
-        <div class="preference-item3-item">
-          <span>Acidity</span>
-          <div id="item3-item-slider">
-            <div>
-              <span id="slider-left">Soft</span>
-              <v-slider
-                v-model="slider2"
-                :max="4"
-                step="1"
-                ticks="always"
-                tick-size="5"
-                color="#e1a957"
-                track-color="#821a33"
-                track-fill-color="#821a33"
-              ></v-slider>
-              <span id="slider-right">Acidic</span>
-            </div>
-            <div class="slider-value">
-              <span>1</span>
-              <span>2</span>
-              <span>3</span>
-              <span>4</span>
-              <span>5</span>
-            </div>
-          </div>
-        </div>
-        <div class="preference-item3-item">
-          <span>Tannin</span>
-          <div id="item3-item-slider">
-            <div>
-              <span id="slider-left">Smooth</span>
-              <v-slider
-                v-model="slider3"
-                :max="4"
-                step="1"
-                ticks="always"
-                tick-size="5"
-                color="#e1a957"
-                track-color="#821a33"
-                track-fill-color="#821a33"
-              ></v-slider>
-              <span id="slider-right">Tannic</span>
-            </div>
-            <div class="slider-value">
-              <span>1</span>
-              <span>2</span>
-              <span>3</span>
-              <span>4</span>
-              <span>5</span>
-            </div>
-          </div>
-        </div>
-        <div class="preference-item3-item">
-          <span>Body</span>
-          <div id="item3-item-slider">
-            <div>
-              <span id="slider-left">Light</span>
-              <v-slider
-                v-model="slider4"
-                :max="4"
-                step="1"
-                ticks="always"
-                tick-size="1"
-                color="#e1a957"
-                track-color="#821a33"
-                track-fill-color="#821a33"
-              ></v-slider>
-              <span id="slider-right">Bold</span>
-            </div>
-            <div class="slider-value">
-              <span>1</span>
-              <span>2</span>
-              <span>3</span>
-              <span>4</span>
-              <span>5</span>
-            </div>
-          </div>
-        </div>
-        <button id="okBtn">선택완료</button>
-      </div>
-
-      <!-- ############################################ -->
-      <!-- ########## end 와인 취향 ########### -->
     </div>
+    <p v-for="(name, index) in preferenceList" :key="index">
+      {{name.name}}
+    </p>
   </div>
 </template>
 
 <script>
 import Card from "@/components/item/Card.vue";
+import * as mypageApi from "@/api/mypageApi";
 
 const FIRST_STAGE = 1,
   SECOND_STAGE = 2,
@@ -292,7 +173,9 @@ export default {
   components: {
     Card,
   },
-  created() {
+  mounted() {
+    console.log("넘겨받는놈");
+    console.log(this.preferenceList);
     for (var i = 0; i < this.preferenceList.length; i++) {
       const item = {
         flavor_id: this.preferenceList[i].flavor_id,
@@ -309,7 +192,8 @@ export default {
       else this.list5.push(item);
     }
   },
-  mounted() {},
+  // created() {
+  // },
   data: () => ({
     curStage: 1,
     lickCnt: 0,
@@ -439,6 +323,13 @@ export default {
         }
         console.log();
       }
+    },
+    async submit() {
+      const preferenceDTO = {
+        dlslikeList: this.hateList,
+        likeList: this.likeList,
+      }
+      await mypageApi.updatePreference(preferenceDTO);
     },
   },
 };

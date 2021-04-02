@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.ssafy.yourwine.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,13 +27,6 @@ import com.ssafy.yourwine.model.entity.TopTen;
 import com.ssafy.yourwine.model.entity.User;
 import com.ssafy.yourwine.model.entity.Wine;
 import com.ssafy.yourwine.model.key.FlavorKey;
-import com.ssafy.yourwine.repository.DislikeFlavorRepository;
-import com.ssafy.yourwine.repository.LikeFlavorRepository;
-import com.ssafy.yourwine.repository.TasteDegreeRepository;
-import com.ssafy.yourwine.repository.TopTenRepository;
-import com.ssafy.yourwine.repository.UserRepository;
-import com.ssafy.yourwine.repository.WineFlavorRepository;
-import com.ssafy.yourwine.repository.WineRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,14 +36,12 @@ import lombok.RequiredArgsConstructor;
 public class RecoService {
 
 	ModelMapper modelMapper = new ModelMapper();
-	private final TasteDegreeRepository tasteDegreeRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final LikeFlavorRepository likeFlavorRepository;
 	private final DislikeFlavorRepository dislikeFlavorRepository;
 	private final UserRepository userRepository;
 	private final TopTenRepository topTenRepository;
 	private final WineRepository wineRepository;
-	private final WineFlavorRepository wineFlavorRepository;
 	private final TodayWineRepository todayWineRepository;
 	
 

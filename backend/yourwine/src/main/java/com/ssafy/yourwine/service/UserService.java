@@ -2,10 +2,12 @@ package com.ssafy.yourwine.service;
 
 import com.ssafy.yourwine.config.security.JwtTokenProvider;
 import com.ssafy.yourwine.model.dto.*;
+import com.ssafy.yourwine.model.entity.Flavor;
 import com.ssafy.yourwine.model.entity.Review;
 
 import com.ssafy.yourwine.model.entity.Scrap;
 import com.ssafy.yourwine.model.entity.User;
+import com.ssafy.yourwine.repository.FlavorRepository;
 import com.ssafy.yourwine.repository.ReviewRepository;
 import com.ssafy.yourwine.repository.ScrapRepository;
 import com.ssafy.yourwine.repository.UserRepository;
@@ -35,6 +37,7 @@ public class UserService {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final KakaoService kakaoService;
 	private final ReviewRepository reviewRepository;
+	private final FlavorRepository flavorRepository;
 	
     public void saveUser(UserDTO userDTO) {
         User user = modelMapper.map(userDTO, User.class);
@@ -218,5 +221,12 @@ public class UserService {
         List<ReviewDTO> reviewDTOList = reviewRepository.findByUser(user, pageRequest).stream().map(ReviewDTO::new).collect(Collectors.toList());
        //리뷰 최신순으로 정렬시킴. 코드추가
         return reviewDTOList;
+    }
+
+    public List<FlavorDTO> getFlavor(){
+        List<FlavorDTO> flavorDTOList = flavorRepository.findAll().stream().map(FlavorDTO::new)
+                .collect(Collectors.toList());
+
+        return flavorDTOList;
     }
 }

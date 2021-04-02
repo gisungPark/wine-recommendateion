@@ -74,8 +74,13 @@ public interface WineRepository extends JpaRepository<Wine, Long> {
 			Pageable pageable
  );
 	
+
 //	//싫어하는 선호도만 입력할 경우
 //	@Query(value = "select * from wine where wine_id not in (select distinct(wine_id) from wine_flavor where flavor_id in ?1) order by avg DESC", nativeQuery = true)
 //	List<Wine> findAllByDisLikeFlavor (List<Flavor> DisLikeFlavor, Pageable pageable);
 //	
+
+	List<Wine> findByGrape (Grape grape);
+	List<Wine> findByAvgGreaterThanEqual(float avg);
+
 }

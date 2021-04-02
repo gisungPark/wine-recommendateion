@@ -50,13 +50,16 @@ public class RecoService {
 	private final TopTenRepository topTenRepository;
 	private final WineRepository wineRepository;
 	private final WineFlavorRepository wineFlavorRepository;
+	private final TodayWineRepository todayWineRepository;
+	
 
 	public boolean checkPreference(String token) {
 		String userId = jwtTokenProvider.getUserId(token);
 		User user = userRepository.findByUserId(userId);
-		TasteDegree tasteDegree = tasteDegreeRepository.findByUser(user);
+		List<LikeFlavor> likeFlavorList = likeFlavorRepository.findByUser(user);
 
-		if (tasteDegree != null)
+
+		if(likeFlavorList.size() != 0)
 			return true;
 		else
 			return false;
@@ -65,18 +68,9 @@ public class RecoService {
 	public void updatePreference(String token, PreferenceDTO preferenceDTO) {
 		String userId = jwtTokenProvider.getUserId(token);
 		User user = userRepository.findByUserId(userId);
-		TasteDegree tasteDegree = tasteDegreeRepository.findByUser(user);
-		tasteDegree.setSweet(preferenceDTO.getTasteDTO().getSweet());
-		tasteDegree.setAcidity(preferenceDTO.getTasteDTO().getAcidity());
-		tasteDegree.setTannin(preferenceDTO.getTasteDTO().getTannin());
-		tasteDegree.setBody(preferenceDTO.getTasteDTO().getBody());
-		System.out.println("여기야1");
-		tasteDegreeRepository.save(tasteDegree);
-		System.out.println("여기야2");
 
 		likeFlavorRepository.deleteByUser(user);
 		dislikeFlavorRepository.deleteByUser(user);
-		System.out.println("여기야3");
 
 		for (FlavorDTO flavorDTO : preferenceDTO.getLikeList()) {
 			LikeFlavor likeFlavor = new LikeFlavor();
@@ -100,12 +94,6 @@ public class RecoService {
 
 	public void savePreference(String token, PreferenceDTO preferenceDTO) {
 		String userId = jwtTokenProvider.getUserId(token);
-		User user = userRepository.findByUserId(userId);
-		TasteDegree tasteDegree = modelMapper.map(preferenceDTO.getTasteDTO(), TasteDegree.class);
-		tasteDegree.setUserId(userId);
-		System.out.println(tasteDegree);
-
-		tasteDegreeRepository.save(tasteDegree);
 
 		for (FlavorDTO flavorDTO : preferenceDTO.getLikeList()) {
 			LikeFlavor likeFlavor = new LikeFlavor();
@@ -134,12 +122,11 @@ public class RecoService {
 		String userId = jwtTokenProvider.getUserId(token);
 		User user = userRepository.findByUserId(userId);
 
-		TasteDegree tasteDegree = tasteDegreeRepository.findByUser(user);
 		List<LikeFlavor> likeFlavorList = likeFlavorRepository.findByUser(user);
 		List<DislikeFlavor> dislikeFlavorList = dislikeFlavorRepository.findByUser(user);
 
-		TasteDTO tasteDTO = modelMapper.map(tasteDegree, TasteDTO.class);
-		for (LikeFlavor likeFlavor : likeFlavorList) {
+
+		for(LikeFlavor likeFlavor: likeFlavorList){
 			FlavorDTO flavorDTO = modelMapper.map(likeFlavor.getFlavor(), FlavorDTO.class);
 			likeList.add(flavorDTO);
 		}
@@ -149,7 +136,6 @@ public class RecoService {
 			dislikeList.add(flavorDTO);
 		}
 
-		preferenceDTO.setTasteDTO(tasteDTO);
 		preferenceDTO.setLikeList(likeList);
 		preferenceDTO.setDislikeList(dislikeList);
 
@@ -257,5 +243,12 @@ public class RecoService {
 
 		return wineDTOList;
 
+	}
+
+	public WineDTO getTodayWine() {
+
+		Wine wine = wineRepository.findByWineId(todayWineRepository.findAll().get(0).getWineId());
+		WineDTO wineDTO = modelMapper.map(wine, WineDTO.class);
+		return wineDTO;
 	}
 }

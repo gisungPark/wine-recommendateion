@@ -80,7 +80,7 @@ public interface WineRepository extends JpaRepository<Wine, Long> {
 //	List<Wine> findAllByDisLikeFlavor (List<Flavor> DisLikeFlavor, Pageable pageable);
 //	
 
-	List<Wine> findByGrape (Grape grape);
+
 	List<Wine> findByAvgGreaterThanEqual(float avg);
 
 }

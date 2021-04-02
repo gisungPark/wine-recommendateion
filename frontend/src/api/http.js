@@ -9,7 +9,7 @@ const instance = axios.create({
 
 console.log(store.state.userInfo.userInfo.token);
 //request 요청 전에 header에 토큰값을 넣기 위한 interceptor
-instance.interceptors.request.use(function (config) {
+instance.interceptors.request.use(function(config) {
   if (store.state.userInfo.userInfo.token !== null) {
     config['headers'] = {
       // Authorization: `Bearer ${store.state.auth.user.token}`,

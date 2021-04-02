@@ -5,32 +5,16 @@
       <div class="left-wrap">
         <span class="nav-title">Mypage</span>
         <div class="nav-btn">
-          <button
-            class="nav-btn-item1"
-            :class="{ 'nav-btn-active': isBtnClick(1) }"
-            @click="onPreferenceSetting(1)"
-          >
+          <button class="nav-btn-item1" :class="{ 'nav-btn-active': isBtnClick(1) }" @click="onPreferenceSetting(1)">
             Scrap
           </button>
-          <button
-            class="nav-btn-item2"
-            :class="{ 'nav-btn-active': isBtnClick(2) }"
-            @click="onPreferenceSetting(2)"
-          >
+          <button class="nav-btn-item2" :class="{ 'nav-btn-active': isBtnClick(2) }" @click="onPreferenceSetting(2)">
             Review
           </button>
-          <button
-            class="nav-btn-item3"
-            :class="{ 'nav-btn-active': isBtnClick(3) }"
-            @click="onPreferenceSetting(3)"
-          >
+          <button class="nav-btn-item3" :class="{ 'nav-btn-active': isBtnClick(3) }" @click="onPreferenceSetting(3)">
             Statistics
           </button>
-          <button
-            class="nav-btn-item4"
-            :class="{ 'nav-btn-active': isBtnClick(4) }"
-            @click="onPreferenceSetting(4)"
-          >
+          <button class="nav-btn-item4" :class="{ 'nav-btn-active': isBtnClick(4) }" @click="onPreferenceSetting(4)">
             Favorite
           </button>
         </div>
@@ -41,27 +25,18 @@
       <div class="right-wrap">
         <div v-show="this.screenState != 4" class="content">
           <div class="imgBox">
-            <img
-              class="profile"
-              :src="this.userInfo.profile"
-              alt="프로필 이미지"
-            />
+            <img class="profile" :src="this.userInfo.profile" alt="프로필 이미지" />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>
           <div class="content-item" v-show="this.screenState == 1"></div>
           <div class="content-item" v-show="this.screenState == 2">
-            <MyReviews
-              v-for="(review, idx) in reviews"
-              :key="idx"
-              :review="review"
-              :userInfo="userInfo"
-            />
+            <MyReviews v-for="(review, idx) in reviews" :key="idx" :review="review" :userInfo="userInfo" />
             <Reviews />
           </div>
           <div class="content-item" v-show="this.screenState == 3"></div>
         </div>
         <div v-show="this.screenState == 4" class="content4">
-          <PreferenceSetting :preferenceList="preferenceList" />
+          <PreferenceSetting :preferenceList="getDiviedFlavors" />
         </div>
       </div>
     </div>
@@ -69,11 +44,11 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-import * as mypageApi from "@/api/mypageApi";
-import MyReviews from "@/components/static/mypage/MyReviews.vue";
-import Reviews from "@/components/static/reviews/Reviews.vue";
-import PreferenceSetting from "@/components/static/mypage/PreferenceSetting.vue";
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+import * as mypageApi from '@/api/mypageApi';
+import MyReviews from '@/components/static/mypage/MyReviews.vue';
+import Reviews from '@/components/static/reviews/Reviews.vue';
+import PreferenceSetting from '@/components/static/mypage/PreferenceSetting.vue';
 
 const SCRAP = 1;
 const REVIEW = 2;
@@ -81,7 +56,7 @@ const STATISTICS = 3;
 const FRAVORITE = 4;
 
 export default {
-  name: "Mypage",
+  name: 'Mypage',
   components: {
     MyReviews,
     Reviews,
@@ -95,10 +70,13 @@ export default {
     preferenceList: [],
   }),
   computed: {
-    ...mapState("userInfo", ["userInfo"]),
-    ...mapState("nav", ["navActive"]),
+    ...mapState('userInfo', ['userInfo']),
+    ...mapState('nav', ['navActive']),
+    ...mapState('mypage', ['flavorList']),
+    ...mapGetters('mypage', ['getDiviedFlavors']),
   },
   methods: {
+    ...mapActions('mypage', ['actGetFlavor']),
     isBtnClick(index) {
       if (index == this.screenState) return true;
       else return false;
@@ -111,21 +89,25 @@ export default {
     },
     mypageFlavor() {
       return mypageApi.mypageFlavor();
-    }
+    },
   },
   created() {
-    console.log("넘겨주는놈");
+    this.actGetFlavor().then(() => {
+      console.log(this.getDiviedFlavors);
+    });
+
+    console.log('넘겨주는놈');
     const mypageReviews = this.mypageReview(1);
     const mypageFlavors = this.mypageFlavor();
 
     mypageReviews.then((response) => {
-      this.reviews = response.data
-    })
+      this.reviews = response.data;
+    });
 
     mypageFlavors.then((response) => {
-      this.preferenceList = response.data
-    })
-  }
+      this.preferenceList = response.data;
+    });
+  },
 };
 </script>
 

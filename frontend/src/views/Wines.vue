@@ -256,6 +256,15 @@ export default {
   display: flex;
   flex-direction: row;
 }
+.content {
+  width: 100%;
+  height: 100%;
+  padding-left: 172px;
+  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .search {
   width: 75%;
   display: flex;
@@ -282,6 +291,11 @@ export default {
   width: 50px;
   height: 50px;
   margin-bottom: 5px;
+}
+
+#select-box {
+  position: relative;
+  margin-left: 65%;
 }
 /* #################################################### */
 /* 사이드 바 */

@@ -7,7 +7,7 @@ const instance = axios.create({
   // baseURL: 'http://i4c109.p.ssafy.io/api',
 });
 
-//request 요청 전에 header에 토큰값을 넣기 위한 interceptor
+// request 요청 전에 header에 토큰값을 넣기 위한 interceptor
 // instance.interceptors.request.use(function(config) {
 //   if (store.state.auth.user.token !== null) {
 //     config['headers'] = {

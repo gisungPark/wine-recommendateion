@@ -45,11 +45,6 @@ public class RecoController {
     @ApiOperation(value = "선호도 변경", notes="Parameter\n" +
             "- token(RequestHeader): 액세스 토큰\n" +
             "- PreferenceDTO\n" +
-            "-- flavorDTO\n" +
-            "--- sweet: 당도\n" +
-            "--- body: 바디감\n" +
-            "--- tannin: 탄닌\n" +
-            "--- acidity: 산도\n" +
             "-- likeList(List(FlavorDTO)): 좋아하는 향 ID 리스트\n" +
             "--- flavorId: 향 ID\n" +
             "--- flavorName: 향 이름\n" +
@@ -67,11 +62,6 @@ public class RecoController {
     @ApiOperation(value = "선호도 입력", notes="Parameter\n" +
             "- token(RequestHeader): 액세스 토큰\n" +
             "- PreferenceDTO\n" +
-            "-- flavorDTO\n" +
-            "--- sweet: 당도\n" +
-            "--- body: 바디감\n" +
-            "--- tannin: 탄닌\n" +
-            "--- acidity: 산도\n" +
             "-- likeList(List(FlavorDTO)): 좋아하는 향 ID 리스트\n" +
             "--- flavorId: 향 ID\n" +
             "--- flavorName: 향 이름\n" +
@@ -90,11 +80,6 @@ public class RecoController {
             "- token(RequestHeader): 액세스 토큰\n" +
             "Respnse(x)\n" +
             "- PreferenceDTO\n" +
-            "-- flavorDTO\n" +
-            "--- sweet: 당도\n" +
-            "--- body: 바디감\n" +
-            "--- tannin: 탄닌\n" +
-            "--- acidity: 산도\n" +
             "-- likeList(List(FlavorDTO)): 좋아하는 향 ID 리스트\n" +
             "--- flavorId: 향 ID\n" +
             "--- flavorName: 향 이름\n" +

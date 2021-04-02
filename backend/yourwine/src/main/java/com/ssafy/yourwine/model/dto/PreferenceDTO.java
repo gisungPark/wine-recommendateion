@@ -8,7 +8,6 @@ import java.util.List;
 @Data
 @ToString
 public class PreferenceDTO {
-	TasteDTO tasteDTO;
 	List<FlavorDTO> likeList;
 	List<FlavorDTO> dislikeList;
 }

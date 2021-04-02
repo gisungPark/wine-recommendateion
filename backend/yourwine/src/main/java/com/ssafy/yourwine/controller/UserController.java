@@ -161,4 +161,15 @@ public class UserController {
 		return reviewDTOList;
 	}
 
+	@GetMapping("/getFlavor")
+	@ApiOperation(value = "향 리스트", notes="Parameter\n" +
+			"- token(RequestHeader): 액세스 토큰\n" +
+			"Response\n" +
+			"")
+	public List<FlavorDTO> getFlavor(@RequestHeader("TOKEN") String token) {
+		List<FlavorDTO> flavorDTOList = userService.getFlavor();
+
+		return flavorDTOList;
+	}
+
 }

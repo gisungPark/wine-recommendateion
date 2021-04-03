@@ -153,28 +153,16 @@ export default {
     slider5: 2,
   }),
   mounted() {
-    console.log('넘겨받는놈');
-    // console.log(this.preferenceList);
-    // for (var i = 0; i < this.preferenceList.length; i++) {
-    //   const item = {
-    //     flavor_id: this.preferenceList[i].flavor_id,
-    //     name: this.preferenceList[i].name,
-    //     img: this.preferenceList[i].img,
-    //     isLike: false,
-    //     isHate: false,
-    //   };
-
-    //   if (i % 5 == 0) this.list1.push(item);
-    //   else if (i % 5 == 1) this.list2.push(item);
-    //   else if (i % 5 == 2) this.list3.push(item);
-    //   else if (i % 5 == 3) this.list4.push(item);
-    //   else this.list5.push(item);
-    // }
+    this.getPreference();
   },
-  // created() {
-  // },
-
   methods: {
+    async getPreference() {
+      const response = await mypageApi.getPreference();
+      for(var i = 0; i < response.data.length; i++){
+        // const index = response.data.likeList[i].flavor_id;
+        console.log(response.data.likeList[i].flavor_id);
+      }
+    },
     onClickStage(stage) {
       this.curStage = stage;
     },
@@ -288,11 +276,36 @@ export default {
       }
     },
     async submit() {
+      const dislikes = [];
+      const likes = [];
+      for (var i = 0; i < this.hateList.length; i++){
+        dislikes.push({
+          flavorId: this.hateList[i].flavor_id,
+          name: this.hateList[i].name
+        })
+      }
+      for (var i = 0; i < this.likeList.length; i++){
+        likes.push({
+          flavorId: this.likeList[i].flavor_id,
+          name: this.likeList[i].name
+        })
+      }
       const preferenceDTO = {
-        dlslikeList: this.hateList,
-        likeList: this.likeList,
+        dislikeList: dislikes,
+        likeList: likes,
       };
-      await mypageApi.updatePreference(preferenceDTO);
+
+      console.log("선호도");
+      console.log(preferenceDTO);
+
+      try {
+        const response = await mypageApi.updatePreference(preferenceDTO);
+        if(response.status === 200){
+          alert('정상적으로 입력 O')
+        }
+      } catch (error) {
+        alert('정상적으로 입력 X')
+      }
     },
   },
 };

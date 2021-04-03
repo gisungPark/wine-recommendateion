@@ -43,7 +43,8 @@ const getters = {
   },
 };
 const actions = {
-  async actGetFlavor({ commit }) {
+  async actGetFlavor({ commit }) {//context를 쓰면 다른 모듈에 있는 것도 쓸수 있음
+    //context쓰고 밑에 log 찍어보기
     try {
       const response = await mypageApi.mypageFlavor();
       if (response.status === 200) {
@@ -55,11 +56,26 @@ const actions = {
       alert('Flavor 카드를 불러오는 도중 문제가 발생했습니다.');
     }
   },
+  async actGetScrap({ commit }) {
+    try {
+      const response = await mypageApi.mypageScrap();
+      if (response.status === 200) {
+        // console.log(response);
+        commit('SET_SCRAPS', response.data);
+      }
+    } catch (error) {
+      console.log(error);
+      alert('Scrap을 불러오는 도중 문제가 발생했습니다.');
+    }
+  }
 };
 const mutations = {
   SET_FLAVORS(state, payload) {
     state.flavors = payload;
   },
+  SET_SCRAPS(state, payload) {
+    state.scraps = payload;
+  }
 };
 
 export default {

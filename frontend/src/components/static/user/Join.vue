@@ -256,8 +256,9 @@ export default {
           nickname: this.nickname,
           password: this.password,
         };
+        console.log("회원가입");
+        console.log(UserDTO);
         const response = await authApi.join(UserDTO);
-        console.log(response);
         alert("회원 가입 성공!!");
       } else {
         alert("입력을 확인하세요");

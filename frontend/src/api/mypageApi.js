@@ -11,3 +11,11 @@ export function mypageFlavor(){
 export function updatePreference(payload){
     return http.put('/reco/updatePreference', payload);
 }
+
+export function getPreference(){
+    return http.post(`/reco/getPreference`);
+}
+
+export function mypageScrap(){
+    return http.get(`/user/getScrap`);
+}

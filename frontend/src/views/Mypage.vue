@@ -72,11 +72,11 @@ export default {
   computed: {
     ...mapState('userInfo', ['userInfo']),
     ...mapState('nav', ['navActive']),
-    ...mapState('mypage', ['flavorList']),
+    ...mapState('mypage', ['flavors','scraps']),
     ...mapGetters('mypage', ['getDiviedFlavors']),
   },
   methods: {
-    ...mapActions('mypage', ['actGetFlavor']),
+    ...mapActions('mypage', ['actGetFlavor','actGetScrap']),
     isBtnClick(index) {
       if (index == this.screenState) return true;
       else return false;
@@ -87,25 +87,18 @@ export default {
     mypageReview(num) {
       return mypageApi.mypageReview(num);
     },
-    mypageFlavor() {
-      return mypageApi.mypageFlavor();
-    },
   },
   created() {
     this.actGetFlavor().then(() => {
       console.log(this.getDiviedFlavors);
     });
+    
+    this.actGetScrap();
 
-    console.log('넘겨주는놈');
     const mypageReviews = this.mypageReview(1);
-    const mypageFlavors = this.mypageFlavor();
 
     mypageReviews.then((response) => {
       this.reviews = response.data;
-    });
-
-    mypageFlavors.then((response) => {
-      this.preferenceList = response.data;
     });
   },
 };

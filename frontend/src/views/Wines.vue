@@ -53,11 +53,9 @@
           <option value="3">높은 별점순</option>
         </select>
       </div>
-      <div style="min-height: 600px">
-        <transition-group name="slideup" mode="out-in">
-          <Winelist class="winelist" key="0" :wines="wines" />
-        </transition-group>
-      </div>
+      <transition-group name="slideup" mode="out-in">
+        <Winelist class="winelist" key="0" :wines="wines" />
+      </transition-group>
 
       <!-- ################################ -->
       <!-- 필터링 모달 ###################### -->

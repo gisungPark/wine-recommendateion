@@ -115,46 +115,120 @@ export default {
     },
   },
   methods: {
-    ...mapMutations('loginDialog', ['SET_JOIN_TOGGLE']),
+    ...mapMutations("loginDialog", ["SET_JOIN_TOGGLE"]),
+    inputInit() {
+      this.email = "";
+      this.password = "";
+      this.passwordConfirm = "";
+      this.nickname = "";
+      this.msg.emailMsg = "";
+      this.msg.passwordMsg = "";
+      this.msg.passwordCheckMsg = "";
+      this.msg.emailMsg = "";
+    },
+
     close() {
       this.SET_JOIN_TOGGLE();
     },
-    join() {},
+    emailDuplicate(email) {
+      return authApi.duplicate(email);
+    },
+
+    nicknameDuplicate(nickname) {
+      return authApi.nicknameDuplicate(nickname);
+    },
 
     // #########################################################
     //start 입력형식 체크
-    emailCheck() {
+    async emailCheck() {
       const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      if (!pattern.test(this.email)) this.msg.emailMsg = '이메일 형식이 올바르지 않습니다.';
-      else {
-        this.msg.emailMsg = '';
-        // ##################### email 중복체크 #####################
-        authApi
-          .duplicate(this.email)
-          .then((response) => {
-            console.log(response);
-            // #######################################
+      if (!pattern.test(this.email)) {
+        this.msg.emailMsg = "이메일 형식이 올바르지 않습니다.";
+        return false;
+      } else {
+        this.msg.emailMsg = "";
+        try {
+          const response = await this.emailDuplicate(this.email);
+          console.log(response);
+          if (response.data) {
+            console.log(this.email + " 은 이미 존재하는 이메일 입니다.!!!");
+            this.msg.emailMsg = "이미 존재하는 이메일입니다. ";
+            return false;
+          } else {
+            console.log(this.email + " 은 사용가능한 이메일 입니다.!!!");
+          }
+        } catch (error) {
+          console.log(error);
+          return false;
+        }
+      }
+      return true;
+    },
 
-            // #######################################
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+    pwCheck() {
+      if (this.password.length < 5) {
+        this.msg.passwordMsg = "비밀번호 최소 길이는 5글자 입니다.";
+        return false;
+      } else {
+        this.msg.passwordMsg = "";
+        return true;
       }
     },
-    pwCheck() {
-      if (this.password.length < 5) this.msg.passwordMsg = '비밀번호 최소 길이는 5자 입니다.';
-      else this.msg.passwordMsg = '';
-    },
+
     pwConfirmCheck() {
-      if (this.password !== this.passwordConfirm) this.msg.passwordCheckMsg = '비밀번호가 일치하지 않습니다.';
-      else this.msg.passwordCheckMsg = '';
+      if (this.password !== this.passwordConfirm) {
+        this.msg.passwordCheckMsg = "비밀번호가 일치하지 않습니다.";
+        return false;
+      } else {
+        this.msg.passwordCheckMsg = "";
+        return true;
+      }
     },
-    nicknameCheck() {
-      this.msg.nicknameMsg = '이미 존재하는 닉네임입니다.';
+
+    // ##################### nickname 중복체크 #####################
+    async nicknameCheck() {
+      if (this.nickname.length < 3) {
+        this.msg.nicknameMsg = "닉네임 최소 길이는 3글자 입니다.";
+        return false;
+      } else {
+        this.msg.nicknameMsg = "";
+        try {
+          const response = await this.nicknameDuplicate(this.nickname);
+          if (response.data) {
+            this.msg.nicknameMsg = "이미 존재하는 닉네임입니다. ";
+            return false;
+          } else {
+            console.log(this.nickname + " 은 사용가능한 닉네임 입니다.!!!");
+          }
+        } catch (error) {
+          console.log(error);
+          return false;
+        }
+        return true;
+      }
     },
     //end 입력형식 체크
     // #########################################################
+    async join() {
+      if (
+        this.emailCheck() &&
+        this.pwCheck() &&
+        this.pwConfirmCheck() &&
+        this.nicknameCheck()
+      ) {
+        const UserDTO = {
+          email: this.email,
+          nickname: this.nickname,
+          password: this.password,
+        };
+        console.log("회원가입");
+        console.log(UserDTO);
+        const response = await authApi.join(UserDTO);
+        alert("회원 가입 성공!!");
+      } else {
+        alert("입력을 확인하세요");
+      }
+    },
   },
 };
 </script>

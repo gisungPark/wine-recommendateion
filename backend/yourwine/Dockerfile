@@ -1,5 +1,5 @@
 FROM rtfpessoa/ubuntu-jdk8
-ADD build/libs/test-1.0-SNAPSHOT.jar app.jar
+ADD build/libs/*.jar app.jar
 ENV JAVA_OPTS=""
 EXPOSE 8080
 

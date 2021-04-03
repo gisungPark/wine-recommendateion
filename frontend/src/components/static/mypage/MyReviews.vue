@@ -8,7 +8,7 @@
     <div class="reviews-item">
       <div class="wine-name">{{ review.wineName }}</div>
       <div class="review-content">
-        <span>{{ review.reviewTitle }} </span>
+        <span>{{ review.contents }} </span>
       </div>
       <div style="height: 20px"></div>
 
@@ -38,21 +38,21 @@
                 d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
               />
             </svg>
-            <span style="color: #626262">4.5</span>
+            <span style="color: #626262">{{review.point}}</span>
           </div>
-          <div v-show="this.review.priceScore == 1" class="cost-rating">
+          <div v-show="this.review.cost == 1" class="cost-rating">
             <div class="cost-rating-icon blue">
               <img src="@/assets/images/smiley-1.png" />
             </div>
             <span>가성비</span>
           </div>
-          <div v-show="this.review.priceScore == 2" class="cost-rating">
+          <div v-show="this.review.cost == 2" class="cost-rating">
             <div class="cost-rating-icon orange">
               <img src="@/assets/images/smiley-2.png" />
             </div>
             <span>가성비</span>
           </div>
-          <div v-show="this.review.priceScore == 3" class="cost-rating">
+          <div v-show="this.review.cost == 3" class="cost-rating">
             <div class="cost-rating-icon red">
               <img src="@/assets/images/smiley-3.png" />
             </div>

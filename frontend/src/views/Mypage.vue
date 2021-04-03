@@ -62,7 +62,6 @@ export default {
     Reviews,
     PreferenceSetting,
   },
-
   data: () => ({
     cnt: 4,
     screenState: 1,

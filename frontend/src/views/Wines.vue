@@ -47,36 +47,18 @@
       <div id="select-box">
         <select v-model="sort" class="style-chooser">
           <option disabled value="0">Sort</option>
-          <option value="1">낮은 가격순</option>
-          <option value="2">높은 가격순</option>
-          <option value="3">낮은 별점순</option>
-          <option value="4">높은 별점순</option>
+          <option value="0">낮은 가격순</option>
+          <option value="1">높은 가격순</option>
+          <option value="2">낮은 별점순</option>
+          <option value="3">높은 별점순</option>
         </select>
       </div>
-
       <transition-group name="slideup" mode="out-in">
-        <!-- <Winelist class="winelist" key="0" :wines="wines0" v-if="contentState === 0" />
-        <Winelist class="winelist" key="1" :wines="wines1" v-if="contentState === 1" />
-        <Winelist class="winelist" key="2" :wines="wines1" v-if="contentState === 2" />
-        <Winelist class="winelist" key="3" :wines="wines2" v-if="contentState === 3" /> -->
+        <Winelist class="winelist" key="0" :wines="wines" />
       </transition-group>
-      <button style="width: 150px; height: 30px; color: white" @click="print">
-        클릭하세요!!
-      </button>
-      <div
-        v-for="(item, index) in 5"
-        :key="index"
-        style="
-          width: 90%;
-          height: 150px;
-          background-color: #707070;
-          margin: 5px;
-        "
-      ></div>
 
       <!-- ################################ -->
       <!-- 필터링 모달 ###################### -->
-
       <!-- 1. 가격 필터링!!!  -->
       <div
         v-show="this.contentState === 1"
@@ -173,6 +155,7 @@
         <div style="height: 10px"></div>
         <select v-model="grapeFilter" class="grape-chooser">
           <option disabled value="전체">품종을 선택하세요</option>
+          <option value="전체">전체</option>
           <option value="피노누아">피노누아</option>
           <option value="쉬라즈">쉬라즈</option>
           <option value="소비뇽블랑">소비뇽블랑</option>
@@ -192,6 +175,7 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import * as wineApi from "@/api/wine";
 import Winelist from "@/components/articles/Winelist.vue";
 
 export default {
@@ -199,15 +183,19 @@ export default {
   components: {
     Winelist,
   },
-
+  created() {
+    this.onSearch();
+  },
   data: () => ({
     contentState: -1,
+    page: 1,
     keyword: "", // 검색어
     sort: 0, // 정렬 조건
-    pointFilter: 5, // 별점 조건
+    pointFilter: 0, // 별점 조건
     priceRange: [0, 50000], //startPrice, endPrice
     grapeFilter: "전체", //품종 조건
     typeFilter: "전체", // 와인 종류 조건
+    wines: [],
   }),
   computed: {
     ...mapState("userInfo", ["userInfo"]),
@@ -218,16 +206,35 @@ export default {
       if (this.contentState === index) this.contentState = -1;
       else this.contentState = index;
     },
-    onSearch() {
-      alert(this.keyword + " 를 검색하셨습니다.");
-    },
-    print() {
-      console.log(this.sort);
-      console.log(this.pointFilter);
-      console.log(this.priceRange[0] + " ~ " + this.priceRange[1]);
-      console.log(this.grapeFilter);
-      console.log(this.typeFilter);
-      console.log("#######################");
+    async onSearch() {
+      const response = await wineApi.search(
+        this.page,
+        this.keyword,
+        this.sort,
+        this.pointFilter,
+        this.typeFilter,
+        this.grapeFilter,
+        this.priceRange[0],
+        this.priceRange[1]
+      );
+      console.log(response);
+      if (response.status == 200) {
+        this.wines = response.data;
+        for (var i = 0; i < this.wines.length; i++) {
+          console.log(
+            this.wines[i].wineId +
+              "/ " +
+              this.wines[i].kname +
+              "/ " +
+              this.wines[i].grape.kname +
+              "/ " +
+              this.wines[i].avg +
+              "/ " +
+              this.wines[i].price
+          );
+        }
+        console.log("###########################");
+      }
     },
   },
 };
@@ -256,6 +263,15 @@ export default {
   display: flex;
   flex-direction: row;
 }
+.content {
+  width: 100%;
+  height: 100%;
+  padding-left: 172px;
+  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .search {
   width: 75%;
   display: flex;
@@ -282,6 +298,11 @@ export default {
   width: 50px;
   height: 50px;
   margin-bottom: 5px;
+}
+
+#select-box {
+  position: relative;
+  margin-left: 65%;
 }
 /* #################################################### */
 /* 사이드 바 */

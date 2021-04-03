@@ -23,6 +23,13 @@ public interface WineRepository extends JpaRepository<Wine, Long> {
 
 	List<Wine> findAll();
 
+	
+	//유저가 쓴 리뷰기준 와인 리스트 
+	@Query(value = "select w.* from review as r join wine as w "
+			+ "on r. wine_id = w.wine_id "
+			+ "where user_id = ?1", nativeQuery = true)
+	List<Wine> findAllByUserReview (String userId);
+	
 	// 선호도 다 입력할 경우
 	@Query(value = "select * from wine where wine_id in "
 			+ "(select distinct(w.wine_id) from wine_flavor as w where w.flavor_id in ?1 "
@@ -74,6 +81,8 @@ public interface WineRepository extends JpaRepository<Wine, Long> {
 			Pageable pageable
  );
 	
+	@Query(value = "select * from wine where wine_id in ?1", nativeQuery = true)
+	List<Wine> findAllByWineList (int[] wineId);
 
 //	//싫어하는 선호도만 입력할 경우
 //	@Query(value = "select * from wine where wine_id not in (select distinct(wine_id) from wine_flavor where flavor_id in ?1) order by avg DESC", nativeQuery = true)

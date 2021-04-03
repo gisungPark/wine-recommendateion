@@ -5,7 +5,7 @@
         <img
           src="https://img.wine21.com/NEWS_MST/froala/202103/20210308162645658299.jpg"
           class="fr-fic fr-dib"
-          style="width: 700px"
+          style="width: 100%"
         />&nbsp;
       </p>
       <p style="margin-top: 10px">

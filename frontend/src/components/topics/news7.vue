@@ -15,6 +15,7 @@
         <img
           class="fr-fic fr-dib"
           src="https://img.wine21.com/NEWS_MST/froala/202103/20210318100240117120.jpg"
+          style="width: 100%"
         />
       </p>
       <p style="text-align: justify"><br /></p>

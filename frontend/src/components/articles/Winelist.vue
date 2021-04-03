@@ -71,7 +71,6 @@ export default {
     return {
       wineListType: true,
       wineStyles: [],
-      wineSubtitle: [],
       wineType: [],
       itemCountInLine: 0,
     };
@@ -140,7 +139,7 @@ export default {
       }
     },
     clickedWine(index) {
-      alert(`${index} item clicked!`);
+      this.$router.push(`/detail/${this.wines[index].id}`);
     },
   },
 };
@@ -238,6 +237,7 @@ export default {
   width: 500px;
   height: 295px;
   padding: 1.5rem;
+  cursor: pointer;
   transform: rotate(-90deg) translate(-500px, 100px);
   transform-origin: top left;
   transition: opacity 0.5s ease;

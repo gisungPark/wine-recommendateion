@@ -80,6 +80,12 @@
         <swiper-slide><Topten /></swiper-slide>
         <swiper-slide><Topten /></swiper-slide>
         <swiper-slide><Topten /></swiper-slide>
+        <div class="swiper-button-prev swiper-button-white" slot="button-prev">
+          <div class="left-arrow "></div>
+        </div>
+        <div class="swiper-button-next swiper-button-white" slot="button-next">
+          <div class="right-arrow "></div>
+        </div>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
     </section>
@@ -90,10 +96,11 @@
 import { mapState } from 'vuex';
 import Scrap from '@/components/button/Scrap.vue';
 import * as interaction from '@/assets/js/interaction.js';
-import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
-import 'swiper/swiper-bundle.css';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import 'swiper/css/swiper.css';
 import Topten from '@/components/main/Topten.vue';
 
+import * as scroll from '@/assets/js/scroll.js';
 export default {
   name: 'Main',
   components: {
@@ -139,7 +146,11 @@ export default {
         freeMode: true,
         pagination: {
           el: '.swiper-pagination',
-          clickable: true,
+          dynamicBullets: true,
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
         },
       },
     };
@@ -160,6 +171,7 @@ export default {
     // interaction section 제어
     interaction.main();
     // breath(this.$refs.titleSub);
+    // scroll.smoothScroll(this.$refs.main);
   },
 };
 
@@ -240,9 +252,10 @@ section {
 }
 .stop {
 }
-
+/* *************************************************************************** */
 /* TODO: section 1 영역 */
 /* FIXME:  */
+/* **************************************************************************** */
 #main-section-0 {
   overflow: hidden;
 }
@@ -459,5 +472,55 @@ span {
   top: 20%;
   width: 100%;
   height: 80%;
+}
+.swiper-pagination {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  pointer-events: none;
+  background-color: transparent;
+  transform: translateX(-50%);
+}
+.left-arrow,
+.right-arrow {
+  width: 100px;
+  height: 100px;
+  background-color: red;
+}
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: 0;
+}
+.swiper-button-prev {
+  left: 42%;
+}
+.swiper-button-next {
+  right: 42%;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  display: none;
+}
+</style>
+
+<style>
+.swiper-pagination-bullet {
+  border-radius: 1rem;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 10rem;
+  display: inline-block;
+  background-color: #e4c18c;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+.swiper-pagination-bullet-active {
+  background-color: var(--basic-color-key) !important;
+  /* width: 2rem; */
+  opacity: 1;
+}
+.swiper-pagination-bullet {
+  margin: 0 1rem;
 }
 </style>

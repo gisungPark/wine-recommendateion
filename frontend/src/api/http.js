@@ -12,7 +12,7 @@ const instance = axios.create({
 //   if (store.state.auth.user.token !== null) {
 //     config['headers'] = {
 //       // Authorization: `Bearer ${store.state.auth.user.token}`,
-//       auth_token: store.state.auth.user.token,
+//       token: store.state.auth.user.token,
 //     };
 //     // config.headers.Authorization = store.state.token;
 //   }

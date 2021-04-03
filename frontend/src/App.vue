@@ -2,9 +2,9 @@
   <div id="app">
     <Nav id="navigation" />
     <GuideBtn id="guide-btn" />
-    <LoginModal />
+    <LoginModal id="login-modal" />
     <transition name="opacity">
-      <router-view id="router-view" />
+      <router-view id="router-view" ref="routerView" />
     </transition>
   </div>
 </template>
@@ -15,7 +15,7 @@ import Nav from './components/static/Nav.vue';
 import GuideBtn from './components/static/GuideBtn.vue';
 import LoginModal from './components/static/user/Login.vue';
 
-import * as Scroll from '@/assets/js/Scroll.js';
+import * as scroll from '@/assets/js/scroll.js';
 
 export default {
   name: 'App',
@@ -29,10 +29,12 @@ export default {
       transitionName: 'slide',
     };
   },
-  created() {
-    Scroll.smoothScroll();
+  created() {},
+  mounted() {
+    // scroll.smoothScroll(document.querySelector('#router-view'));
+    // scroll.smoothScroll(this.$refs.router);
+    scroll.semi(document);
   },
-  mounted() {},
   computed: {},
   watch: {
     // $route(to, from) {
@@ -65,6 +67,21 @@ body {
 .opacity-leave {
   opacity: 1;
 }
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s ease;
+}
+.fade-enter,
+.fade-leave-to {
+  transform: scale(0.9);
+  opacity: 0;
+}
+.fade-enter-to,
+.fade-leave {
+  transform: scale(1);
+  opacity: 1;
+}
 </style>
 
 <style scoped>
@@ -82,9 +99,11 @@ body {
   pointer-events: none;
   z-index: 10;
 }
-
-#router-view {
+#login-modal {
   position: absolute;
+}
+#router-view {
+  position: relative;
   width: 100%;
   overflow-x: hidden;
   top: 0;

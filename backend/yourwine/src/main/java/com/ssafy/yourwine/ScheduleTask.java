@@ -40,7 +40,7 @@ public class ScheduleTask {
 			TopTen topTen = new TopTen();
 
 			List<Review> reviewList = reviewRepository.findByWine(wine);
-			int sum = 0;
+			double sum = 0;
 			double devSqvSum = 0;
 			double avg;
 			double std;

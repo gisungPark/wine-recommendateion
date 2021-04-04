@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://10.0.3.226:3306/yourwine?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://yourwine.cvhx9cl9iaf8.ap-northeast-2.rds.amazonaws.com:3306/yourwine?serverTimezone=Asia/Seoul
     username: yourwine
     password: yourwineC102
     driver-class-name: com.mysql.cj.jdbc.Driver

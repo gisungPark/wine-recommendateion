@@ -24,4 +24,9 @@ export default [
     view: 'WineDetails',
     name: 'WineDetials',
   },
+  {
+    path: '/toptic',
+    view: 'Topic',
+    name: 'Topic',
+  },
 ];

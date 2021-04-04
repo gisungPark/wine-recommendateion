@@ -180,7 +180,7 @@
       <div class="section-title">Review</div>
       <div class="sec-3-part">
         <div class="avg">
-          <span class="b-title">{{ detail.wineDto.avg }}</span>
+          <span class="b-title">{{ detail.wineDto.avg.toFixed(1) }}</span>
           <div class="star">
             <div class="star-rate" :style="{ width: starRate + 'rem' }"></div>
             <div class="star-rate-bg"></div>
@@ -192,7 +192,8 @@
         <div class="review-data-frame">
           <div class="review-item" v-for="(review, index) in detail.reviewList" :key="review.nickname + index">
             <div class="profile">
-              <img :src="detail.wineDto.img" alt="프로필 이미지" />
+              <img v-if="review.userImg != null" class="profile-img" :src="review.userImg" alt="프로필 이미지" />
+              <div v-else class="profile-img"></div>
               <p>{{ review.nickname }}</p>
             </div>
             <div class="review-data">
@@ -202,7 +203,7 @@
               </div>
               <div class="review-text-frame">
                 <div class="balloon">
-                  <p>{{ review.text }}</p>
+                  <p>{{ review.contents }}</p>
                 </div>
               </div>
             </div>
@@ -637,7 +638,8 @@ section {
   position: relative;
 }
 .star-rate {
-  position: relative;
+  position: absolute;
+  top: 0;
   z-index: 1;
   width: 3rem;
   height: 3rem;
@@ -646,8 +648,7 @@ section {
   background-repeat: repeat-x;
 }
 .star-rate-bg {
-  position: absolute;
-  top: 0;
+  position: relative;
   z-index: 0;
   width: 15rem;
   height: 3rem;
@@ -865,15 +866,16 @@ section {
 .sec-3-part .avg {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
 }
 .sec-3-part .avg span {
   display: block;
   font-size: 18rem;
 }
 .sec-3-part .avg .star {
-  margin: 2rem 3rem;
-  transform: scale(2) translate(-25%);
+  width: 20rem;
+  margin-top: 2rem;
+  transform: scale(2);
   width: auto;
 }
 
@@ -891,7 +893,7 @@ section {
   flex-direction: column;
   align-items: flex-end;
 }
-.sec-3-part .profile img {
+.sec-3-part .profile-img {
   width: 4rem;
   height: 4rem;
   margin-bottom: 0.5rem;

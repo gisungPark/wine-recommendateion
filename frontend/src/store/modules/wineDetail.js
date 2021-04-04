@@ -71,6 +71,15 @@ const INIT_DETAIL = () => {
         },
       },
     ],
+    costArray: [0, 0, 0],
+    flavorList: [
+      {
+        flavorId: 0,
+        name: '',
+      },
+    ],
+    scrap: false,
+    writeReview: false,
   };
 };
 

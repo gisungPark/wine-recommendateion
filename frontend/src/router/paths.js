@@ -20,6 +20,11 @@ export default [
     name: 'Wines',
   },
   {
+    path: '/detail/:id',
+    view: 'WineDetails',
+    name: 'WineDetials',
+  },
+  {
     path: '/toptic',
     view: 'Topic',
     name: 'Topic',

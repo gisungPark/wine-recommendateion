@@ -7,17 +7,21 @@ const instance = axios.create({
   // baseURL: 'http://i4c109.p.ssafy.io/api',
 });
 
-console.log(store.state.userInfo.userInfo.token);
-//request 요청 전에 header에 토큰값을 넣기 위한 interceptor
+// request 요청 전에 header에 토큰값을 넣기 위한 interceptor
 instance.interceptors.request.use(function(config) {
-  if (store.state.userInfo.userInfo.token !== null) {
+  if (store.state.userInfo.userInfo.token != null) {
     config['headers'] = {
       // Authorization: `Bearer ${store.state.auth.user.token}`,
       token: store.state.userInfo.userInfo.token,
     };
     // config.headers.Authorization = store.state.token;
+  } else {
+    config['headers'] = {
+      // Authorization: `Bearer ${store.state.auth.user.token}`,
+      TOKEN: 'guest',
+    };
   }
-  console.log(config);
+  // console.log(config);
   return config;
 });
 

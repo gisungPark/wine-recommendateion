@@ -17,42 +17,42 @@
     <section id="main-section-1">
       <div class="main-message wine-top sticky-elem"></div>
       <div class="main-message wine-name sticky-elem">
-        <h2 class="ename b-desc-e real-shadow-text">{{ wine.ename }}</h2>
+        <h2 class="ename b-desc-e real-shadow-text">{{ todaysWine.ename }}</h2>
       </div>
       <div class="main-message wine-name-sub sticky-elem">
         <hr />
-        <p class="kname">{{ wine.kname }}</p>
+        <p class="kname">{{ todaysWine.kname }}</p>
       </div>
       <div class="main-message wine-desc sticky-elem">
         <div class="pin"></div>
         <p class="r-desc">
-          <strong>{{ wine.year }}</strong>
-          {{ wine.detail }}
+          <strong>{{ todaysWine.year }}</strong>
+          {{ todaysWine.detail }}
         </p>
       </div>
       <div class="main-message wine-info sticky-elem">
         <div class="wine-info-item a">
-          <span>지역</span><span>{{ wine.area }}</span>
+          <span>지역</span><span>{{ todaysWine.area }}</span>
         </div>
         <hr />
         <div class="wine-info-item b">
-          <span>품종</span><span>{{ wine.grape_id }}</span>
+          <span>품종</span><span>{{ todaysWine.grape.kname }}</span>
         </div>
         <hr />
         <div class="wine-info-item c">
-          <span>종류</span><span>{{ wine.type }}</span>
+          <span>종류</span><span>{{ todaysWine.type }}</span>
         </div>
         <hr />
         <div class="wine-info-item d">
-          <span>알코올 도수</span><span>{{ wine.alchol }}</span>
+          <span>알코올 도수</span><span>{{ todaysWine.alcohol }}</span>
         </div>
         <hr />
         <div class="wine-info-item e">
-          <span>음용 온도</span><span>{{ wine.temper }}</span>
+          <span>음용 온도</span><span>{{ todaysWine.temper }}</span>
         </div>
         <hr />
         <div class="wine-info-item f">
-          <span>가격</span><span>{{ wine.price | currency }} 원</span>
+          <span>가격</span><span>{{ todaysWine.price | currency }} 원</span>
         </div>
         <hr />
       </div>
@@ -60,7 +60,7 @@
     <section id="main-section-2">
       <div class="main-message wine-review sticky-elem">
         <div class="frame">
-          <p class="b-desc">{{ avg }}</p>
+          <p class="b-desc">{{ todaysWine.avg.toFixed(1) }}</p>
           <Scrap class="scrap-btn" :scraped="true" />
         </div>
         <div class="star-rate" :style="{ width: starRate + 'vw' }"></div>
@@ -70,16 +70,9 @@
     <section id="main-section-3">
       <p class="topten-title b-title">Top 10</p>
       <swiper class="swiper" :options="swiperOption">
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
+        <swiper-slide class="topten-item" v-for="(item, index) in top10" :key="item.wineId + index"><Topten :wine="item"/></swiper-slide>
+        <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
+        <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
     </section>
@@ -87,13 +80,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import Scrap from '@/components/button/Scrap.vue';
 import * as interaction from '@/assets/js/interaction.js';
-import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
-import 'swiper/swiper-bundle.css';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import 'swiper/css/swiper.css';
 import Topten from '@/components/main/Topten.vue';
 
+import * as scroll from '@/assets/js/scroll.js';
 export default {
   name: 'Main',
   components: {
@@ -112,54 +106,52 @@ export default {
       show: false,
       title: `TODAY'S WINE`,
       subtitle: '',
-      wine: {
-        wine_id: `0`,
-        img: ``,
-        ename: `Morande, Pionero Rose`,
-        kname: `모란데, 피오네로 로제`,
-        type: `로제`,
-        area: `칠레`,
-        alchol: `13~14도`,
-        grape_id: `카베르네 소비뇽`,
-        temper: `11~14℃`,
-        price: `5100000`,
-        year: `2013`,
-        detail: `딸기, 블랙 베리의 향이 신선하게 다가오며 달콤한 맛이 적절한 산도와 상쾌한 과일 느낌과 함께 잘 어우러지는 와인이다.`,
-        sweet: 2,
-        acidity: 3,
-        body: 3,
-        tannin: 1,
-      },
-      avg: 4.5,
       starRate: 10,
       //swiper
       swiperOption: {
-        slidesPerView: 4.5,
+        slidesPerView: 'auto',
         spaceBetween: 30,
         freeMode: true,
         pagination: {
           el: '.swiper-pagination',
-          clickable: true,
+          dynamicBullets: true,
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
         },
       },
     };
   },
   created() {
-    // 별점에 따라 별 개수 동적 표시를 위해 width값 계산
-    this.starRate = this.starRate * this.avg;
-    // subtitle 생성, enmae에서 쉼표까지 텍스트 자르기
-    let index = -1;
-    index = this.wine.ename.indexOf(',');
-    if (index !== -1) {
-      this.subtitle = this.wine.ename.substring(0, index);
-    } else {
-      this.subtitle = this.wine.ename;
-    }
+    // vuex
+    this.actGetTodaysWine().then(() => {
+      // subtitle 생성, enmae에서 쉼표까지 텍스트 자르기
+      let index = -1;
+      index = this.todaysWine.ename.indexOf(',');
+      if (index !== -1) {
+        this.subtitle = this.todaysWine.ename.substring(0, index);
+      } else {
+        this.subtitle = this.todaysWine.ename;
+      }
+
+      // 별점에 따라 별 개수 동적 표시를 위해 width값 계산
+      this.starRate = this.starRate * this.todaysWine.avg;
+
+      interaction.main();
+    });
+    this.actGetTop10().then(() => {});
   },
   mounted() {
     // interaction section 제어
-    interaction.main();
     // breath(this.$refs.titleSub);
+    // scroll.smoothScroll(this.$refs.main);
+  },
+  computed: {
+    ...mapState('main', ['todaysWine', 'top10']),
+  },
+  methods: {
+    ...mapActions('main', ['actGetTodaysWine', 'actGetTop10']),
   },
 };
 
@@ -235,14 +227,15 @@ section {
   top: 50%;
   transform: translate(-50%, -50%);
   width: auto;
-  height: 60%;
+  height: 60vh;
   min-height: 550px;
 }
 .stop {
 }
-
+/* *************************************************************************** */
 /* TODO: section 1 영역 */
 /* FIXME:  */
+/* **************************************************************************** */
 #main-section-0 {
   overflow: hidden;
 }
@@ -421,7 +414,7 @@ span {
 .star-rate {
   width: 50vw;
   height: 10vw;
-  background-image: url(../assets/images/start.png);
+  background-image: url(../assets/images/star.png);
   background-size: contain;
   background-repeat: repeat-x;
 }
@@ -459,5 +452,53 @@ span {
   top: 20%;
   width: 100%;
   height: 80%;
+}
+.topten-item {
+  width: 380px;
+}
+.swiper-pagination {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  pointer-events: none;
+  background-color: transparent;
+  transform: translateX(-50%);
+}
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: 0;
+}
+.swiper-button-prev {
+  left: 42%;
+}
+.swiper-button-next {
+  right: 42%;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  transform: scale(0.5);
+  margin-top: 30px;
+}
+</style>
+
+<style>
+.swiper-pagination-bullet {
+  border-radius: 1rem;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 10rem;
+  display: inline-block;
+  background-color: #e4c18c;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+.swiper-pagination-bullet-active {
+  background-color: var(--basic-color-key) !important;
+  /* width: 2rem; */
+  opacity: 1;
+}
+.swiper-pagination-bullet {
+  margin: 0 1rem;
 }
 </style>

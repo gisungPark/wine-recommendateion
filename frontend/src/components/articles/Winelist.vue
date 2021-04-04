@@ -51,6 +51,7 @@
 </template>
 
 <script>
+import common from '@/assets/js/common.js';
 export default {
   name: 'Winelist',
   props: {
@@ -70,7 +71,6 @@ export default {
     return {
       wineListType: true,
       wineStyles: [],
-      wineSubtitle: [],
       wineType: [],
       itemCountInLine: 0,
     };
@@ -110,6 +110,7 @@ export default {
       const winelistWidth = this.$refs.winelist.offsetWidth;
       this.itemCountInLine = Math.floor(winelistWidth / 300);
       this.wineStyles = [];
+      5;
       for (let i = 0; i < this.wines.length; i++) {
         // 엇갈려 배치하기
         let nth = (i % this.itemCountInLine) + 1;
@@ -119,21 +120,7 @@ export default {
           this.wineStyles.push(true);
         }
         // 와인 type 영문화
-        switch (this.wines[i].type) {
-          case '레드':
-            this.wineType.push('Red Wine');
-            break;
-          case '화이트':
-            this.wineType.push('White wine');
-            break;
-          case '스파클링':
-            this.wineType.push('Sparkling');
-            break;
-          default:
-            this.wineType.push('error');
-            console.log('wine type error!');
-            break;
-        }
+        this.wineType.push(common.getEType(this.wines[i].type));
       }
       // wrap의 padding 동적 계산
       const blank = winelistWidth - this.itemCountInLine * 300;
@@ -152,7 +139,7 @@ export default {
       }
     },
     clickedWine(index) {
-      alert(`${index} item clicked!`);
+      this.$router.push(`/detail/${this.wines[index].id}`);
     },
   },
 };
@@ -250,6 +237,7 @@ export default {
   width: 500px;
   height: 295px;
   padding: 1.5rem;
+  cursor: pointer;
   transform: rotate(-90deg) translate(-500px, 100px);
   transform-origin: top left;
   transition: opacity 0.5s ease;

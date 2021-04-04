@@ -22,13 +22,14 @@ import { mapState, mapMutations } from 'vuex';
 import Sidebar from '@/components/articles/Sidebar.vue';
 import Winelist from '@/components/articles/Winelist.vue';
 
+import * as scroll from '@/assets/js/scroll.js';
+
 export default {
   name: 'Recommendation',
   components: {
     Sidebar,
     Winelist,
   },
-
   data: () => ({
     contentState: 0,
     sidebar: {
@@ -43,6 +44,7 @@ export default {
     },
     wines0: [
       {
+        id: 1,
         type: '레드',
         ename: 'wine name wine wine wine winewine name wine wine wine wine',
         kname: '와인 명',
@@ -52,6 +54,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '화이트',
         ename: 'wine name, wine wine wine wine',
         kname: '와인 명',
@@ -61,6 +64,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '스파클링',
         ename: 'wine name, wine wine wine wine',
         kname: '와인 명',
@@ -70,6 +74,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '레드',
         ename: 'wine name, wine wine wine wine',
         kname: '와인 명',
@@ -79,6 +84,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '레드',
         ename: 'wine name, wine wine wine wine',
         kname: '와인 명',
@@ -88,6 +94,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '레드',
         ename: 'wine name, wine wine wine wine',
         kname: '와인 명',
@@ -97,6 +104,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '레드',
         ename: 'wine name',
         kname: '와인 명',
@@ -106,6 +114,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '레드',
         ename: 'wine name',
         kname: '와인 명',
@@ -115,6 +124,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '레드',
         ename: '`Morande, Pionero Rose`',
         kname: '와인 명',
@@ -126,6 +136,7 @@ export default {
     ],
     wines1: [
       {
+        id: 1,
         type: '화이트',
         ename: 'wine name',
         kname: '와인 명',
@@ -135,6 +146,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '로제',
         ename: 'wine name',
         kname: '와인 명',
@@ -144,6 +156,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '레드',
         ename: 'wine name',
         kname: '와인 명',
@@ -153,6 +166,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '레드',
         ename: 'wine name',
         kname: '와인 명',
@@ -162,6 +176,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '레드',
         ename: 'wine name',
         kname: '와인 명',
@@ -171,6 +186,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '레드',
         ename: 'wine name',
         kname: '와인 명',
@@ -180,6 +196,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '레드',
         ename: 'wine name',
         kname: '와인 명',
@@ -189,6 +206,7 @@ export default {
         img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
       },
       {
+        id: 1,
         type: '레드',
         ename: '`Morande, Pionero Rose`',
         kname: '와인 명',
@@ -199,6 +217,9 @@ export default {
       },
     ],
   }),
+  mounted() {
+    // scroll.linear();
+  },
   computed: {
     ...mapState('userInfo', ['userInfo']),
     ...mapState('nav', ['navActive']),
@@ -226,10 +247,10 @@ export default {
 <style scoped>
 /* 트랜지션 */
 .slideup-leave-active {
-  transition: all 0.5s cubic-bezier(0, 1, 0.65, 1);
+  transition: transform 0.5s, opacity 0.5s cubic-bezier(0, 1, 0.65, 1);
 }
 .slideup-enter-active {
-  transition: all 0.5s cubic-bezier(0, 1, 0.65, 1) 0.5s;
+  transition: transform 0.5s cubic-bezier(0, 1, 0.65, 1) 0.5s, opacity 0.5s cubic-bezier(0, 1, 0.65, 1) 0.5s;
 }
 .slideup-enter,
 .slideup-leave-to {

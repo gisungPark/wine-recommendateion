@@ -159,7 +159,7 @@ public class StatisticService {
 		String[] lowStringList = lowString.substring(1, lowString.length() - 1).split(",");
 		String[] highStringList = highString.substring(1, highString.length() - 1).split(",");
 		
-		// string -> Long []
+		// string -> int []
 		int[] lowList = Arrays.asList(lowStringList).stream().mapToInt(Integer::parseInt).toArray();
 		int[] highList = Arrays.asList(highStringList).stream().mapToInt(Integer::parseInt).toArray();
 		

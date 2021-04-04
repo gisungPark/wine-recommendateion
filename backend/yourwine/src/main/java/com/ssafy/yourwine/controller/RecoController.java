@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.yourwine.model.dto.AvgRecoDTO;
 import com.ssafy.yourwine.model.dto.PreferenceDTO;
 import com.ssafy.yourwine.model.dto.PreferenceRecoDTO;
 import com.ssafy.yourwine.model.dto.TasteFilterDTO;
@@ -136,4 +137,12 @@ public class RecoController {
         return recoService.getTodayWine();
     }
 
+    //평점기반추천
+    @ApiOperation( value="평점 기반 추천 ",notes="리뷰가 없을 경우 writeReview = false, 리스트=null 반환한다. \n"
++"리뷰데이터가 있어도 평점기반추천은 1시간씩 배치작업으로 추천으로 뽑은 데이터가 DB에 들어가기때문에 없을 수도 있음. BatchData = false면 추천 불가 -> 멘트 필요 \n" +"리스트는 총 5개") 
+    @GetMapping("/avg-recolist")
+    public AvgRecoDTO getWineListByAvg (@RequestHeader("TOKEN") String token) {
+    	return recoService.getWineListByAvg(token);
+    }
+    
 }

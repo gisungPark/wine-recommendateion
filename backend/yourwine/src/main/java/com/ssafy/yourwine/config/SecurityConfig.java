@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/reco/getTodayWine","/reco/preference-recolist/**", "/reco/getTopten/**","/reco/food-recolist/**","/wine/**","/user/signup", "/user/checkemail/**", "/user/checknickname/**", "/user/checkuser",
+                .antMatchers("/reco/avg-recolist","/reco/getTodayWine","/reco/preference-recolist/**", "/reco/getTopten/**","/reco/food-recolist/**","/wine/**","/user/signup", "/user/checkemail/**", "/user/checknickname/**", "/user/checkuser",
                             "/user/login", "/user/checkmail", "/user/statistics/**")
                 .permitAll()
                 .antMatchers(

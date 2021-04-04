@@ -1,17 +1,43 @@
 <template>
   <div class="preference-fram">
     <div id="stage-line">
-      <div id="preference-stages-line1" :class="{ 'active-stage': isCurStage(2) }"></div>
-      <div id="preference-stages-line2" :class="{ 'active-stage': isCurStage(3) }"></div>
+      <div
+        id="preference-stages-line1"
+        :class="{ 'active-stage': isCurStage(2) }"
+      ></div>
+      <!-- <div
+        id="preference-stages-line2"
+        :class="{ 'active-stage': isCurStage(3) }"
+      ></div> -->
     </div>
     <div class="preference-stages">
       <div class="preference-stages-wrap">
-        <div class="stage" :class="{ 'active-stage': isCurStage(1) }" @click="onClickStage(1)"></div>
-        <a class="stage-name" :class="{ 'active-stage-name': isCurStage(1) }" href="#" @click="onClickStage(1)">좋아하는 향</a>
+        <div
+          class="stage"
+          :class="{ 'active-stage': isCurStage(1) }"
+          @click="onClickStage(1)"
+        ></div>
+        <a
+          class="stage-name"
+          :class="{ 'active-stage-name': isCurStage(1) }"
+          href="#"
+          @click="onClickStage(1)"
+          >좋아하는 향</a
+        >
       </div>
       <div class="preference-stages-wrap">
-        <div class="stage" :class="{ 'active-stage': isCurStage(2) }" @click="onClickStage(2)"></div>
-        <a class="stage-name" :class="{ 'active-stage-name': isCurStage(2) }" @click="onClickStage(2)" href="#">싫어하는 향</a>
+        <div
+          class="stage"
+          :class="{ 'active-stage': isCurStage(2) }"
+          @click="onClickStage(2)"
+        ></div>
+        <a
+          class="stage-name"
+          :class="{ 'active-stage-name': isCurStage(2) }"
+          @click="onClickStage(2)"
+          href="#"
+          >싫어하는 향</a
+        >
       </div>
     </div>
     <div class="preference-fillter">
@@ -92,19 +118,31 @@
             <span v-show="curStage == 2">Dislike list</span>
           </div>
           <div v-show="curStage == 1" class="selected-list-like">
-            <div class="selected-list-item" v-for="(item, idx) in likeList" :key="item + idx">
+            <div
+              class="selected-list-item"
+              v-for="(item, idx) in likeList"
+              :key="item + idx"
+            >
               <h1>{{ item.name }}</h1>
               <div id="cancleBtn" @click="removeItemFromList(1, item)"></div>
             </div>
           </div>
-          <span v-show="curStage == 1" class="count-display">{{ this.lickCnt }} / 3</span>
+          <span v-show="curStage == 1" class="count-display"
+            >{{ this.lickCnt }} / 3</span
+          >
           <div v-show="curStage == 2" class="selected-list-hate">
-            <div class="selected-list-item" v-for="(item, idx) in hateList" :key="item + idx">
+            <div
+              class="selected-list-item"
+              v-for="(item, idx) in hateList"
+              :key="item + idx"
+            >
               <h1>{{ item.name }}</h1>
               <div id="cancleBtn" @click="removeItemFromList(2, item)"></div>
             </div>
           </div>
-          <span v-show="curStage == 2" class="count-display">{{ this.hateCnt }} / 3</span>
+          <span v-show="curStage == 2" class="count-display"
+            >{{ this.hateCnt }} / 3</span
+          >
         </div>
 
         <!-- ############################################ -->
@@ -116,22 +154,23 @@
       </div>
       <!-- <div v-show="curStage == 2" class="preference-item2"></div> -->
     </div>
-    <p v-for="(name, index) in preferenceList" :key="index">
-      {{ name.name }}
-    </p>
+    <div style="color: white" v-for="(item, index) in likeList" :key="index">
+      {{ item.name }}
+    </div>
   </div>
 </template>
 
 <script>
-import Card from '@/components/item/Card.vue';
-import * as mypageApi from '@/api/mypageApi';
+import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
+import Card from "@/components/item/Card.vue";
+import * as mypageApi from "@/api/mypageApi";
 
 const FIRST_STAGE = 1,
   SECOND_STAGE = 2,
   THIRD_STAGE = 3;
 
 export default {
-  props: ['preferenceList'],
+  props: ["preferenceList"],
   components: {
     Card,
   },
@@ -144,25 +183,18 @@ export default {
     list3: [],
     list4: [],
     list5: [],
-    likeList: [],
-    hateList: [],
     slider1: 2,
     slider2: 2,
     slider3: 2,
     slider4: 2,
     slider5: 2,
   }),
-  mounted() {
-    this.getPreference();
+  created() {},
+  mounted() {},
+  computed: {
+    ...mapState("mypage", ["flavors", "likeList", "hateList"]),
   },
   methods: {
-    async getPreference() {
-      const response = await mypageApi.getPreference();
-      for(var i = 0; i < response.data.length; i++){
-        // const index = response.data.likeList[i].flavor_id;
-        console.log(response.data.likeList[i].flavor_id);
-      }
-    },
     onClickStage(stage) {
       this.curStage = stage;
     },
@@ -205,10 +237,10 @@ export default {
      * 배열에서 해당 객체 삭제 함수!!
      */
     removeItemFromList(stage, targe) {
-      let itemToFine = '';
+      let itemToFine = "";
       let removeIdx = -1;
       if (stage == FIRST_STAGE) {
-        itemToFine = this.likeList.find(function(item) {
+        itemToFine = this.likeList.find(function (item) {
           return item.flavor_id === targe.flavor_id;
         });
         removeIdx = this.likeList.indexOf(itemToFine);
@@ -218,7 +250,7 @@ export default {
           this.lickCnt--;
         }
       } else if (stage == SECOND_STAGE) {
-        itemToFine = this.hateList.find(function(item) {
+        itemToFine = this.hateList.find(function (item) {
           return item.flavor_id === targe.flavor_id;
         });
         removeIdx = this.hateList.indexOf(itemToFine);
@@ -238,7 +270,7 @@ export default {
         // 1. 좋아한다고 선택하는 경우
         if (!item.isLike) {
           if (!this.isSelectPossible(FIRST_STAGE)) {
-            alert('선택 가능한 갯수를 초과했습니다.');
+            alert("선택 가능한 갯수를 초과했습니다.");
             return;
           } else {
             this.likeList.push(item);
@@ -257,7 +289,7 @@ export default {
         if (item.isLike) return;
         if (!item.isHate) {
           if (!this.isSelectPossible(SECOND_STAGE)) {
-            alert('선택 가능한 갯수를 초과했습니다.' + this.hateCnt);
+            alert("선택 가능한 갯수를 초과했습니다." + this.hateCnt);
             return;
           } else {
             this.hateList.push(item);
@@ -268,7 +300,7 @@ export default {
           // 3. 좋아한다고 했다가 취소하는 경우
           this.removeItemFromList(SECOND_STAGE, item);
         }
-        console.log('싫어하는 리스트!!!   ' + this.hateCnt);
+        console.log("싫어하는 리스트!!!   " + this.hateCnt);
         for (var i = 0; i < this.hateList.length; i++) {
           console.log(this.hateList[i]);
         }
@@ -278,17 +310,17 @@ export default {
     async submit() {
       const dislikes = [];
       const likes = [];
-      for (var i = 0; i < this.hateList.length; i++){
+      for (var i = 0; i < this.hateList.length; i++) {
         dislikes.push({
           flavorId: this.hateList[i].flavor_id,
-          name: this.hateList[i].name
-        })
+          name: this.hateList[i].name,
+        });
       }
-      for (var i = 0; i < this.likeList.length; i++){
+      for (i = 0; i < this.likeList.length; i++) {
         likes.push({
           flavorId: this.likeList[i].flavor_id,
-          name: this.likeList[i].name
-        })
+          name: this.likeList[i].name,
+        });
       }
       const preferenceDTO = {
         dislikeList: dislikes,
@@ -300,11 +332,11 @@ export default {
 
       try {
         const response = await mypageApi.updatePreference(preferenceDTO);
-        if(response.status === 200){
-          alert('정상적으로 입력 O')
+        if (response.status === 200) {
+          alert("정상적으로 입력 O");
         }
       } catch (error) {
-        alert('정상적으로 입력 X')
+        alert("정상적으로 입력 X");
       }
     },
   },
@@ -322,6 +354,8 @@ export default {
   width: 100%;
   position: fixed;
   top: 133px;
+  left: calc(50% + 86px);
+  transform: translateX(-50%);
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -331,11 +365,11 @@ export default {
   height: 1px;
   background-color: #4e4c4c;
 }
-#preference-stages-line2 {
-  width: 32%;
+/* #preference-stages-line2 {
+  width: 18%;
   height: 1px;
   background-color: #4e4c4c;
-}
+} */
 .preference-stages {
   width: 100%;
   display: flex;

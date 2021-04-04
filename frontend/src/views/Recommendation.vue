@@ -13,22 +13,28 @@
         <Winelist class="winelist" key="2" :wines="wines1" v-if="contentState === 2" />
         <Winelist class="winelist" key="3" :wines="wines2" v-if="contentState === 3" />
       </transition-group>
+      <LineChart style="width:100%; height: 500px;" />
     </section>
   </div>
 </template>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script>
 import { mapState, mapMutations } from 'vuex';
 import Sidebar from '@/components/articles/Sidebar.vue';
 import Winelist from '@/components/articles/Winelist.vue';
 
 // import * as scroll from '@/assets/js/scroll.js';
+import VueCharts from 'vue-chartjs';
+import { Bar, Line } from 'vue-chartjs';
+import LineChart from '@/components/articles/LineChart';
 
 export default {
   name: 'Recommendation',
   components: {
     Sidebar,
     Winelist,
+    LineChart,
   },
   data: () => ({
     contentState: 0,

@@ -169,13 +169,24 @@
     <!--******************************************************************** -->
     <section id="detail-section-2" :style="{ backgroundColor: backgroundColor }">
       <div class="section-title">Detail</div>
-      <div class="sec-2-part">
+      <div class="sec-2-part-left">
+        <div v-for="n in 2" :key="n" class="food-svg-frame">
+          <FoodSvgs :foodId="n" />
+          <p>이탈리아 음식</p>
+        </div>
+        <!-- <FoodSvgs v-for="(item, index) in detail.foodList" :key="item.foodId + index" :foodId="item.foodId" /> -->
+      </div>
+      <div class="sec-2-part-right">
         <p>
           <span>"</span>
           {{ detail.wineDto.detail }}
         </p>
       </div>
     </section>
+
+    <!--******************************************************************** -->
+    <!--******************************************************************** -->
+    <!--******************************************************************** -->
     <section id="detail-section-3" :style="{ backgroundColor: backgroundColor }">
       <div class="section-title">Review</div>
       <div class="sec-3-part">
@@ -240,6 +251,7 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import 'swiper/css/swiper.css';
 
 import WineItem from '@/components/articles/WineItem.vue';
+import FoodSvgs from '@/components/articles/FoodSvgs.vue';
 
 import { mapState, mapActions } from 'vuex';
 
@@ -255,6 +267,7 @@ export default {
     Swiper,
     SwiperSlide,
     WineItem,
+    FoodSvgs,
   },
   data() {
     return {
@@ -834,7 +847,30 @@ section {
   align-items: center;
   position: relative;
 }
-.sec-2-part {
+.sec-2-part-left {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: absolute;
+  width: 50%;
+  height: auto;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #ffffff55;
+}
+.food-svg-frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 2rem;
+}
+.food-svg-frame p {
+  margin-top: 0.5rem;
+  font-size: 1.5rem;
+}
+.sec-2-part-right {
   margin-left: 50%;
   width: 30%;
 }

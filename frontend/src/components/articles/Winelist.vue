@@ -1,10 +1,10 @@
 <template>
   <div id="winelist" ref="winelist">
     <div
-      class="wineitem fadeup"
       v-for="(wine, index) in wines"
       :key="index + wine.ename + wine.marginTop"
       :style="{ marginTop: wine.marginTop }"
+      class="wineitem fadeup"
       :class="{ 'margin-top': wineStyles[index], red: wine.type === '레드', white: wine.type === '화이트', rose: wine.type === '스파클링' }"
       @click="clickedWine(index)"
     >
@@ -31,7 +31,7 @@
       <div class="info-thumb m-desc">
         <div class="info-thumb-part">
           <div class="info-thumb-type">
-            <div class="circle"></div>
+            <div class="circle" />
             <span>{{ wineType[index] }}</span>
           </div>
           <p class="info-thumb-subtitle">{{ wine.subtitle }}</p>
@@ -54,17 +54,17 @@
 import common from '@/assets/js/common.js';
 export default {
   name: 'Winelist',
+  filters: {
+    currency(val) {
+      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    },
+  },
   props: {
     wines: {
       type: Array,
       default: function() {
         return;
       },
-    },
-  },
-  filters: {
-    currency(val) {
-      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
   },
   data() {
@@ -74,6 +74,15 @@ export default {
       wineType: [],
       itemCountInLine: 0,
     };
+  },
+  watch: {
+    wines: {
+      deep: true,
+      handler() {
+        const beforeSize = this.wineStyles.length;
+        this.pushMarginTop(beforeSize);
+      },
+    },
   },
   created() {
     window.addEventListener('resize', this.setMarginTop);
@@ -94,15 +103,6 @@ export default {
   },
   mounted() {
     this.setMarginTop();
-  },
-  watch: {
-    wines: {
-      deep: true,
-      handler() {
-        const beforeSize = this.wineStyles.length;
-        this.pushMarginTop(beforeSize);
-      },
-    },
   },
   methods: {
     setMarginTop() {
@@ -245,7 +245,7 @@ export default {
 .info-thumb-part {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   color: white;
   text-shadow: 1px 1px 10px #000;
 }

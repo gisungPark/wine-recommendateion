@@ -33,9 +33,7 @@ server:
       timeout: 30
   ssl:
     enabled: true
-    key-alias: "yourwine"
-    key-store: "yourwine.pkcs12"
-    key-store-password: "yourwine"
-    key-password: "yourwine"
-    trust-store: "yourwinetrust.pkcs12"
-    trust-store-password: "yourwine"
+    key-store: keystore.p12
+    key-store-type: PKCS12
+    key-store-password: yourwine
+    key-alias: spring

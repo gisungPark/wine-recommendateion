@@ -22,7 +22,7 @@ import { mapState, mapMutations } from 'vuex';
 import Sidebar from '@/components/articles/Sidebar.vue';
 import Winelist from '@/components/articles/Winelist.vue';
 
-import * as scroll from '@/assets/js/scroll.js';
+// import * as scroll from '@/assets/js/scroll.js';
 
 export default {
   name: 'Recommendation',

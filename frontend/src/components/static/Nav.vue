@@ -3,14 +3,8 @@
     <section id="header">
       <div class="menu" @click="clickedMenu">
         <div class="menu-icon">
-          <div
-            class="line line-top"
-            :class="{ cross1: navActive, pop2: navActive }"
-          ></div>
-          <div
-            class="line line-bottom"
-            :class="{ cross2: navActive, pop2: navActive }"
-          ></div>
+          <div class="line line-top" :class="{ cross1: navActive, pop2: navActive }"></div>
+          <div class="line line-bottom" :class="{ cross2: navActive, pop2: navActive }"></div>
         </div>
         <p class="l-desc no-drag" :class="{ move: navActive, pop2: navActive }">
           MENU
@@ -18,20 +12,11 @@
       </div>
       <div class="logo" :class="{ left: logoState }">
         <h1 id="title">Your Wine</h1>
-        <img
-          src="../../assets/images/logo_w.png"
-          alt="logo image"
-          @click="clickedLogo"
-        />
+        <img src="../../assets/images/logo_w.png" alt="logo image" @click="clickedLogo" />
       </div>
     </section>
 
-    <section
-      id="nav-frame"
-      class="real-shadow-box"
-      :class="{ pop: navActive, change: changeState, hidden: hiddenState }"
-      @click="clickedMenuFrame"
-    >
+    <section id="nav-frame" class="real-shadow-box" :class="{ pop: navActive, change: changeState, hidden: hiddenState }" @click="clickedMenuFrame">
       <ul id="menu-list">
         <li class="menu-list-item b-desc-e no-drag" @click.stop="clickedRcomm">
           Recommendation
@@ -46,24 +31,23 @@
           Chart
         </li>
       </ul>
+      <div class="source">
+        wine21.com의 데이터를 활용하여 개발하였습니다.
+      </div>
     </section>
-    <div
-      class="bg-close"
-      :class="{ block: navActive }"
-      @click="clickedBackground"
-    ></div>
+    <div class="bg-close" :class="{ block: navActive }" @click="clickedBackground"></div>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+import { mapMutations, mapState } from 'vuex';
 
 export default {
-  name: "Nav",
+  name: 'Nav',
   data() {
     return {
-      routeWithoutSidebar: ["Main"],
-      routeWithSidebar: ["Mypage", "Recommendation"],
+      routeWithoutSidebar: ['Main'],
+      routeWithSidebar: ['Mypage', 'Recommendation'],
       logoState: false, //false => center, true => 사이드바 영역만큼 오른쪽으로 치우침
       // router 전환 상태 관리
       changeState: false,
@@ -71,7 +55,7 @@ export default {
     };
   },
   computed: {
-    ...mapState("nav", ["navActive"]),
+    ...mapState('nav', ['navActive']),
   },
 
   watch: {
@@ -91,7 +75,7 @@ export default {
     },
   },
   methods: {
-    ...mapMutations("nav", ["SET_NAV_TOGGLE", "SET_NAV_CLOSE"]),
+    ...mapMutations('nav', ['SET_NAV_TOGGLE', 'SET_NAV_CLOSE']),
     menuTransition() {
       this.changeState = true;
       setTimeout(() => {
@@ -108,23 +92,23 @@ export default {
     },
     clickedRcomm() {
       this.menuTransition();
-      this.$router.push({ name: "Recommendation" });
+      this.$router.push({ name: 'Recommendation' });
     },
     clickedWines() {
       this.menuTransition();
-      this.$router.push({ name: "Wines" });
+      this.$router.push({ name: 'Wines' });
     },
     clickedTopic() {
       this.menuTransition();
-      this.$router.push({ name: "Topic" });
+      this.$router.push({ name: 'Topic' });
     },
     clickedChart() {
       this.menuTransition();
-      this.$router.push({ name: "Recommendation" });
+      this.$router.push({ name: 'Recommendation' });
     },
     // 메인 페이지로 이동
     clickedLogo() {
-      this.$router.push({ name: "Main" });
+      this.$router.push({ name: 'Main' });
     },
     // 배경 클릭시 메뉴 닫기
     clickedBackground() {
@@ -138,6 +122,16 @@ export default {
 </script>
 
 <style scoped>
+.source {
+  margin: 0 auto;
+  position: absolute;
+  font-weight: 700;
+  left: 50%;
+  bottom: 3rem;
+  color: #fff;
+  transform: translateX(-50%);
+}
+
 .change {
   padding-left: 100%;
   background-color: var(--basic-color-bg) !important;
@@ -268,8 +262,7 @@ export default {
   box-sizing: border-box;
   background-color: rgba(100, 100, 100, 0.5);
   transform: translate(-100%, 0);
-  transition: padding-left 0.5s, background-color 0.5s, backdrop-filter 0.5s,
-    transform 0.5s cubic-bezier(0, 1, 0.65, 1);
+  transition: padding-left 0.5s, background-color 0.5s, backdrop-filter 0.5s, transform 0.5s cubic-bezier(0, 1, 0.65, 1);
 
   -webkit-backdrop-filter: saturate(180%) blur(100px);
   -moz-backdrop-filter: saturate(180%) blur(100px);

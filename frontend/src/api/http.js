@@ -3,7 +3,8 @@ import axios from 'axios';
 import store from '../store/index';
 
 const instance = axios.create({
-  baseURL: 'http://10.0.3.226:8080',
+  // baseURL: 'http://10.0.3.226:8080',
+  baseURL: 'https://15.164.99.118:8081',
   // baseURL: 'http://i4c109.p.ssafy.io/api',
 });
 
@@ -21,7 +22,7 @@ instance.interceptors.request.use(function(config) {
       TOKEN: 'guest',
     };
   }
-  // console.log(config);
+  console.log(config);
   return config;
 });
 

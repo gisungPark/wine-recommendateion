@@ -15,7 +15,7 @@ import Nav from './components/static/Nav.vue';
 import GuideBtn from './components/static/GuideBtn.vue';
 import LoginModal from './components/static/user/Login.vue';
 
-import * as scroll from '@/assets/js/scroll.js';
+// import * as scroll from '@/assets/js/scroll.js';
 
 export default {
   name: 'App',

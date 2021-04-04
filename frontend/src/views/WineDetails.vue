@@ -360,7 +360,7 @@ export default {
     ...mapState('wineDetail', ['detail']),
   },
   methods: {
-    // vuex
+    // vuex!
     ...mapActions('wineDetail', ['actGetWineDetail']),
 
     // vue 페이지 내 활용
@@ -800,6 +800,7 @@ section {
   background-color: #f86161;
 }
 .left-bottom .gauge {
+  margin-top: 3px;
   background-color: #fc2121;
 }
 .right-top span,
@@ -817,6 +818,7 @@ section {
   background-color: #fe9a43;
 }
 .right-bottom .gauge {
+  margin-top: 3px;
   background-color: #5a0707;
 }
 

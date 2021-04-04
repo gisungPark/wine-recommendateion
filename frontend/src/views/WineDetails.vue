@@ -1,16 +1,15 @@
 <template>
-  <!-- <div ref="wineDetails" id="wine-details" :style="{ color: fontColor }" :class="{ 'prevent-scroll': grapeInfoState }"> -->
   <div ref="wineDetails" id="wine-details" :style="{ color: fontColor }">
-    <img :src="wine.img" :alt="`${wine.kname} 와인의 이미지`" id="detail-wine-img" />
+    <img :src="`${this.s3url}${detail.wineDto.wineId}.png`" :alt="`${detail.wineDto.kname} 와인의 이미지`" id="detail-wine-img" />
     <section id="detail-section-0" :style="{ backgroundColor: backgroundColor }">
       <!-- 왼쪽 -->
       <div class="sec-0-part">
         <p class="ename">
-          <span>{{ wine.year }}</span>
-          {{ wine.ename }}
+          <span>{{ detail.wineDto.year }}</span>
+          {{ detail.wineDto.ename }}
         </p>
         <div class="bar" :style="{ backgroundColor: fontColor }"></div>
-        <p class="kname">{{ wine.kname }}</p>
+        <p class="kname">{{ detail.wineDto.kname }}</p>
         <div class="sub-info">
           <svg :style="{ fill: fontColor }" class="icon" height="512" viewBox="0 0 505 505" width="512" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -19,7 +18,7 @@
           </svg>
           <div class="data">
             <p class="key">Grape</p>
-            <p class="value">{{ wine.grape_id }}</p>
+            <p class="value">{{ detail.wineDto.grape.kname }}</p>
           </div>
           <!-- modal -->
           <div ref="modalInitPosition"></div>
@@ -45,7 +44,7 @@
             </svg>
             <transition name="fade">
               <p v-if="grapeInfoTextState" class="grape-info-modal-text">
-                {{ wine.grape_info }}
+                {{ detail.wineDto.grape.detail }}
               </p>
             </transition>
           </div>
@@ -62,7 +61,7 @@
           </svg>
           <div class="data">
             <p class="key">From</p>
-            <p class="value">{{ wine.area }}</p>
+            <p class="value">{{ detail.wineDto.area }}</p>
           </div>
         </div>
         <div class="sub-info">
@@ -77,7 +76,7 @@
           </svg>
           <div class="data">
             <p class="key">Temperature</p>
-            <p class="value">{{ wine.temper }}</p>
+            <p class="value">{{ detail.wineDto.temper }}</p>
           </div>
         </div>
         <div class="sub-info">
@@ -89,7 +88,7 @@
           </svg>
           <div class="data">
             <p class="key">Flavor</p>
-            <p class="value">{{ wine.flavor }}</p>
+            <span class="value" v-for="(item, index) in this.detail.flavorList" :key="item.flavorId + index">{{ item.name }}, </span>
           </div>
         </div>
         <div class="bar" :style="{ backgroundColor: fontColor }"></div>
@@ -103,10 +102,10 @@
       </div>
       <!-- 오른쪽 -->
       <div class="sec-0-part">
-        <p class="price">₩ {{ wine.price | currency }}</p>
+        <p class="price">₩ {{ detail.wineDto.price | currency }}</p>
         <div class="bar" :style="{ backgroundColor: fontColor }"></div>
         <div class="avg">
-          <span>{{ wine.avg }}</span>
+          <span>{{ detail.wineDto.avg }}</span>
           <div class="star">
             <div class="star-rate" :style="{ width: starRate + 'rem' }"></div>
             <div class="star-rate-bg"></div>
@@ -135,7 +134,7 @@
           <span>ACIDITY</span>
           <div class="frame">
             <div v-for="n in 4" :key="n" class="line" :style="{ backgroundColor: backgroundColor }"></div>
-            <div class="gauge" ref="sweet"></div>
+            <div class="gauge" ref="acidity"></div>
           </div>
         </div>
       </div>
@@ -152,7 +151,7 @@
           <span>TANNIN</span>
           <div class="frame">
             <div v-for="n in 4" :key="n" class="line" :style="{ backgroundColor: backgroundColor }"></div>
-            <div class="gauge" ref="sweet"></div>
+            <div class="gauge" ref="tannin"></div>
           </div>
         </div>
         <div class="line right-bottom" :style="{ backgroundColor: fontColor }">
@@ -160,7 +159,7 @@
           <span>BODY</span>
           <div class="frame">
             <div v-for="n in 4" :key="n" class="line" :style="{ backgroundColor: backgroundColor }"></div>
-            <div class="gauge" ref="sweet"></div>
+            <div class="gauge" ref="body"></div>
           </div>
         </div>
       </div>
@@ -173,7 +172,7 @@
       <div class="sec-2-part">
         <p>
           <span>"</span>
-          {{ wine.detail }}
+          {{ detail.wineDto.detail }}
         </p>
       </div>
     </section>
@@ -181,7 +180,7 @@
       <div class="section-title">Review</div>
       <div class="sec-3-part">
         <div class="avg">
-          <span class="b-title">{{ wine.avg }}</span>
+          <span class="b-title">{{ detail.wineDto.avg }}</span>
           <div class="star">
             <div class="star-rate" :style="{ width: starRate + 'rem' }"></div>
             <div class="star-rate-bg"></div>
@@ -191,9 +190,9 @@
       <div class="wine-blank"></div>
       <div class="sec-3-part">
         <div class="review-data-frame">
-          <div class="review-item" v-for="(review, index) in reviews" :key="review.nickname + index">
+          <div class="review-item" v-for="(review, index) in detail.reviewList" :key="review.nickname + index">
             <div class="profile">
-              <img :src="wine.img" alt="프로필 이미지" />
+              <img :src="detail.wineDto.img" alt="프로필 이미지" />
               <p>{{ review.nickname }}</p>
             </div>
             <div class="review-data">
@@ -208,6 +207,9 @@
               </div>
             </div>
           </div>
+          <div class="review-show">
+            <span class="b-title" @click="clickedShowReview">Show more review</span>
+          </div>
         </div>
       </div>
     </section>
@@ -221,15 +223,7 @@
         Wines?
       </div>
       <swiper class="swiper" :options="swiperOption2" ref="moreWineSwiper">
-        <swiper-slide class="slide"><WineItem :wine="wine"/></swiper-slide>
-        <swiper-slide class="slide"><WineItem :wine="wine"/></swiper-slide>
-        <swiper-slide class="slide"><WineItem :wine="wine"/></swiper-slide>
-        <swiper-slide class="slide"><WineItem :wine="wine"/></swiper-slide>
-        <swiper-slide class="slide"><WineItem :wine="wine"/></swiper-slide>
-        <swiper-slide class="slide"><WineItem :wine="wine"/></swiper-slide>
-        <swiper-slide class="slide"><WineItem :wine="wine"/></swiper-slide>
-        <swiper-slide class="slide"><WineItem :wine="wine"/></swiper-slide>
-        <swiper-slide class="slide"><WineItem :wine="wine"/></swiper-slide>
+        <swiper-slide v-for="(item, index) in detail.moreWineList" :key="item.wineId + index" class="slide"><WineItem :wine="item"/></swiper-slide>
         <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
         <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
         <div class="swiper-pagination" slot="pagination"></div>
@@ -245,6 +239,8 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import 'swiper/css/swiper.css';
 
 import WineItem from '@/components/articles/WineItem.vue';
+
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'WineDetails',
@@ -278,51 +274,6 @@ export default {
       },
       grapeInfoState: false,
       grapeInfoTextState: false,
-      reviews: [
-        {
-          img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
-          nickname: '다희짱짱다희짱짱다희짱짱다희짱짱',
-          rate: 4,
-          text: `와린이 입문용으로 강추요~
-굉장히 달달하고 좀 묵직한 편이에요!`,
-        },
-        {
-          img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
-          nickname: '시백이시백이시백이시백이',
-          rate: 3,
-          text: `가성비 굿입니다~ 근데 좀 달긴해요
-그래도 치즈랑 같이 먹으면 궁합 굳
-`,
-        },
-        {
-          img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
-          nickname: '와인덕후',
-          rate: 4,
-          text: `와인덕후로서 한 말씀드리자면,,
-이렇게 단 와인은 입에서 음미하기보다 맛있게 냠냠 후루룹짭짭 배불렁`,
-        },
-      ],
-      wine: {
-        wine_id: `1`,
-        img: 'https://images.vivino.com/thumbs/1mRIannXRIqzf7FwQCmaJg_pb_x600.png',
-        ename: `Morande, Pionero Rose`,
-        kname: `모란데, 피오네로 로제`,
-        type: `레드`,
-        area: `칠레`,
-        alchol: `13~14도`,
-        grape_id: `카베르네 소비뇽`,
-        temper: `11~14℃`,
-        price: `5100000`,
-        year: `2013`,
-        flavor: `시트러스`,
-        detail: `딸기, 블랙 베리의 향이 신선하게 다가오며 달콤한 맛이 적절한 산도와 상쾌한 과일 느낌과 함께 잘 어우러지는 와인이다.`,
-        sweet: 2,
-        acidity: 3,
-        body: 3,
-        tannin: 1,
-        avg: '4.5',
-        grape_info: `카베르네 소비뇽(Cabernet Sauvignon)은 거의 모든 와인생산국에서 재배되는 레드 품종이다. 유전자 분석에 따르면, 카베르네 프랑(Cabernet Franc)과 소비뇽 블랑(Sauvignon Blanc)의 접합종이다. 카베르네 소비뇽은 거의 전세계 와인산지에서 재배되며, 와인은 기후, 토양, 와인 양조방식에 따라 제각기 다른 맛을 낸다. 카베르네 소비뇽은 포도가 완전히 익으려면 따뜻한 기후가 필요해 피노 누아(Pinot Noir)보다는 온난한 기후에서 재배가 잘 된다. 서늘한 해에는 와인에 피망 향이 스치며, 지나치게 더운 해에는 잼 같은 느낌으로 조리된 블랜커런트 풍미를 낸다. 카베르네 소비뇽의 명성은 보르도 메독처럼 배수가 잘되는 자갈 토양에서 잘 자란다. 카베르네 소비뇽은 보르도에서는 거의 대부분 다른 품종, 예를 들어, 메를로, 카베르네 프랑, 말벡, 쁘띠 베르도가 블렌딩에 사용된다. 호주에서는 카베르네 품종에 쉬라즈 품종을 혼합하기도 한다. 카베르네 소비뇽은 블랙커런트, 블랙체리, 자두 향이 특징적이며, 숙성되면 삼나무와 담배 상자 풍미를 낸다. 포도의 완숙도가 살짝 부족한 경우, 피망향 혹은 식물성 향이 스치기도 한다. 카베르네 소비뇽은 이외 담배, 유칼립투스 향도 지니며, 숙성에 따라 더 복합적인 풍미를 준다. 대부분의 카베르네 소비뇽 와인들은 수확 년도에서 9~12년 사이 시음 적정기에 들며, 매우 긴 숙성 잠재력을 지닌다. 카베르네 소비뇽으로 만든 와인은 풍미가 풍부해서 구운 양 고기, 소고기 스테이크, 구운 가금류 등이 잘 어울리며, 이외 버섯이 들어간 음식, 비프 스튜 등도 잘 어울린다.카베르네 소비뇽(Cabernet Sauvignon)은 거의 모든 와인생산국에서 재배되는 레드 품종이다. 유전자 분석에 따르면, 카베르네 프랑(Cabernet Franc)과 소비뇽 블랑(Sauvignon Blanc)의 접합종이다. 카베르네 소비뇽은 거의 전세계 와인산지에서 재배되며, 와인은 기후, 토양, 와인 양조방식에 따라 제각기 다른 맛을 낸다. 카베르네 소비뇽은 포도가 완전히 익으려면 따뜻한 기후가 필요해 피노 누아(Pinot Noir)보다는 온난한 기후에서 재배가 잘 된다. 서늘한 해에는 와인에 피망 향이 스치며, 지나치게 더운 해에는 잼 같은 느낌으로 조리된 블랜커런트 풍미를 낸다. 카베르네 소비뇽의 명성은 보르도 메독처럼 배수가 잘되는 자갈 토양에서 잘 자란다. 카베르네 소비뇽은 보르도에서는 거의 대부분 다른 품종, 예를 들어, 메를로, 카베르네 프랑, 말벡, 쁘띠 베르도가 블렌딩에 사용된다. 호주에서는 카베르네 품종에 쉬라즈 품종을 혼합하기도 한다. 카베르네 소비뇽은 블랙커런트, 블랙체리, 자두 향이 특징적이며, 숙성되면 삼나무와 담배 상자 풍미를 낸다. 포도의 완숙도가 살짝 부족한 경우, 피망향 혹은 식물성 향이 스치기도 한다. 카베르네 소비뇽은 이외 담배, 유칼립투스 향도 지니며, 숙성에 따라 더 복합적인 풍미를 준다. 대부분의 카베르네 소비뇽 와인들은 수확 년도에서 9~12년 사이 시음 적정기에 들며, 매우 긴 숙성 잠재력을 지닌다. 카베르네 소비뇽으로 만든 와인은 풍미가 풍부해서 구운 양 고기, 소고기 스테이크, 구운 가금류 등이 잘 어울리며, 이외 버섯이 들어간 음식, 비프 스튜 등도 잘 어울린다.`,
-      },
       swiperOption2: {
         slidesPerView: 'auto',
         spaceBetween: 30,
@@ -337,6 +288,9 @@ export default {
           prevEl: '.swiper-button-prev',
         },
       },
+      // 이미지 postion 조절
+      targetImg: null,
+      targetYScroll: null,
     };
   },
   created() {
@@ -344,46 +298,83 @@ export default {
     this.id = this.$route.params.id;
     //TODO: 와인 데이터 요청
 
-    // 한글 와인 타입 영문화
-    this.type = common.getEType(this.wine.type);
-    // 별점에 따라 별 개수 동적 표시를 위해 width값 계산
-    this.starRate = this.starRate * this.wine.avg;
-    // 리뷰 3개 별점 계산
-    this.reviews.forEach((element) => {
-      this.starRateReview.push(1 * element.rate);
-    });
-
     // 모달 위치 초기화
     window.addEventListener('resize', this.initModalPosition);
+    window.addEventListener('scroll', this.imgPositionChanger);
+
+    // vuex
+    this.actGetWineDetail(this.id).then(() => {
+      // 한글 와인 타입 영문화
+      this.type = common.getEType(this.detail.wineDto.type);
+      // 별점에 따라 별 개수 동적 표시를 위해 width값 계산
+      this.starRate = this.starRate * this.detail.wineDto.avg;
+      // 리뷰 3개 별점 계산
+      this.detail.reviewList.forEach((element) => {
+        this.starRateReview.push(1 * element.point);
+      });
+
+      // 배경색 동적 할당
+      this.backgroundColor = common.getTypeColor(this.detail.wineDto.type);
+      // 텍스트 색 설정
+      switch (this.detail.wineDto.type) {
+        case '레드':
+          this.fontColor = '#EDDB4B';
+          break;
+        case '화이트':
+        case '스파클링':
+          this.fontColor = '#9A040C';
+          break;
+        default:
+          console.log('wine type error!');
+          this.fontColor = '#fff';
+          break;
+      }
+      // 모달 버튼 위치 초기화
+      this.initModalPosition();
+      // 맛 게이지 초기화
+      const sweetGauge = this.detail.wineDto.sweet * 2;
+      const acidityGauge = this.detail.wineDto.acidity * 2;
+      const tanninGauge = this.detail.wineDto.tannin * 2;
+      const bodyGauge = this.detail.wineDto.body * 2;
+      this.$refs.sweet.style.transform = `translateY(-${sweetGauge}rem)`;
+      this.$refs.acidity.style.transform = `translateY(-${acidityGauge}rem)`;
+      this.$refs.tannin.style.transform = `translateY(-${tanninGauge}rem)`;
+
+      this.$refs.body.style.transform = `translateY(-${bodyGauge}rem)`;
+
+      // wine.img position chanager
+      this.targetImg = document.querySelector('detail-wine-img');
+      this.targetYScroll = document.body.offsetHeight - window.innerHeight * 2;
+    });
   },
   destroyed() {
     window.removeEventListener('resize', this.initModalPosition);
+    window.removeEventListener('scroll', thiss.imgPositionChanger);
   },
   mounted() {
-    // 배경색 동적 할당
-    this.backgroundColor = common.getTypeColor(this.wine.type);
-    // 텍스트 색 설정
-    switch (this.wine.type) {
-      case '레드':
-        this.fontColor = '#EDDB4B';
-        break;
-      case '화이트':
-      case '스파클링':
-        this.fontColor = '#9A040C';
-        break;
-      default:
-        console.log('wine type error!');
-        this.fontColor = '#fff';
-        break;
-    }
     //TODO: 마운트 되었을 때 스크롤 살짝 내려서 애니메이션 동작하도록 설정
     //TODO: 그냥 등장 시키자....
-    this.initModalPosition();
+  },
+  computed: {
+    ...mapState(['s3url']),
+    ...mapState('wineDetail', ['detail']),
   },
   methods: {
-    initModalPosition() {
-      // modal 위치 초기화
+    // vuex
+    ...mapActions('wineDetail', ['actGetWineDetail']),
 
+    // vue 페이지 내 활용
+    imgPositionChanger() {
+      // 와인 이미지가 detail-section-3 중앙까지 위치 후 고정 됨
+      if (window.pageYOffset <= this.targetYScroll) {
+        this.targetImg.position = 'fixed';
+      } else {
+        this.targetImg.position = 'absolute';
+      }
+    },
+
+    // modal 위치 초기화
+    initModalPosition() {
       this.modalPosition.left = this.$refs.modalInitPosition.offsetLeft;
       this.modalPosition.top = this.$refs.modalInitPosition.offsetTop;
       this.$refs.modalWrap.style.top = `${this.modalPosition.top}px`;
@@ -396,7 +387,6 @@ export default {
       //active 상태의 top설정
       const targetTop = window.pageYOffset + this.modalPosition.viewportTop;
       this.$refs.modalWrap.style.top = `${targetTop}px`;
-
       setTimeout(() => {
         this.grapeInfoTextState = true;
       }, 400);
@@ -411,13 +401,12 @@ export default {
       }, 510);
     },
     closeModal() {
-      // fixed에서 -> absolute로 전환=
+      // fixed에서 -> absolute로 전환
       this.modalPosition.transitionState = true;
       const targetTop = window.pageYOffset + this.modalPosition.viewportTop;
       this.$refs.modalWrap.style.top = `${targetTop}px`;
       this.$refs.modalWrap.style.position = 'absolute';
       this.grapeInfoTextState = false;
-
       setTimeout(() => {
         this.modalPosition.transitionState = false;
         this.grapeInfoState = false;
@@ -433,6 +422,9 @@ export default {
     },
     clickedModalBG() {
       this.closeModal();
+    },
+    clickedShowReview() {
+      alert('리뷰 모달 뿅!');
     },
   },
 
@@ -518,6 +510,12 @@ section {
   margin-left: 1em;
   margin: 0.2em 0 0.2em 1em;
 }
+.sub-info .data span {
+  display: inline-block;
+  font-size: 1.8rem;
+  margin-left: 1em;
+  margin: 0.2em 0 0.2em 1em;
+}
 .sub-info .data .key {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
@@ -590,7 +588,8 @@ section {
 .grape-info-modal-text {
   z-index: 3;
   color: black;
-  line-height: 1.2rem;
+  font-size: 2rem;
+  line-height: 2.2rem;
 }
 
 /* 중간 영역 */
@@ -785,7 +784,7 @@ section {
 .frame .gauge {
   position: absolute;
   z-index: 0;
-  top: 0;
+  top: 10rem;
   width: 100%;
   height: 100%;
   background-color: #f86161;
@@ -797,6 +796,7 @@ section {
   transform: translate(-180%, -50%);
 }
 .left-top .gauge {
+  margin-top: 3px;
   background-color: #f86161;
 }
 .left-bottom .gauge {
@@ -813,6 +813,7 @@ section {
   transform: translate(180%, -50%);
 }
 .right-top .gauge {
+  margin-top: 3px;
   background-color: #fe9a43;
 }
 .right-bottom .gauge {
@@ -877,6 +878,7 @@ section {
 .sec-3-part .review-data-frame {
   display: flex;
   flex-direction: column;
+  margin-top: 2rem;
 }
 .review-item {
   display: flex;
@@ -893,6 +895,9 @@ section {
   margin-bottom: 0.5rem;
   border-radius: 50%;
   object-fit: cover;
+  background: url(../assets/images/default_profile.jpg);
+  background-position: center;
+  background-size: cover;
 }
 .sec-3-part .profile p {
   width: 5rem;
@@ -993,7 +998,18 @@ section {
   flex-direction: column;
   align-items: flex-start;
 }
-.review-item:nth-child(2) .profile p {
+.review-show {
+  display: flex;
+  flex-direction: row;
+}
+.review-show span {
+  padding: 1rem;
+  border: 1px solid var(--basic-color-key);
+  border-radius: 3rem;
+  transition: all 0.5s ease;
+}
+.review-show span:hover {
+  background-color: rgba(255, 255, 255, 0.5);
 }
 
 /* *************************************************************************** */

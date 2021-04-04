@@ -33,7 +33,7 @@ export default {
   mounted() {
     // scroll.smoothScroll(document.querySelector('#router-view'));
     // scroll.smoothScroll(this.$refs.router);
-    scroll.semi(document);
+    // scroll.semi(document);
   },
   computed: {},
   watch: {

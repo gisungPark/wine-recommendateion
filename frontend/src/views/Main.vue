@@ -1,6 +1,6 @@
 <template>
   <div id="wrap">
-    <img src="../assets/images/wine.png" alt="오늘의 와인 이미지" id="main-wine-img" />
+    <img :src="`${this.s3url}${todaysWine.wineId}.png`" alt="오늘의 와인 이미지" id="main-wine-img" />
     <section id="main-section-0">
       <div class="marquee-container tilt">
         <div class="marquee">
@@ -87,7 +87,7 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import 'swiper/css/swiper.css';
 import Topten from '@/components/main/Topten.vue';
 
-import * as scroll from '@/assets/js/scroll.js';
+// import * as scroll from '@/assets/js/scroll.js';
 export default {
   name: 'Main',
   components: {
@@ -148,6 +148,7 @@ export default {
     // scroll.smoothScroll(this.$refs.main);
   },
   computed: {
+    ...mapState(['s3url']),
     ...mapState('main', ['todaysWine', 'top10']),
   },
   methods: {

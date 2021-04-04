@@ -186,7 +186,7 @@ export default {
 .info-thumb-part {
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   color: white;
   text-shadow: 1px 1px 10px #000;
 }

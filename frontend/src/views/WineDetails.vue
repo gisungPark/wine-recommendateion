@@ -169,18 +169,29 @@
     <!--******************************************************************** -->
     <section id="detail-section-2" :style="{ backgroundColor: backgroundColor }">
       <div class="section-title">Detail</div>
-      <div class="sec-2-part">
+      <div class="sec-2-part-left">
+        <div v-for="n in 2" :key="n" class="food-svg-frame">
+          <FoodSvgs :foodId="n" />
+          <p>이탈리아 음식</p>
+        </div>
+        <!-- <FoodSvgs v-for="(item, index) in detail.foodList" :key="item.foodId + index" :foodId="item.foodId" /> -->
+      </div>
+      <div class="sec-2-part-right">
         <p>
           <span>"</span>
           {{ detail.wineDto.detail }}
         </p>
       </div>
     </section>
+
+    <!--******************************************************************** -->
+    <!--******************************************************************** -->
+    <!--******************************************************************** -->
     <section id="detail-section-3" :style="{ backgroundColor: backgroundColor }">
       <div class="section-title">Review</div>
       <div class="sec-3-part">
         <div class="avg">
-          <span class="b-title">{{ detail.wineDto.avg }}</span>
+          <span class="b-title">{{ detail.wineDto.avg.toFixed(1) }}</span>
           <div class="star">
             <div class="star-rate" :style="{ width: starRate + 'rem' }"></div>
             <div class="star-rate-bg"></div>
@@ -192,7 +203,8 @@
         <div class="review-data-frame">
           <div class="review-item" v-for="(review, index) in detail.reviewList" :key="review.nickname + index">
             <div class="profile">
-              <img :src="detail.wineDto.img" alt="프로필 이미지" />
+              <img v-if="review.userImg != null" class="profile-img" :src="review.userImg" alt="프로필 이미지" />
+              <div v-else class="profile-img"></div>
               <p>{{ review.nickname }}</p>
             </div>
             <div class="review-data">
@@ -202,7 +214,7 @@
               </div>
               <div class="review-text-frame">
                 <div class="balloon">
-                  <p>{{ review.text }}</p>
+                  <p>{{ review.contents }}</p>
                 </div>
               </div>
             </div>
@@ -239,6 +251,7 @@ import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 import 'swiper/css/swiper.css';
 
 import WineItem from '@/components/articles/WineItem.vue';
+import FoodSvgs from '@/components/articles/FoodSvgs.vue';
 
 import { mapState, mapActions } from 'vuex';
 
@@ -254,6 +267,7 @@ export default {
     Swiper,
     SwiperSlide,
     WineItem,
+    FoodSvgs,
   },
   data() {
     return {
@@ -360,7 +374,7 @@ export default {
     ...mapState('wineDetail', ['detail']),
   },
   methods: {
-    // vuex
+    // vuex!
     ...mapActions('wineDetail', ['actGetWineDetail']),
 
     // vue 페이지 내 활용
@@ -637,7 +651,8 @@ section {
   position: relative;
 }
 .star-rate {
-  position: relative;
+  position: absolute;
+  top: 0;
   z-index: 1;
   width: 3rem;
   height: 3rem;
@@ -646,8 +661,7 @@ section {
   background-repeat: repeat-x;
 }
 .star-rate-bg {
-  position: absolute;
-  top: 0;
+  position: relative;
   z-index: 0;
   width: 15rem;
   height: 3rem;
@@ -800,6 +814,7 @@ section {
   background-color: #f86161;
 }
 .left-bottom .gauge {
+  margin-top: 3px;
   background-color: #fc2121;
 }
 .right-top span,
@@ -817,6 +832,7 @@ section {
   background-color: #fe9a43;
 }
 .right-bottom .gauge {
+  margin-top: 3px;
   background-color: #5a0707;
 }
 
@@ -831,7 +847,30 @@ section {
   align-items: center;
   position: relative;
 }
-.sec-2-part {
+.sec-2-part-left {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: absolute;
+  width: 50%;
+  height: auto;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #ffffff55;
+}
+.food-svg-frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 2rem;
+}
+.food-svg-frame p {
+  margin-top: 0.5rem;
+  font-size: 1.5rem;
+}
+.sec-2-part-right {
   margin-left: 50%;
   width: 30%;
 }
@@ -863,15 +902,16 @@ section {
 .sec-3-part .avg {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
 }
 .sec-3-part .avg span {
   display: block;
   font-size: 18rem;
 }
 .sec-3-part .avg .star {
-  margin: 2rem 3rem;
-  transform: scale(2) translate(-25%);
+  width: 20rem;
+  margin-top: 2rem;
+  transform: scale(2);
   width: auto;
 }
 
@@ -889,7 +929,7 @@ section {
   flex-direction: column;
   align-items: flex-end;
 }
-.sec-3-part .profile img {
+.sec-3-part .profile-img {
   width: 4rem;
   height: 4rem;
   margin-bottom: 0.5rem;

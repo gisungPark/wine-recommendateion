@@ -1,32 +1,39 @@
 package com.ssafy.yourwine.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
-import com.ssafy.yourwine.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.yourwine.config.security.JwtTokenProvider;
+import com.ssafy.yourwine.model.dto.AvgRecoDTO;
 import com.ssafy.yourwine.model.dto.FlavorDTO;
 import com.ssafy.yourwine.model.dto.PreferenceDTO;
 import com.ssafy.yourwine.model.dto.PreferenceRecoDTO;
-import com.ssafy.yourwine.model.dto.TasteDTO;
 import com.ssafy.yourwine.model.dto.TasteFilterDTO;
 import com.ssafy.yourwine.model.dto.WineDTO;
+import com.ssafy.yourwine.model.entity.BatchData;
 import com.ssafy.yourwine.model.entity.DislikeFlavor;
 import com.ssafy.yourwine.model.entity.Flavor;
 import com.ssafy.yourwine.model.entity.LikeFlavor;
-import com.ssafy.yourwine.model.entity.TasteDegree;
 import com.ssafy.yourwine.model.entity.TopTen;
 import com.ssafy.yourwine.model.entity.User;
 import com.ssafy.yourwine.model.entity.Wine;
 import com.ssafy.yourwine.model.key.FlavorKey;
+import com.ssafy.yourwine.repository.BatchRepository;
+import com.ssafy.yourwine.repository.DislikeFlavorRepository;
+import com.ssafy.yourwine.repository.LikeFlavorRepository;
+import com.ssafy.yourwine.repository.TodayWineRepository;
+import com.ssafy.yourwine.repository.TopTenRepository;
+import com.ssafy.yourwine.repository.UserRepository;
+import com.ssafy.yourwine.repository.WineRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,6 +50,7 @@ public class RecoService {
 	private final TopTenRepository topTenRepository;
 	private final WineRepository wineRepository;
 	private final TodayWineRepository todayWineRepository;
+	private final BatchRepository batchRepository;
 	
 
 	public boolean checkPreference(String token) {
@@ -217,6 +225,55 @@ public class RecoService {
 
 		return preferenceRecoDto;
 	}
+	
+	/** 평점기반 추천 */
+	public AvgRecoDTO getWineListByAvg (String token){
+		String userId = jwtTokenProvider.getUserId(token);
+		User user = userRepository.findByUserId(userId);
+		List<WineDTO> wineDtoList = new ArrayList<WineDTO>();
+		AvgRecoDTO avgRecoDto = new AvgRecoDTO();
+		
+		//리뷰없을 경우
+		List<Wine> wineList = wineRepository.findAllByUserReview(userId);
+		if(wineList.size() == 0) {
+			avgRecoDto.setWriteReview(false);
+			return avgRecoDto;
+		}
+		
+		avgRecoDto.setWriteReview(true);
+		BatchData batchData = batchRepository.findByUserId(userId);
+		
+		//평점배치작업이 진행 안되서 db에 없을 경우
+		if(batchData == null) {
+			avgRecoDto.setBatchData(false); 
+			return avgRecoDto;
+		}
+		
+		String recoString = batchData.getRecoList().replace(" ", "");
+		// string -> string[]
+		String[] recoStringList = recoString.substring(1, recoString.length() - 1).split(",");
+		// string -> int []
+		int [] recoListId = Arrays.asList(recoStringList).stream().mapToInt(Integer::parseInt).toArray();
+		List<Wine> recoList = wineRepository.findAllByWineList(recoListId);
+		List<WineDTO> recoDtoList = new ArrayList<WineDTO>();
+		
+		//순서정렬 필요 -> 가져오면 기본 wine_id순으로 오름차순으로 정렬해서 그대로 주면 x 
+		for (int i = 0; i < 5; i++) {
+			for (Wine wine : recoList) {
+				if(wine.getWineId() == recoListId[i]) {
+					WineDTO wineDto = modelMapper.map(wine, WineDTO.class);
+					recoDtoList.add(wineDto);
+				}
+			}
+		}
+		
+		//set
+		avgRecoDto.setBatchData(true);
+		avgRecoDto.setWineDtoList(recoDtoList);
+		
+		return avgRecoDto;
+	}
+	
 
 	public List<WineDTO> getTopten(int min, int max) {
 

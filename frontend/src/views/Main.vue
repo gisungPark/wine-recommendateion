@@ -1,6 +1,6 @@
 <template>
   <div id="wrap">
-    <img :src="`${this.s3url}${todaysWine.wineId}.png`" alt="오늘의 와인 이미지" id="main-wine-img" />
+    <img v-if="todaysWine.wineId != 0" :src="`${this.s3url}${todaysWine.wineId}.png`" alt="오늘의 와인 이미지" id="main-wine-img" />
     <section id="main-section-0">
       <div class="marquee-container tilt">
         <div class="marquee">
@@ -123,6 +123,10 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapState(['s3url']),
+    ...mapState('main', ['todaysWine', 'top10']),
+  },
   created() {
     // vuex
     this.actGetTodaysWine().then(() => {
@@ -146,10 +150,6 @@ export default {
     // interaction section 제어
     // breath(this.$refs.titleSub);
     // scroll.smoothScroll(this.$refs.main);
-  },
-  computed: {
-    ...mapState(['s3url']),
-    ...mapState('main', ['todaysWine', 'top10']),
   },
   methods: {
     ...mapActions('main', ['actGetTodaysWine', 'actGetTop10']),

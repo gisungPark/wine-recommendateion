@@ -8,7 +8,7 @@
       :class="{ 'margin-top': wineStyles[index], red: wine.type === '레드', white: wine.type === '화이트', rose: wine.type === '스파클링' }"
       @click="clickedWine(index)"
     >
-      <img class="wineitem-img" v-if="wine.wineId != undefined && wine.wineId != 0" :src="`${s3url}${wine.wineId}.png`" alt="와인 이미지" />
+      <img class="wineitem-img" :src="wine.img" alt="와인 이미지" />
       <div class="wineitem-info">
         <div class="info-title">
           <p>{{ wine.kname }}</p>
@@ -34,7 +34,7 @@
             <div class="circle" />
             <span>{{ wineType[index] }}</span>
           </div>
-          <p class="info-thumb-subtitle">{{ wineSubtitle[index] }}</p>
+          <p class="inrfo-thumb-subtitle">{{ wine.subtitle }}</p>
         </div>
         <div class="info-thumb-part">
           <p class="info-thumb-price">{{ wine.price | currency }} 원</p>
@@ -52,7 +52,6 @@
 
 <script>
 import common from '@/assets/js/common.js';
-import { mapState } from 'vuex';
 
 export default {
   name: 'Winelist',
@@ -68,19 +67,15 @@ export default {
         return;
       },
     },
+    action: Object,
   },
-
   data() {
     return {
       wineListType: true,
       wineStyles: [],
       wineType: [],
-      wineSubtitle: [],
       itemCountInLine: 0,
     };
-  },
-  computed: {
-    ...mapState(['s3url']),
   },
   watch: {
     wines: {
@@ -93,15 +88,16 @@ export default {
   },
   created() {
     window.addEventListener('resize', this.setMarginTop);
+    console.log(this.action);
 
     // subtitle 생성, enmae에서 쉼표까지 텍스트 자르기
     for (let i = 0; i < this.wines.length; i++) {
       let index = -1;
       index = this.wines[i].ename.indexOf(',');
       if (index !== -1) {
-        this.wineSubtitle.push(this.wines[i].ename.substring(0, index));
+        this.wines[i].subtitle = this.wines[i].ename.substring(0, index);
       } else {
-        this.wineSubtitle.push(this.wines[i].ename);
+        this.wines[i].subtitle = this.wines[i].ename;
       }
     }
   },
@@ -109,7 +105,6 @@ export default {
     window.removeEventListener('resize', this.setMarginTop);
   },
   mounted() {
-    console.log(this.s3url);
     this.setMarginTop();
   },
   methods: {
@@ -281,7 +276,8 @@ export default {
   border: 1px solid var(--basic-color-key);
 }
 .info-thumb-subtitle {
-  margin: 10px 60px;
+  margin-left: 60px;
+  margin-top: 10px;
   font-size: 1.3rem;
   padding-right: 30px;
   word-break: break-all;

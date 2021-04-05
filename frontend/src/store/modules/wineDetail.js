@@ -100,7 +100,6 @@ const actions = {
         commit('SET_DETAIL', response.data);
       }
     } catch (error) {
-      console.log(error);
       alert(`와인 정보를 가져오는 도중 문제가 발생했습니다.`);
     }
   },
@@ -118,6 +117,3 @@ export default {
   actions,
   mutations,
 };
-
-//부가적인 기능 함수
-const getEventsTransfer = (arr) => {};

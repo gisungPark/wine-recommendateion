@@ -3,7 +3,9 @@
     <div class="card">
       <div
         class="img"
-        :style="{ 'background-image': `url(${item.img})` }"
+        :style="{
+          'background-image': `url(${this.s3url_flavor}${item.flavorId}.png)`,
+        }"
       ></div>
       <div class="logo-wrap">
         <div style="width: 90%; height: 1px; background-color: white"></div>
@@ -19,6 +21,8 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
+
 export default {
   name: "Card",
   props: {
@@ -37,6 +41,9 @@ export default {
   },
   data() {
     return {};
+  },
+  computed: {
+    ...mapState(["s3url_flavor"]),
   },
   methods: {
     onClick() {

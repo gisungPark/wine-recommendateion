@@ -64,6 +64,7 @@
         v-show="this.contentState === 1"
         id="priceModal"
         class="fillter-modal"
+        @click="onSearch"
       >
         <div id="scoreModal-info">
           <span id="scoreModal-info-item1">Price?</span>
@@ -92,6 +93,7 @@
         v-show="this.contentState === 2"
         id="scoreModal"
         class="fillter-modal"
+        @click="onSearch"
       >
         <div id="scoreModal-info">
           <span id="scoreModal-info-item1">Point?</span>
@@ -111,6 +113,7 @@
         v-show="this.contentState === 3"
         id="kindModal"
         class="fillter-modal"
+        @click="onSearch"
       >
         <div id="scoreModal-info">
           <span id="scoreModal-info-item1">What kind?</span>
@@ -147,6 +150,7 @@
         v-show="this.contentState === 4"
         id="grapeModal"
         class="fillter-modal"
+        @click="onSearch"
       >
         <div id="scoreModal-info">
           <span id="scoreModal-info-item1">Grape?</span>

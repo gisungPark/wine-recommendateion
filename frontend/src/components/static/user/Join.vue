@@ -12,7 +12,12 @@
             "
             @click="close"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
               <path
                 d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212
                   8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"
@@ -32,7 +37,14 @@
                 <v-col>
                   <ul>
                     <li>
-                      <input class="underline" type="text" placeholder="Email" v-model="email" maxlength="20" @blur="emailCheck" />
+                      <input
+                        class="underline"
+                        type="text"
+                        placeholder="Email"
+                        v-model="email"
+                        maxlength="20"
+                        @blur="emailCheck"
+                      />
                     </li>
                     <li>
                       <span>{{ this.msg.emailMsg }}</span>
@@ -44,7 +56,14 @@
                 <v-col>
                   <ul>
                     <li>
-                      <input class="underline" type="password" placeholder="Password" v-model="password" maxlength="20" @blur="pwCheck" />
+                      <input
+                        class="underline"
+                        type="password"
+                        placeholder="Password"
+                        v-model="password"
+                        maxlength="20"
+                        @blur="pwCheck"
+                      />
                     </li>
                     <li>
                       <span>{{ this.msg.passwordMsg }}</span>
@@ -56,7 +75,14 @@
                 <v-col>
                   <ul>
                     <li>
-                      <input class="underline" type="password" placeholder="Pasword check" v-model="passwordConfirm" maxlength="20" @blur="pwConfirmCheck" />
+                      <input
+                        class="underline"
+                        type="password"
+                        placeholder="Pasword check"
+                        v-model="passwordConfirm"
+                        maxlength="20"
+                        @blur="pwConfirmCheck"
+                      />
                     </li>
                     <li>
                       <span>{{ this.msg.passwordCheckMsg }}</span>
@@ -68,7 +94,14 @@
                 <v-col>
                   <ul>
                     <li>
-                      <input class="underline" type="text" placeholder="Nickname" v-model="nickname" maxlength="20" @blur="nicknameCheck" />
+                      <input
+                        class="underline"
+                        type="text"
+                        placeholder="Nickname"
+                        v-model="nickname"
+                        maxlength="20"
+                        @blur="nicknameCheck"
+                      />
                     </li>
                     <li>
                       <span>{{ this.msg.nicknameMsg }}</span>
@@ -91,27 +124,29 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex';
-import * as authApi from '@/api/auth';
+import { mapState, mapMutations } from "vuex";
+import * as authApi from "@/api/auth";
 
 export default {
-  name: 'Join',
+  name: "Join",
   data: () => ({
-    email: '',
-    password: '',
-    passwordConfirm: '',
-    nickname: '',
+    email: "",
+    password: "",
+    passwordConfirm: "",
+    nickname: "",
     msg: {
-      emailMsg: '',
-      passwordMsg: '',
-      passwordCheckMsg: '',
-      nicknameMsg: '',
+      emailMsg: "",
+      passwordMsg: "",
+      passwordCheckMsg: "",
+      nicknameMsg: "",
     },
   }),
   computed: {
-    ...mapState('loginDialog', ['joinDialog']),
+    ...mapState("loginDialog", ["joinDialog"]),
     passwordConfirmationRule() {
-      return () => this.password === this.passwordConfirm || '비밀번호가 일치하지 않습니다.';
+      return () =>
+        this.password === this.passwordConfirm ||
+        "비밀번호가 일치하지 않습니다.";
     },
   },
   methods: {
@@ -128,6 +163,7 @@ export default {
     },
 
     close() {
+      this.inputInit();
       this.SET_JOIN_TOGGLE();
     },
     emailDuplicate(email) {
@@ -225,6 +261,7 @@ export default {
         console.log(UserDTO);
         const response = await authApi.join(UserDTO);
         alert("회원 가입 성공!!");
+        this.close();
       } else {
         alert("입력을 확인하세요");
       }

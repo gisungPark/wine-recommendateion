@@ -2,7 +2,7 @@
   <div id="content">
     <div class="detail_txt fr-view">
       <p style="text-align: center">
-        <img src="@/assets/images/topic_3_1.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_3_1.jpg`" style="width: 100%" />
       </p>
       <p>
         라벨을 읽는 방법을 잘 모른다면 와인 가게를 가는 것이 부담스럽게 느껴질
@@ -25,11 +25,11 @@
       <p>아래 예제를 통해 가장 일반적인 라벨의 요소를 살펴보죠.</p>
 
       <p style="text-align: center">
-        <img src="@/assets/images/topic_3_2.png" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_3_2.png`" style="width: 100%" />
       </p>
       <p class="description">Talamonti Wine Label</p>
       <p style="text-align: center">
-        <img src="@/assets/images/topic_3_3.png" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_3_3.png`" style="width: 100%" />
       </p>
       <p class="description">Clos de l’Oratoire des Papes Wine Label</p>
       <p class="header1">이름</p>
@@ -151,8 +151,12 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({}),
+  computed: {
+    ...mapState(["s3url_topic"]),
+  },
 };
 </script>
 
@@ -166,8 +170,7 @@ export default {
   padding-bottom: 50px;
   padding-left: 15px;
   padding-right: 15px;
-  background-color: #f1f0f0;
-  opacity: 0.8;
+  background-color: var(--basic-color-background);
   display: flex;
   flex-direction: column;
   justify-content: center;

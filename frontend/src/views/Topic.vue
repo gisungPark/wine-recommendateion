@@ -15,7 +15,7 @@
               :class="{ 'nav-btn-active': isBtnClick(2) }"
               @click="clickedBtn(2)"
             >
-              <span>Column</span>
+              <span>News</span>
             </button>
             <button
               :class="{ 'nav-btn-active': isBtnClick(3) }"
@@ -317,17 +317,17 @@ export default {
         flag: false,
       },
       {
-        category: "Topic",
+        category: "Tip",
         title: "와인이란 무엇일까?",
         flag: false,
       },
       {
-        category: "Topic",
+        category: "Tip",
         title: "와인이 만들어지는 법: 포도밭에서 와인잔까지의 6가지 단계",
         flag: false,
       },
       {
-        category: "Topic",
+        category: "Tip",
         title: "와인 라벨 읽는 방법 : 초보자 가이드",
         flag: false,
       },

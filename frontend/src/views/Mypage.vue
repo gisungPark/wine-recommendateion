@@ -60,6 +60,7 @@
               :userInfo="userInfo"
             />
             <Reviews />
+            <div style="height: 10px"></div>
           </div>
         </div>
         <div class="content3" v-show="this.screenState == 1">
@@ -107,7 +108,7 @@ export default {
   },
   data: () => ({
     cnt: 4,
-    screenState: 1,
+    screenState: 3,
     reviews: [],
     preferenceList: [],
   }),

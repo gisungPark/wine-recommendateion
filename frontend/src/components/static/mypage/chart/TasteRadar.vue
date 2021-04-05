@@ -57,8 +57,10 @@ export default {
               borderWidth: 3,
             },
           },
-          scales: {
-            fontSize: 14,
+          scale: {
+            pointLabels: {
+              fontSize: 20,
+            },
           },
         },
       });

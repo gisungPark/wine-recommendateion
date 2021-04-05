@@ -5,7 +5,7 @@
     :class="{ red: wine.type === '레드', white: wine.type === '화이트', rose: wine.type === '스파클링' }"
     @click="clickedWine"
   >
-    <img class="wineitem-img" :src="wine.img" alt="와인 이미지" />
+    <img class="wineitem-img" :src="`${this.s3url}${wine.wineId}.png`" alt="와인 이미지" />
     <div class="wineitem-info">
       <div class="info-title">
         <p>{{ wine.kname }}</p>
@@ -47,20 +47,21 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import common from '@/assets/js/common.js';
 export default {
   name: 'WineItem',
+  filters: {
+    currency(val) {
+      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    },
+  },
   props: {
     wine: {
       type: Object,
       default: function() {
         return;
       },
-    },
-  },
-  filters: {
-    currency(val) {
-      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
   },
   data() {
@@ -71,6 +72,10 @@ export default {
       itemCountInLine: 0,
     };
   },
+  computed: {
+    ...mapState(['s3url']),
+  },
+  watch: {},
   created() {
     // subtitle 생성, enmae에서 쉼표까지 텍스트 자르기
     let index = -1;
@@ -83,9 +88,8 @@ export default {
     // 와인 type 영문화
     this.wineType = common.getEType(this.wine.type);
   },
-  destroyed() {},
   mounted() {},
-  watch: {},
+  destroyed() {},
   methods: {
     clickedWine() {
       this.$router.push(`/detail/${this.wine.id}`);

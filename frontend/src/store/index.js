@@ -10,6 +10,7 @@ import userInfo from './modules/userInfo';
 import wineDetail from './modules/wineDetail';
 import main from './modules/main';
 import mypage from './modules/mypage';
+import recommendation from './modules/recommendation';
 
 Vue.use(Vuex);
 
@@ -41,5 +42,6 @@ export default new Vuex.Store({
     reviewDialog,
     wineDetail,
     mypage,
+    recommendation,
   },
 });

@@ -1,6 +1,6 @@
 <template>
   <div class="topten-frame" @click="clickedItem">
-    <div class="topten-img" :style="{ 'background-image': `url(${this.s3url}${wine.wineId}.png)` }"></div>
+    <div v-if="wine.wineId != 0" class="topten-img" :style="{ 'background-image': `url(${this.s3url}${wine.wineId}.png)` }"></div>
     <div class="topten-img-fade"></div>
     <p>{{ wine.img }}</p>
     <div class="type">

@@ -10,7 +10,7 @@
               <div class="tab-desc-item m-desc">
                 <div class="pin"></div>
                 <div class="desc-btn">
-                  <span>{{ descBtnReverse[index] }}</span>
+                  <span>{{ sidebar.descBtn[index] }}</span>
                 </div>
               </div>
             </div>
@@ -41,14 +41,10 @@ export default {
     return {
       show: false,
       activeState: 0,
-      descBtnReverse: [],
     };
   },
   mounted() {
     this.show = true;
-    for (let i = this.sidebar.descBtn.length - 1; i >= 0; i--) {
-      this.descBtnReverse.push(this.sidebar.descBtn[i]);
-    }
   },
   beforeDestroy() {
     this.show = false;

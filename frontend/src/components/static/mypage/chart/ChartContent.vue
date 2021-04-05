@@ -27,7 +27,7 @@
           </svg>
         </div>
       </div>
-      <div v-show="this.writeFlag1 == true">
+      <div class="review-true" v-show="this.writeFlag1 == true">
         <div class="item-title_small gray">선호하는 와인 종류</div>
         <div class="item-sub">
           <svg
@@ -95,7 +95,7 @@
           </svg>
         </div>
       </div>
-      <div v-show="this.writeFlag2 == true">
+      <div class="review-true" v-show="this.writeFlag2 == true">
         <div class="item-title_small gray">와인 향 통계</div>
         <div class="item-sub">
           <svg
@@ -164,7 +164,7 @@
           </svg>
         </div>
       </div>
-      <div v-show="this.writeFlag3 == true">
+      <div class="review-true" v-show="this.writeFlag3 == true">
         <div class="content-item">
           <div class="item-title gray">
             {{ this.userInfo.nickname }}님의 입맛과 가장 유사한 유저가 뽑은
@@ -296,7 +296,9 @@ export default {
         response.data.spaclingCnt
       );
       this.grapeList = response.data.grapeCntList;
-      this.grapeList.shift();
+      if (this.grapeList !== null && this.grapeList !== undefined) {
+        this.grapeList.shift();
+      }
       console.log(this.grapeList);
     },
 
@@ -304,7 +306,9 @@ export default {
       const response = await chartApi.getflavorStatistic();
       this.writeFlag2 = response.data.writeReview;
       this.flavorList = response.data.flavorCntList;
-      this.flavorList.shift();
+      if (this.flavorList !== null && this.flavorList !== undefined) {
+        this.flavorList.shift();
+      }
       this.tasteList = new Array(
         response.data.acidityAvg,
         response.data.bodyAvg,
@@ -390,6 +394,14 @@ export default {
   text-align: center;
 }
 .review-write-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.review-true {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

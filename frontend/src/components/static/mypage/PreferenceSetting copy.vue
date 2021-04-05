@@ -5,6 +5,10 @@
         id="preference-stages-line1"
         :class="{ 'active-stage': isCurStage(2) }"
       ></div>
+      <!-- <div
+        id="preference-stages-line2"
+        :class="{ 'active-stage': isCurStage(3) }"
+      ></div> -->
     </div>
     <div class="preference-stages">
       <div class="preference-stages-wrap">
@@ -46,7 +50,7 @@
               'list-item-cards-active': currentCardState(item),
               'list-item-cards-inactive': isInactive(item),
             }"
-            v-for="(item, index) in this.list1"
+            v-for="(item, index) in preferenceList.list1"
             :key="item.name + index"
             @onClickCart="onCardActive(item)"
             :item="item"
@@ -59,7 +63,7 @@
               'list-item-cards-active': currentCardState(item),
               'list-item-cards-inactive': isInactive(item),
             }"
-            v-for="(item, idx) in this.list2"
+            v-for="(item, idx) in preferenceList.list2"
             :key="item + idx"
             @onClickCart="onCardActive(item)"
             :item="item"
@@ -72,7 +76,7 @@
               'list-item-cards-active': currentCardState(item),
               'list-item-cards-inactive': isInactive(item),
             }"
-            v-for="(item, idx) in this.list3"
+            v-for="(item, idx) in preferenceList.list3"
             :key="item + idx"
             @onClickCart="onCardActive(item)"
             :item="item"
@@ -85,7 +89,7 @@
               'list-item-cards-active': currentCardState(item),
               'list-item-cards-inactive': isInactive(item),
             }"
-            v-for="(item, idx) in this.list4"
+            v-for="(item, idx) in preferenceList.list4"
             :key="item + idx"
             @onClickCart="onCardActive(item)"
             :item="item"
@@ -98,7 +102,7 @@
               'list-item-cards-active': currentCardState(item),
               'list-item-cards-inactive': isInactive(item),
             }"
-            v-for="(item, idx) in this.list5"
+            v-for="(item, idx) in preferenceList.list5"
             :key="item + idx"
             @onClickCart="onCardActive(item)"
             :item="item"
@@ -150,6 +154,9 @@
       </div>
       <!-- <div v-show="curStage == 2" class="preference-item2"></div> -->
     </div>
+    <div style="color: white" v-for="(item, index) in likeList" :key="index">
+      {{ item.name }}
+    </div>
   </div>
 </template>
 
@@ -176,37 +183,18 @@ export default {
     list3: [],
     list4: [],
     list5: [],
-    likeList: [],
-    hateList: [],
+    slider1: 2,
+    slider2: 2,
+    slider3: 2,
+    slider4: 2,
+    slider5: 2,
   }),
-  created() {
-    this.onInit();
-  },
-  watch: {
-    preferenceList: function () {
-      this.onInit();
-    },
-  },
+  created() {},
   mounted() {},
-  computed: {},
+  computed: {
+    ...mapState("mypage", ["flavors", "likeList", "hateList"]),
+  },
   methods: {
-    onInit() {
-      for (var i = 0; i < this.preferenceList.length; i++) {
-        if (this.preferenceList[i].isLike) {
-          this.lickCnt++;
-          this.likeList.push(this.preferenceList[i]);
-        } else if (this.preferenceList[i].isHate) {
-          this.hateCnt++;
-          this.hateList.push(this.preferenceList[i]);
-        }
-
-        if (i % 5 == 0) this.list1.push(this.preferenceList[i]);
-        else if (i % 5 == 1) this.list2.push(this.preferenceList[i]);
-        else if (i % 5 == 2) this.list3.push(this.preferenceList[i]);
-        else if (i % 5 == 3) this.list4.push(this.preferenceList[i]);
-        else this.list5.push(this.preferenceList[i]);
-      }
-    },
     onClickStage(stage) {
       this.curStage = stage;
     },
@@ -253,7 +241,7 @@ export default {
       let removeIdx = -1;
       if (stage == FIRST_STAGE) {
         itemToFine = this.likeList.find(function (item) {
-          return item.flavorId === targe.flavorId;
+          return item.flavor_id === targe.flavor_id;
         });
         removeIdx = this.likeList.indexOf(itemToFine);
         if (removeIdx > -1) {
@@ -263,7 +251,7 @@ export default {
         }
       } else if (stage == SECOND_STAGE) {
         itemToFine = this.hateList.find(function (item) {
-          return item.flavorId === targe.flavorId;
+          return item.flavor_id === targe.flavor_id;
         });
         removeIdx = this.hateList.indexOf(itemToFine);
         if (removeIdx > -1) {
@@ -312,24 +300,43 @@ export default {
           // 3. 좋아한다고 했다가 취소하는 경우
           this.removeItemFromList(SECOND_STAGE, item);
         }
+        console.log("싫어하는 리스트!!!   " + this.hateCnt);
+        for (var i = 0; i < this.hateList.length; i++) {
+          console.log(this.hateList[i]);
+        }
+        console.log();
       }
     },
     async submit() {
-      if (this.lickCnt < 1) {
-        alert("좋아하는 향을 한가지 이상 선택해주세요!");
-        return;
+      const dislikes = [];
+      const likes = [];
+      for (var i = 0; i < this.hateList.length; i++) {
+        dislikes.push({
+          flavorId: this.hateList[i].flavor_id,
+          name: this.hateList[i].name,
+        });
+      }
+      for (i = 0; i < this.likeList.length; i++) {
+        likes.push({
+          flavorId: this.likeList[i].flavor_id,
+          name: this.likeList[i].name,
+        });
       }
       const preferenceDTO = {
-        dislikeList: this.hateList,
-        likeList: this.likeList,
+        dislikeList: dislikes,
+        likeList: likes,
       };
+
+      console.log("선호도");
+      console.log(preferenceDTO);
+
       try {
         const response = await mypageApi.updatePreference(preferenceDTO);
         if (response.status === 200) {
-          alert("취향 설정을 완료했습니다.");
+          alert("정상적으로 입력 O");
         }
       } catch (error) {
-        alert("취향 설정을 실패했습니다.");
+        alert("정상적으로 입력 X");
       }
     },
   },
@@ -527,7 +534,7 @@ export default {
 
 .selected-list {
   position: fixed;
-  right: 48px;
+  right: 38px;
   top: 250px;
   display: flex;
   flex-direction: column;
@@ -550,7 +557,6 @@ export default {
 .selected-list-like,
 .selected-list-hate {
   width: 100%;
-  min-height: 130px;
   border: 2px solid var(--basic-color-key);
   border-top: 0px;
   border-radius: 1em;
@@ -561,10 +567,10 @@ export default {
 }
 
 .selected-list-item {
-  width: 140px;
+  background-color: white;
+  width: 100px;
   height: 30px;
   margin: 3px;
-  background-color: var(--basic-color-key);
   text-align: center;
   border-radius: 1em;
   display: flex;
@@ -574,9 +580,6 @@ export default {
 }
 .selected-list-item > h1 {
   margin-left: 12px;
-  color: #e4e4e4;
-  font-size: 18px;
-  font-weight: 600;
 }
 
 .count-display {
@@ -595,15 +598,13 @@ export default {
 }
 
 #okBtn {
-  width: 150px;
-  height: 45px;
-  border-radius: 1em;
-  font-size: 20px;
-  font-weight: bold;
-  color: white;
   background-color: var(--basic-color-bg2);
-  position: fixed;
-  right: 48px;
-  top: 450px;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  width: 95px;
+  height: 40px;
+  border-radius: 1em;
+  margin-top: 10px;
 }
 </style>

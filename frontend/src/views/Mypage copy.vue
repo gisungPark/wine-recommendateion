@@ -67,7 +67,7 @@
           <ChartContent />
         </div>
         <div v-show="this.screenState == 4" class="content4">
-          <PreferenceSetting :preferenceList="preferenceList" />
+          <PreferenceSetting :preferenceList="getDiviedFlavors" />
         </div>
       </div>
     </div>
@@ -105,7 +105,8 @@ export default {
   }),
   created() {
     // 1. 향 정보 읽어오기!!
-    this.getFlavor();
+    // this.actGetFlavor();
+    // this.getMyPreference();
 
     // 2. 리뷰 정보
     this.mypageReview(1);
@@ -117,9 +118,10 @@ export default {
     ...mapState("nav", ["navActive"]),
     ...mapState("userInfo", ["userInfo"]),
     ...mapState("mypage", ["flavors", "scraps"]),
+    ...mapGetters("mypage", ["initFlavors", "getDiviedFlavors"]),
   },
   methods: {
-    ...mapActions("mypage", ["getMyPreference", "actGetScrap"]),
+    ...mapActions("mypage", ["actGetFlavor", "getMyPreference", "actGetScrap"]),
 
     isBtnClick(index) {
       if (index == this.screenState) return true;
@@ -132,14 +134,6 @@ export default {
       const response = await mypageApi.mypageReview(num);
       console.log(response.data);
       this.reviews = response.data;
-    },
-
-    async getFlavor() {
-      const response = await mypageApi.mypageFlavor();
-      console.log("!!!!!!!!!!!!!!!!!!!!!!!");
-      console.log(response.data);
-      console.log("!!!!!!!!!!!!!!!!!!!!!!!");
-      this.preferenceList = response.data;
     },
   },
 };

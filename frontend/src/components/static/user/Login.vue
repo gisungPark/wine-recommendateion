@@ -147,7 +147,8 @@ export default {
             alert("아이디 비밀번호를 확인하세요!!");
           } else if (result.data.code === 0) {
             alert(this.email + "님 환영합니다.");
-
+            this.email = "";
+            this.password = "";
             this.SET_LOGIN_TOGGLE();
             this.SET_GUIDEBTN_TOGGLE();
             this.$router.push({ name: "Mypage" });
@@ -157,8 +158,9 @@ export default {
     onFindPw() {
       this.SET_NICKNAME_TOGGLE();
     },
-
     close() {
+      this.email = "";
+      this.password = "";
       this.SET_LOGIN_TOGGLE();
     },
     onKakaoCallback(data) {},

@@ -169,7 +169,7 @@ public class UserController {
 			"Response\n" +
 			"")
 	public List<FlavorDTO> getFlavor(@RequestHeader("TOKEN") String token) {
-		List<FlavorDTO> flavorDTOList = userService.getFlavor();
+		List<FlavorDTO> flavorDTOList = userService.getFlavor(token);
 
 		return flavorDTOList;
 	}

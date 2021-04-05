@@ -2,15 +2,9 @@ package com.ssafy.yourwine.service;
 
 import com.ssafy.yourwine.config.security.JwtTokenProvider;
 import com.ssafy.yourwine.model.dto.*;
-import com.ssafy.yourwine.model.entity.Flavor;
-import com.ssafy.yourwine.model.entity.Review;
+import com.ssafy.yourwine.model.entity.*;
 
-import com.ssafy.yourwine.model.entity.Scrap;
-import com.ssafy.yourwine.model.entity.User;
-import com.ssafy.yourwine.repository.FlavorRepository;
-import com.ssafy.yourwine.repository.ReviewRepository;
-import com.ssafy.yourwine.repository.ScrapRepository;
-import com.ssafy.yourwine.repository.UserRepository;
+import com.ssafy.yourwine.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -38,6 +32,8 @@ public class UserService {
 	private final KakaoService kakaoService;
 	private final ReviewRepository reviewRepository;
 	private final FlavorRepository flavorRepository;
+    private final LikeFlavorRepository likeFlavorRepository;
+    private final DislikeFlavorRepository dislikeFlavorRepository;
 	
     public void saveUser(UserDTO userDTO) {
         User user = modelMapper.map(userDTO, User.class);
@@ -223,9 +219,24 @@ public class UserService {
         return reviewDTOList;
     }
 
-    public List<FlavorDTO> getFlavor(){
+    public List<FlavorDTO> getFlavor(String token){
+        String userId = jwtTokenProvider.getUserId(token);
+        User user = userRepository.findByUserId(userId);
         List<FlavorDTO> flavorDTOList = flavorRepository.findAll().stream().map(FlavorDTO::new)
                 .collect(Collectors.toList());
+
+        List<LikeFlavor> likeFlavorList = likeFlavorRepository.findByUser(user);
+        List<DislikeFlavor> dislikeFlavorList = dislikeFlavorRepository.findByUser(user);
+
+        for(LikeFlavor likeFlavor: likeFlavorList){
+            FlavorDTO flavorDTO = modelMapper.map(likeFlavor.getFlavor(), FlavorDTO.class);
+            flavorDTOList.get(flavorDTOList.indexOf(flavorDTO)).setIsLike(true);
+        }
+
+        for (DislikeFlavor dislikeFlavor : dislikeFlavorList) {
+            FlavorDTO flavorDTO = modelMapper.map(dislikeFlavor.getFlavor(), FlavorDTO.class);
+            flavorDTOList.get(flavorDTOList.indexOf(flavorDTO)).setIsHate(true);
+        }
 
         return flavorDTOList;
     }

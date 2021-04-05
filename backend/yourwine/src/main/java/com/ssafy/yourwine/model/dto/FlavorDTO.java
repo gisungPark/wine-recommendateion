@@ -16,6 +16,8 @@ import lombok.ToString;
 public class FlavorDTO {
     private Long flavorId;
     private String name;
+    private Boolean isLike = false;
+    private Boolean isHate = false;
 
     public FlavorDTO (WineFlavor wineFlavor) {
     	this.flavorId = wineFlavor.getFlavor().getFlavorId();

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.yourwine.model.dto.AvgRecoDTO;
+import com.ssafy.yourwine.model.dto.FoodRecoDTO;
 import com.ssafy.yourwine.model.dto.PreferenceDTO;
 import com.ssafy.yourwine.model.dto.PreferenceRecoDTO;
 import com.ssafy.yourwine.model.dto.TasteFilterDTO;
@@ -95,9 +96,9 @@ public class RecoController {
         return recoService.getPreference(token);
     }
     
-    @ApiOperation(value = "음식 매칭 와인리스트", notes = "음식ID에 매칭되는 와인 리뷰 리스트.1페이지당 아이템 10개씩 줌.리스트는 평점높은순으로 없을 경우 no food data 에러발생")
+    @ApiOperation(value = "음식 매칭 와인리스트", notes = "음식ID에 매칭되는 와인 리뷰 리스트. FoodRecoDTO에 담아서 줌. wineList는 1페이지당 아이템 10개씩 줌.리스트는 평점높은순으로 없을 경우 no food data 에러발생. mention에는 음식 멘트")
     @GetMapping("/food-recolist/{foodId}")
-    public List<WineDTO> getWineListByFood (@PathVariable Long foodId, @RequestParam int page){
+    public FoodRecoDTO getWineListByFood (@PathVariable Long foodId, @RequestParam int page){
     	return foodService.getWineListByFood(foodId, page);
     }
     

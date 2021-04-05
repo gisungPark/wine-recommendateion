@@ -5,9 +5,9 @@ import store from './store';
 
 //추가 라이브러리
 import vuetify from './plugins/vuetify'; //vuetify
-import infiniteScroll from 'vue-infinite-scroll'; //infinity Scroll
+// import infiniteScroll from 'vue-infinite-scroll'; //infinity Scroll
+// Vue.use(infiniteScroll);
 Vue.config.productionTip = false;
-Vue.use(infiniteScroll);
 //https://www.npmjs.com/package/vue-moment
 //[moment 사용법]: https://flamingotiger.github.io/javascript/momentjs/
 Vue.use(require('vue-moment')); //moment

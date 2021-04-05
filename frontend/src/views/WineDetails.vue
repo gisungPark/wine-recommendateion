@@ -357,13 +357,13 @@ export default {
       this.$refs.body.style.transform = `translateY(-${bodyGauge}rem)`;
 
       // wine.img position chanager
-      this.targetImg = document.querySelector('detail-wine-img');
+      this.targetImg = document.querySelector('#detail-wine-img');
       this.targetYScroll = document.body.offsetHeight - window.innerHeight * 2;
     });
   },
   destroyed() {
     window.removeEventListener('resize', this.initModalPosition);
-    window.removeEventListener('scroll', thiss.imgPositionChanger);
+    window.removeEventListener('scroll', this.imgPositionChanger);
   },
   mounted() {
     //TODO: 마운트 되었을 때 스크롤 살짝 내려서 애니메이션 동작하도록 설정

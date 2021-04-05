@@ -11,9 +11,7 @@
                     <v-text-field v-model="storeName" label="음식점 이름" />
                   </v-flex>
                   <v-flex xs12 text-center>
-                    <v-btn large class="indigo white--text ma-5" rounded color="blue lighten-1" @click="onSubmit"
-                      >GO!</v-btn
-                    >
+                    <v-btn large class="indigo white--text ma-5" rounded color="blue lighten-1" @click="onSubmit">GO!</v-btn>
                   </v-flex>
                 </v-layout>
               </v-container>
@@ -24,13 +22,7 @@
 
         <v-flex xs12 md8>
           <v-flex v-for="store in stores" :key="store.id" pa-4>
-            <store-list-card
-              :id="store.id"
-              :name="store.name"
-              :categories="store.categories"
-              :address="store.address"
-              :tel="store.tel"
-            />
+            <store-list-card :id="store.id" :name="store.name" :categories="store.categories" :address="store.address" :tel="store.tel" />
           </v-flex>
         </v-flex>
       </v-layout>

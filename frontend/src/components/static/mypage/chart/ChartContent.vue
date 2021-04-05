@@ -467,7 +467,7 @@ export default {
   line-height: 50px;
   font-size: 30px;
   text-align: center;
-  color: #e4e4e4;
+  color: var(--basic-color-background);
   display: block;
   float: left;
   text-align: center;
@@ -492,7 +492,7 @@ input[name="tab_item"] {
   display: none;
   clear: both;
   padding: 40px 40px 0;
-  background-color: #e4e4e4;
+  background-color: var(--basic-color-background);
   overflow: hidden;
 }
 /* 선택 된 탭 콘텐츠를 표시 */
@@ -508,7 +508,7 @@ input[name="tab_item"] {
 
 /* 선택된 탭 스타일 */
 .tabs input:checked + .tab_item {
-  background-color: #e4e4e4;
+  background-color: var(--basic-color-background);
   color: #8c0a0a;
 }
 </style>

@@ -148,6 +148,9 @@
       </p>
       <p><br /></p>
     </div>
+    <div style="color: black; font-size: 20px; font-weight: 600px">
+      wine21.com의 데이터를 활용하여 개발하였습니다.
+    </div>
   </div>
 </template>
 
@@ -167,8 +170,7 @@ export default {
   padding-bottom: 50px;
   padding-left: 15px;
   padding-right: 15px;
-  background-color: #f1f0f0;
-  opacity: 0.8;
+  background-color: var(--basic-color-background);
   display: flex;
   flex-direction: column;
   justify-content: center;

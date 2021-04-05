@@ -329,7 +329,7 @@ export default {
           alert("취향 설정을 완료했습니다.");
         }
       } catch (error) {
-        alert("취향 설정을 실패했습니다.");
+        alert("취향 설정에 실패했습니다.");
       }
     },
   },

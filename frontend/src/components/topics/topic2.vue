@@ -2,7 +2,7 @@
   <div id="content">
     <div class="detail_txt fr-view">
       <p style="text-align: center">
-        <img src="@/assets/images/topic_2_1.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_2_1.jpg`" style="width: 100%" />
       </p>
       <p class="header1">
         수확에서 보틀링에 이르기까지 와인 제조법에 대해 알아야 할 모든 것.
@@ -24,13 +24,13 @@
 
       <p class="header1">1. 포도 재배</p>
       <p style="text-align: center">
-        <img src="@/assets/images/topic_2_2.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_2_2.jpg`" style="width: 100%" />
       </p>
       <p class="description">
         일몰에 포도밭에서 일하고 있는 두 프랑스 와인 재배자
       </p>
       <p style="text-align: center">
-        <img src="@/assets/images/topic_2_3.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_2_3.jpg`" style="width: 100%" />
       </p>
       <p class="description">좋은 포도가 없다면 좋은 와인도 없다!</p>
       <p>
@@ -41,11 +41,11 @@
 
       <p class="header1">2. 수확</p>
       <p style="text-align: center">
-        <img src="@/assets/images/topic_2_4.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_2_4.jpg`" style="width: 100%" />
       </p>
       <p class="description">포도밭에서 가위로 흰색 포도를 따고 있는 모습</p>
       <p style="text-align: center">
-        <img src="@/assets/images/topic_2_5.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_2_5.jpg`" style="width: 100%" />
       </p>
       <p class="description">미국 라세터 패밀리 와이너리에서의 와인 수확</p>
       <p>매년 포도밭에서 시작됩니다…</p>
@@ -71,7 +71,7 @@
 
       <p class="header1">3. 크러싱</p>
       <p style="text-align: center">
-        <img src="@/assets/images/topic_2_6.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_2_6.jpg`" style="width: 100%" />
       </p>
       <p>
         오리건주 윌라멧 계곡에서 갓 수확한 피노 누아 포도. 잘 익은 과일, 줄기
@@ -80,7 +80,7 @@
         피노 누아 와인을 만들어냅니다.
       </p>
       <p style="text-align: center">
-        <img src="@/assets/images/topic_2_7.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_2_7.jpg`" style="width: 100%" />
       </p>
       <p class="description">
         디스태머 분쇄기를 이용해서 분쇄되는 까베르네 소비뇽
@@ -96,14 +96,14 @@
 
       <p class="header1">4. 발효</p>
       <p style="text-align: center">
-        <img src="@/assets/images/topic_2_8.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_2_8.jpg`" style="width: 100%" />
       </p>
       <p class="description">
         포도주 양조 과정의 일환으로, 압축된 포도 주스는 스테인리스 스틸 탱크로
         부드럽게 흘러갑니다.
       </p>
       <p style="text-align: center">
-        <img src="@/assets/images/topic_2_9.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_2_9.jpg`" style="width: 100%" />
       </p>
       <p class="description">
         양조학자들은 발효 탱크에서 포도주 샘플을 추출하여 와인의 속성을
@@ -127,11 +127,11 @@
 
       <p class="header1">5. 숙성</p>
       <p style="text-align: center">
-        <img src="@/assets/images/topic_2_10.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_2_10.jpg`" style="width: 100%" />
       </p>
       <p class="description">와인 저장고의 배럴</p>
       <p style="text-align: center">
-        <img src="@/assets/images/topic_2_11.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_2_11.jpg`" style="width: 100%" />
       </p>
       <p class="description">배럴에서 레드 와인 샘플을 받고있는 와인메이커</p>
       <p>좋은 일은 기다리는 자들에게 찾아온다</p>
@@ -143,7 +143,7 @@
 
       <p class="header1">6. 보틀링</p>
       <p style="text-align: center">
-        <img src="@/assets/images/topic_2_12.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_2_12.jpg`" style="width: 100%" />
       </p>
       <p class="description">와이너리 공장에서의 와인 보틀링과 라벨링</p>
       <p>이제 곧 와인을 즐길 시간</p>
@@ -158,8 +158,12 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({}),
+  computed: {
+    ...mapState(["s3url_topic"]),
+  },
 };
 </script>
 
@@ -173,8 +177,7 @@ export default {
   padding-bottom: 50px;
   padding-left: 15px;
   padding-right: 15px;
-  background-color: #f1f0f0;
-  opacity: 0.8;
+  background-color: var(--basic-color-background);
   display: flex;
   flex-direction: column;
   justify-content: center;

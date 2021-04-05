@@ -3,7 +3,7 @@
     <div class="detail_txt fr-view">
       <p class="header1">와인은 무엇으로 만들어질까요?</p>
       <p>
-        <img src="@/assets/images/topic_1_1.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_1_1.jpg`" style="width: 100%" />
       </p>
       <p>
         와인은 발효된 포도로 만든 알코올음료입니다. 이 외에도 발효 과일로 만든
@@ -28,7 +28,7 @@
 
       <p class="header1">와인을 구성하는 요소</p>
       <p>
-        <img src="@/assets/images/topic_1_2.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_1_2.jpg`" style="width: 100%" />
       </p>
       <p>
         현대 와인 제조법에는 최종 제품을 만들기 위해 많은 요소들이 들어가
@@ -126,7 +126,7 @@
 
       <p class="header1">단일 품종 vs. 블렌드 와인</p>
       <p>
-        <img src="@/assets/images/topic_1_3.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_1_3.jpg`" style="width: 100%" />
       </p>
       <p>
         대중적인 믿음과는 달리, 거의 모든 와인은 어느 정도 혼합되어 있습니다.
@@ -201,7 +201,7 @@
 
       <p class="header1">와인 메이커는 무슨일을 할까요?</p>
       <p>
-        <img src="@/assets/images/topic_1_4.jpg" style="width: 100%" />
+        <img :src="`${this.s3url_topic}topic_1_4.jpg`" style="width: 100%" />
       </p>
       <p>
         테이블 포도로 와인을 만들 수는 있지만 매우 희석되고 밍밍한 맛을 갖게
@@ -225,8 +225,12 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({}),
+  computed: {
+    ...mapState(["s3url_topic"]),
+  },
 };
 </script>
 
@@ -240,8 +244,7 @@ export default {
   padding-bottom: 50px;
   padding-left: 15px;
   padding-right: 15px;
-  background-color: #f1f0f0;
-  opacity: 0.8;
+  background-color: var(--basic-color-background);
   display: flex;
   flex-direction: column;
   justify-content: center;

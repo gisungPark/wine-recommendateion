@@ -51,9 +51,7 @@
             />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>
-          <div class="content-item" v-show="this.screenState == 3">
-            <LineChart />
-          </div>
+          <div class="content-item" v-show="this.screenState == 3"></div>
           <div class="content-item" v-show="this.screenState == 2">
             <MyReviews
               v-for="(review, idx) in reviews"
@@ -65,69 +63,7 @@
           </div>
         </div>
         <div class="content3" v-show="this.screenState == 1">
-          <div
-            style="
-              height: 50px;
-              width: 300px;
-              background-color: #818181;
-              algin: center;
-              padding-top: 15px;
-              padding-left: 30px;
-              font-weight: 600;
-              font-size: 22px;
-            "
-          >
-            <span>선호하는 와인 종류</span>
-          </div>
-          <PieCharts width="500px" height="500px" />
-          <div style="height: 150px"></div>
-          <div
-            style="
-              height: 50px;
-              width: 300px;
-              background-color: #818181;
-              algin: center;
-              padding-top: 15px;
-              padding-left: 30px;
-              font-weight: 600;
-              font-size: 22px;
-            "
-          >
-            선호하는 품종 종류
-          </div>
-          <PieCharts2 width="500px" height="500px" />
-          <div style="height: 150px"></div>
-          <div
-            style="
-              height: 50px;
-              width: 300px;
-              background-color: #818181;
-              algin: center;
-              padding-top: 15px;
-              padding-left: 30px;
-              font-weight: 600;
-              font-size: 22px;
-            "
-          >
-            와인향 통계
-          </div>
-          <Doughnut width="500px" height="500px" />
-          <div style="height: 150px"></div>
-          <div
-            style="
-              height: 50px;
-              width: 300px;
-              background-color: #818181;
-              algin: center;
-              padding-top: 15px;
-              padding-left: 30px;
-              font-weight: 600;
-              font-size: 22px;
-            "
-          >
-            와인향 통계
-          </div>
-          <Radar width="500px" height="500px" />
+          <ChartContent />
         </div>
         <div v-show="this.screenState == 4" class="content4">
           <PreferenceSetting :preferenceList="getDiviedFlavors" />
@@ -144,11 +80,12 @@ import * as mypageApi from "@/api/mypageApi";
 import MyReviews from "@/components/static/mypage/MyReviews.vue";
 import Reviews from "@/components/static/reviews/Reviews.vue";
 import PreferenceSetting from "@/components/static/mypage/PreferenceSetting.vue";
-import LineChart from "@/components/articles/LineChart";
-import PieCharts from "@/components/static/mypage/chart/PieCharts.vue";
-import PieCharts2 from "@/components/static/mypage/chart/PieCharts2.vue";
-import Doughnut from "@/components/static/mypage/chart/Doughnut.vue";
-import Radar from "@/components/static/mypage/chart/Radar.vue";
+// import LineChart from "@/components/articles/LineChart";
+// import PieCharts from "@/components/static/mypage/chart/PieCharts.vue";
+// import PieCharts2 from "@/components/static/mypage/chart/PieCharts2.vue";
+// import Doughnut from "@/components/static/mypage/chart/Doughnut.vue";
+// import Radar from "@/components/static/mypage/chart/Radar.vue";
+import ChartContent from "@/components/static/mypage/chart/ChartContent.vue";
 
 const SCRAP = 1;
 const REVIEW = 2;
@@ -161,11 +98,12 @@ export default {
     MyReviews,
     Reviews,
     PreferenceSetting,
-    LineChart,
-    PieCharts,
-    PieCharts2,
-    Doughnut,
-    Radar,
+    ChartContent,
+    // LineChart,
+    // PieCharts,
+    // PieCharts2,
+    // Doughnut,
+    // Radar,
   },
   data: () => ({
     cnt: 4,
@@ -353,18 +291,14 @@ export default {
 }
 .content3 {
   position: relative;
+  width: 100%;
+  height: 100%;
   margin-top: 150px;
-  width: 90%;
-  min-height: 600px;
-  height: auto;
-  background-color: #ffffff;
   border-radius: 2em;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 30px;
-  padding-bottom: 30px;
 }
 
 .content4 {

@@ -3,7 +3,7 @@ import axios from 'axios';
 import store from '../store/index';
 
 const instance = axios.create({
-  baseURL: 'http://10.0.3.226:8080',
+  baseURL: 'http://15.164.99.118:8080',
   // baseURL: 'https://15.164.99.118:8081',
   // baseURL: 'http://i4c109.p.ssafy.io/api',
 });

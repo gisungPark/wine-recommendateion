@@ -82,6 +82,23 @@ body {
   transform: scale(1);
   opacity: 1;
 }
+
+.scale-enter-active {
+  transition: all 0.3s cubic-bezier(0, 1, 0.65, 1) 0.3s;
+}
+.scale-leave-active {
+  transition: all 0.3s cubic-bezier(0, 1, 0.65, 1);
+}
+.scale-enter,
+.scale-leave-to {
+  transform: scale(0.3);
+  opacity: 0;
+}
+.scale-enter-to,
+.scale-leave {
+  transform: scale(1);
+  opacity: 1;
+}
 </style>
 
 <style scoped>

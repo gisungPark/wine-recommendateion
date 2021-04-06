@@ -12,6 +12,29 @@ Vue.config.productionTip = false;
 //[moment 사용법]: https://flamingotiger.github.io/javascript/momentjs/
 Vue.use(require('vue-moment')); //moment
 
+import VueToast from 'vue-toast-notification';
+// Import one of the available themes
+//import 'vue-toast-notification/dist/theme-default.css';
+import 'vue-toast-notification/dist/theme-sugar.css';
+
+Vue.use(VueToast, {
+  position: 'top-right',
+  duration: 2000,
+  //message: msg,
+  //typs: 'default'
+  // duration: 1000,
+  // position: 'bottom-right',
+  // dismissible: true,
+  // onClick: function() {
+  //   alert('alert');
+  // },
+  // onDismiss: function() {
+  //   alert('dismissed!');
+  // },
+  // queue: false,
+  // pauseOnHover: true,
+});
+
 new Vue({
   router,
   store,

@@ -1,6 +1,11 @@
 <template>
   <div ref="wineDetails" id="wine-details" :style="{ color: fontColor }">
-    <img :src="`${this.s3url}${detail.wineDto.wineId}.png`" :alt="`${detail.wineDto.kname} 와인의 이미지`" id="detail-wine-img" />
+    <img
+      v-if="detail.wineDto.wineId != 0"
+      :src="`${this.s3url}${detail.wineDto.wineId}.png`"
+      :alt="`${detail.wineDto.kname} 와인의 이미지`"
+      id="detail-wine-img"
+    />
     <section id="detail-section-0" :style="{ backgroundColor: backgroundColor }">
       <!-- 왼쪽 -->
       <div class="sec-0-part">

@@ -80,28 +80,12 @@ const INIT_PREFERENCE_BASED_RECOM = () => {
 };
 
 const state = {
+  checkPreference: null,
   ratingBasedRecom: INIT_RATING_BASED_RECOM(),
-  checkPreference: false,
   preferenceBasedRecom: INIT_PREFERENCE_BASED_RECOM(),
 };
 const getters = {};
 const actions = {
-  // 평점 기반 와인 추천 목록 요청
-  // 5개의 와인 리스트 제공
-  async actGetRatingBasedRecom({ commit }) {
-    try {
-      const response = await recommendationApi.getRatingBasedRecom();
-      if (response.status === 200) {
-        commit('SET_RATING_BASED_RECOM', response.data);
-        return true;
-      }
-    } catch (error) {
-      console.log('평점기반 추천 리스트를 가져오는 도중 문제 발생!');
-      console.log(error);
-      return false;
-    }
-  },
-
   // 선호도 설정 여부 확인
   // response 값으로 선호도 추천 탭 누를 때, info 메시지 조절
   async actGetCheckPreperence({ commit }) {
@@ -130,6 +114,37 @@ const actions = {
       return false;
     }
   },
+  // 평점 기반 와인 추천 목록 요청 + 필터링
+  async actGetPreferenceBasedRecomFilter({ commit }, payload) {
+    try {
+      console.log(payload);
+      const response = await recommendationApi.getPreferenceBasedRecomFilter(payload);
+      if (response.status === 200) {
+        commit('SET_RATING_BASED_RECOM', response.data);
+        return true;
+      }
+    } catch (error) {
+      console.log('평점기반 추천 리스트를 가져오는 도중 문제 발생!');
+      console.log(error);
+      return false;
+    }
+  },
+
+  // 평점 기반 와인 추천 목록 요청
+  // 5개의 와인 리스트 제공
+  async actGetRatingBasedRecom({ commit }) {
+    try {
+      const response = await recommendationApi.getRatingBasedRecom();
+      if (response.status === 200) {
+        commit('SET_RATING_BASED_RECOM', response.data);
+        return true;
+      }
+    } catch (error) {
+      console.log('평점기반 추천 리스트를 가져오는 도중 문제 발생!');
+      console.log(error);
+      return false;
+    }
+  },
 };
 
 const mutations = {
@@ -141,6 +156,7 @@ const mutations = {
   },
   SET_PREFERENCE_BASED_RECOM(state, payload) {
     state.preferenceBasedRecom = payload;
+    console.log(state.preferenceBasedRecom);
   },
 };
 

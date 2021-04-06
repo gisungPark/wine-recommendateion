@@ -24,10 +24,19 @@
             <v-row v-for="(review, idx) in review" :key="review + idx">
               <v-col>
                 <div class="review-item-frame">
-                  <div class="review-content">
-                    <span>
-                      {{ review.contents }}
-                    </span>
+                  <div class="review-top">
+                    <div class="review-content">
+                      <span>
+                        {{ review.contents }}
+                      </span>
+                    </div>
+                    <div class="review-icon">
+                      <div
+                        class="review-icon-1"
+                        @click="onModify(review)"
+                      ></div>
+                      <div class="review-icon-2" @click="onDelete"></div>
+                    </div>
                   </div>
                   <div style="height: 30px"></div>
                   <div class="review-writer">
@@ -96,7 +105,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <ReviewWrite />
+      <ReviewWrite :propsReview="propsReview" />
     </v-row>
   </div>
 </template>
@@ -116,12 +125,27 @@ export default {
     reviewDialog: function () {
       this.readWineReviews();
     },
+    reviewWriteDialog: function () {
+      this.readWineReviews();
+      if (this.reviewWriteDialog == false) {
+        this.propsReview = {
+          rating: 5,
+          costRating: -1,
+          reviewContent: "",
+        };
+      }
+    },
   },
   computed: {
-    ...mapState("reviewDialog", ["reviewDialog", "reviewByWineId"]),
+    ...mapState("reviewDialog", [
+      "reviewDialog",
+      "reviewWriteDialog",
+      "reviewByWineId",
+    ]),
   },
   data: () => ({
     review: [],
+    propsReview: {},
   }),
   methods: {
     ...mapMutations("reviewDialog", [
@@ -138,6 +162,24 @@ export default {
       console.log(response);
       console.log("리뷰 읽어왔다. ");
     },
+
+    onModify(item) {
+      if (window.confirm("리뷰룰 수정 하시겠습니까?")) {
+        console.log("호로로로로로롤로");
+        console.log(item);
+        this.propsReview = {
+          rating: item.point,
+          costRating: item.cost,
+          reviewContent: item.contents,
+        };
+        this.SET_REVIEW_WRITE_TOGGLE();
+      }
+    },
+    onDelete() {
+      if (window.confirm("리뷰를 삭제 하시겠습니까?")) {
+      }
+    },
+
     clickWriteBtn() {
       this.SET_REVIEW_WRITE_TOGGLE();
     },
@@ -166,7 +208,34 @@ export default {
   overflow: hidden;
   position: relative;
 }
+
+.review-top {
+  display: flex;
+  flex-direction: row;
+}
+.review-icon {
+  width: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: absolute;
+  right: 10px;
+}
+.review-icon-1 {
+  width: 40px;
+  height: 40px;
+  background-image: url("../../../assets/images/pencil.png");
+  background-size: contain;
+}
+
+.review-icon-2 {
+  width: 40px;
+  height: 40px;
+  background-image: url("../../../assets/images/close.png");
+  background-size: contain;
+}
 .review-content {
+  width: 88%;
   margin-top: 10px;
   margin-left: 15px;
   margin-right: 15px;

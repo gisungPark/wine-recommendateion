@@ -9,11 +9,10 @@ const mutations = {
   SET_REVIEW_WINEID(state, wineId) {
     state.reviewByWineId = wineId;
   },
-  SET_REVIEW_TOGGLE(state ) {
+  SET_REVIEW_TOGGLE(state) {
     state.reviewDialog = !state.reviewDialog;
   },
   SET_REVIEW_WRITE_TOGGLE(state) {
-    state.reviewByWineId = "";
     state.reviewWriteDialog = !state.reviewWriteDialog;
   },
 };

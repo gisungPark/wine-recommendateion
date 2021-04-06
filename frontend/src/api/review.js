@@ -1,7 +1,7 @@
 import http from '@/api/http';
 
 export function getWineReviewById(pageNum, wineId) {
-    return http.get(`/wine/reivew-list/21`,{
+    return http.get(`/wine/reivew-list/${wineId}`,{
         params: {
             page: pageNum,
         }
@@ -10,9 +10,9 @@ export function getWineReviewById(pageNum, wineId) {
 
 export function writeReview(contents, cost, point, wineId) {
     return http.post(`/wine/reivew`, { 
-        contents: contents,
-        cost: cost,
-        point: point,
-        wineId: wineId,
+            contents: contents,
+            cost: cost,
+            point: point,
+            wineId: wineId,
     });
 }

@@ -2,7 +2,11 @@
   <div class="reviews-fram">
     <div class="reviews-item">
       <div class="reviews-Img">
-        <img class="wineImg" src="@/assets/images/wine02.png" alt="" />
+        <img
+          class="wineImg"
+          :src="`${this.s3url}${review.wineId}.png`"
+          alt="리뷰 와인 이미지"
+        />
       </div>
     </div>
     <div class="reviews-item">
@@ -16,7 +20,7 @@
       <div class="review-writer">
         <div class="writer-info">
           <div class="writer-img">
-            <img :src="userInfo.profile" alt="" />
+            <img :src="userInfo.profile" />
           </div>
           <span class="writer-nickname">
             {{ userInfo.nickname }}
@@ -79,7 +83,13 @@ import { mapState, mapMutations } from "vuex";
 export default {
   name: "MyReviews",
   props: ["review", "userInfo"],
-  components: {},
+  created() {
+    console.log(this.s3url);
+  },
+
+  computed: {
+    ...mapState(["s3url"]),
+  },
   methods: {
     ...mapMutations("reviewDialog", ["SET_REVIEW_WINEID", "SET_REVIEW_TOGGLE"]),
 
@@ -174,6 +184,8 @@ export default {
   height: 40px;
   border-radius: 70%;
   overflow: hidden;
+  background-image: url("https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg");
+  background-size: contain;
 }
 
 .writer-img > img {

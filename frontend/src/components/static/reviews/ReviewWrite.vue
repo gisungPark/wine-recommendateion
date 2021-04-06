@@ -100,10 +100,19 @@ import * as reviewApi from "@/api/review";
 
 export default {
   name: "ReviewWrite",
-  props: [],
+  props: ["propsReview"],
   components: {},
   computed: {
-    ...mapState("reviewDialog", ["reviewWriteDialog"]),
+    ...mapState("reviewDialog", ["reviewWriteDialog", "reviewByWineId"]),
+  },
+  watch: {
+    reviewWriteDialog: function () {
+      this.rating = this.propsReview.rating;
+      this.costRating = this.propsReview.costRating;
+      this.reviewContent = this.propsReview.reviewContent;
+      console.log("dkdkdkdkdkdkdk");
+      console.log(this.propsReview);
+    },
   },
   data: () => ({
     rating: 5,
@@ -113,6 +122,9 @@ export default {
   methods: {
     ...mapMutations("reviewDialog", ["SET_REVIEW_WRITE_TOGGLE"]),
     close() {
+      this.rating = 5;
+      this.costRating = -1;
+      this.reviewContent = "";
       this.SET_REVIEW_WRITE_TOGGLE();
     },
     getCostRating(n) {
@@ -122,13 +134,24 @@ export default {
     setCostRating(n) {
       this.costRating = n;
     },
-    writeReivew() {
-      if (this.costRating < 0) alert("가성비 점수를 선택해 주세요!!");
-      console.log("별점: " + this.rating);
-      console.log("가성비: " + this.costRating);
-      console.log("리뷰 내용: " + this.reviewContent);
+    async writeReivew() {
+      if (this.costRating < 0) {
+        alert("가성비 점수를 선택해 주세요!!");
+        return;
+      }
+      const response = await reviewApi.writeReview(
+        this.reviewContent,
+        this.costRating,
+        this.rating,
+        this.reviewByWineId
+      );
 
-      const response = writeReview(contents, cost, point, wineId);
+      if (response.status === 200) {
+        alert(this.reviewByWineId + "와인 리뷰 작성에 성공했습니다.!!");
+        this.close();
+      } else {
+        alert(this.reviewByWineId + "와인 리뷰 작성에 실패했습니다.!!");
+      }
     },
   },
 };

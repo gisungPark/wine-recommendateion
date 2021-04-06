@@ -44,11 +44,7 @@
           class="content"
         >
           <div class="imgBox">
-            <img
-              class="profile"
-              :src="this.userInfo.profile"
-              alt="프로필 이미지"
-            />
+            <img class="profile" :src="this.userInfo.profile" />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>
           <div class="content-item" v-show="this.screenState == 3">
@@ -113,19 +109,26 @@ export default {
     scarpList: [],
   }),
   created() {
+    console.log("img!!!!!!!");
+    console.log(this.userInfo.profile);
+    console.log(this.userInfo.defaultProfile);
     // 1. 향 정보 읽어오기!!
     this.getFlavor();
-
     // 2. 리뷰 정보
     this.mypageReview(1);
     // 3. 스크랩 정보!!
     this.getScrap();
   },
-
+  watch: {
+    reviewDialog: function () {
+      this.mypageReview(1);
+    },
+  },
   computed: {
     ...mapState("nav", ["navActive"]),
     ...mapState("userInfo", ["userInfo"]),
     ...mapState("mypage", ["flavors", "scraps"]),
+    ...mapState("reviewDialog", ["reviewDialog"]),
   },
   methods: {
     ...mapActions("mypage", ["getMyPreference", "actGetScrap"]),
@@ -280,6 +283,8 @@ export default {
   height: 180px;
   border-radius: 70%;
   overflow: hidden;
+  background-image: url("https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg");
+  background-size: contain;
 }
 .profile {
   width: 100%;

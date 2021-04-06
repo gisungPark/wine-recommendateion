@@ -5,7 +5,9 @@ const INIT_USER = () => {
   return {
     token: localStorage.getItem('token'),
     nickname: localStorage.getItem('nickname'),
-    profile: 'https://t1.daumcdn.net/cfile/tistory/99DBE73359AAC5D224',
+    provider: localStorage.getItem('provider'),
+    profile: localStorage.getItem('profile'),
+    defaultProfile: localStorage.getItem('defaultProfile'),
   };
 };
 
@@ -25,7 +27,9 @@ const mutations = {
     //로컬 저장
     localStorage.setItem('token', state.userInfo.token);
     localStorage.setItem('nickname', state.userInfo.nickname);
+    localStorage.setItem('provider', state.userInfo.provider);
     localStorage.setItem('profile', state.userInfo.profile);
+    localStorage.setItem('defaultProfile', state.userInfo.defaultProfile);
   },
   SET_LOGOUT(state) {
     localStorage.clear();
@@ -40,11 +44,16 @@ const actions = {
       const response = await authApi.login(email, password);
       // 로그인 성공!!
       if (response.data.code === 0) {
+        const userinfo = await authApi.getUserInfo();
+
+
         context.commit('SET_USER_INFO', {
           userInfo: {
             token: response.data.token,
             nickname: response.data.nickname,
-            profile: 'https://t1.daumcdn.net/cfile/tistory/99DBE73359AAC5D224',
+            provider: userinfo.data.provider,
+            profile: userinfo.data.img,
+            defaultProfile: "https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg",
           },
         });
       }

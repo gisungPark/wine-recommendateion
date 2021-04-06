@@ -15,7 +15,7 @@
       <span class="title wine-title-sub b-desc-e tilt" ref="titleSub">{{ subtitle }}</span>
     </section>
     <section id="main-section-1">
-      <div class="main-message wine-top sticky-elem"></div>
+      <div ref="area" class="main-message wine-top sticky-elem"></div>
       <div class="main-message wine-name sticky-elem">
         <h2 class="ename b-desc-e real-shadow-text">{{ todaysWine.ename }}</h2>
       </div>
@@ -137,6 +137,61 @@ export default {
         this.subtitle = this.todaysWine.ename.substring(0, index);
       } else {
         this.subtitle = this.todaysWine.ename;
+      }
+
+      // 국기 아이콘 출력을 위한 sprite position
+      const area = this.$refs.area;
+      const wineArea = this.todaysWine.area.replace(/\s/gi, ''); //db에 저장된 지역에 공백이 들어가있어서 제거
+      switch (wineArea) {
+        case '미국':
+          area.style.backgroundPosition = '-700px -700px';
+          break;
+        case '뉴질랜드':
+          area.style.backgroundPosition = '-452px -452px';
+          break;
+          break;
+        case '칠레':
+          area.style.backgroundPosition = '-948px -80px';
+          break;
+          break;
+        case '프랑스':
+          area.style.backgroundPosition = '-824px -204px';
+          break;
+          break;
+        case '호주':
+          area.style.backgroundPosition = '-328px -80px';
+          break;
+          break;
+        case '슬로베니아':
+          area.style.backgroundPosition = '-576px -576px';
+          break;
+          break;
+        case '남아프리카 공화국':
+          area.style.backgroundPosition = '-700px -576px';
+          break;
+          break;
+        case '스페인':
+          area.style.backgroundPosition = '-824px -576px';
+          break;
+          break;
+        case '아르헨티나':
+          area.style.backgroundPosition = '-80px -80px';
+          break;
+          break;
+        case '포르투갈':
+          area.style.backgroundPosition = '-1196px -452px';
+          break;
+          break;
+        case '그리스':
+          area.style.backgroundPosition = '-1072px -204px';
+          break;
+          break;
+        case '이탈리아':
+          area.style.backgroundPosition = '-576px -328px';
+          break;
+        default:
+          area.style.backgroundPosition = '-947px -700px;';
+          break;
       }
 
       // 별점에 따라 별 개수 동적 표시를 위해 width값 계산
@@ -293,7 +348,7 @@ section {
   background-image: url(../assets/images/sprite_area.png);
   background-repeat: no-repeat;
   background-size: 1360px 864px;
-  background-position: -824px -80px;
+  /* background-position: -576px -328px; */
 }
 .wine-name,
 .wine-name-sub {

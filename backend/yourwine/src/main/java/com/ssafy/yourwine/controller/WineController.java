@@ -117,12 +117,11 @@ public class WineController {
 
 	@ApiOperation(value = "와인ID 전체 리뷰 리스트 ", notes = "와인ID에 해당되는 리뷰 리스트. 와인ID없을 경우 no wine data 에러발생")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name="page",value = "기본-1(아이템 5개 기준) ex) 1-(1~5) 2-(6~10)", defaultValue = "1", required = true),
-		@ApiImplicitParam(name="time",value = "*한국시간 기준 String. 해당 string은 서버에서 시간으로 포맷함 yyyy-MM-dd hh:mm:ss", defaultValue ="2021-03-31 11:50:00",required = true)
+		@ApiImplicitParam(name="page",value = "기본-1(아이템 5개 기준) ex) 1-(1~5) 2-(6~10)", defaultValue = "1", required = true)
 	})
 	@GetMapping("/reivew-list/{wineId}")
-	public List<ReviewDTO> getReviewList(@PathVariable Long wineId, @RequestParam int page, @RequestParam String time) throws ParseException {
-		return reviewService.getWineReviewList(wineId, page, time);
+	public List<ReviewDTO> getReviewList(@PathVariable Long wineId, @RequestParam int page) throws ParseException {
+		return reviewService.getWineReviewList(wineId, page);
 	}
 
 }

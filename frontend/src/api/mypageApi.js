@@ -24,3 +24,9 @@ export function getPreference(){
 export function mypageScrap(){
     return http.get(`/user/getScrap`);
 }
+/**
+ * 스크랩한 와인 삭제
+ */
+ export function deleteScrap(windId){
+    return http.delete(`/wine/scrap/${windId}`);
+}

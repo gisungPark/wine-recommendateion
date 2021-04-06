@@ -7,9 +7,7 @@ export function login(email, password) {
     });
 }
 export function kakaoLogin(data) {
-    return http.post('/user/checkUser', {
-        token: data.access_token
-    });
+    return http.post(`/user/checkUser?token=${data.access_token}`);
 }
 
 export function getUserInfo() {

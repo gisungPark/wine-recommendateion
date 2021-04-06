@@ -43,20 +43,31 @@
           v-show="this.screenState == 3 || this.screenState == 2"
           class="content"
         >
-          <div class="imgBox">
+          <div
+            :style="{ 'background-image': `url(${userInfo.profile})` }"
+            class="imgBox"
+          >
             <img class="profile" :src="this.userInfo.profile" />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>
+          <!-- 스크랩 페이지 ################################################ -->
           <div class="content-item" v-show="this.screenState == 3">
+            <div class="item-title gray">스크랩한 와인</div>
+            <div style="height: 50px"></div>
             <div class="item-list">
               <div
                 class="wine-item"
                 v-for="(item, index) in scarpList"
                 :key="item + index"
-              ></div>
+              >
+                <WineItem v-on:deleteScrap="updateScrap" :wine="item" />
+              </div>
             </div>
           </div>
+          <!-- 리뷰 페이지 ################################################ -->
           <div class="content-item" v-show="this.screenState == 2">
+            <div class="item-title gray">내가 쓴 리뷰</div>
+            <div style="height: 50px"></div>
             <MyReviews
               v-for="(review, idx) in reviews"
               :key="idx"
@@ -67,9 +78,11 @@
             <div style="height: 10px"></div>
           </div>
         </div>
+        <!-- 차트 페이지 ################################################ -->
         <div class="content3" v-show="this.screenState == 1">
           <ChartContent />
         </div>
+        <!-- 선호도 페이지 ################################################ -->
         <div v-show="this.screenState == 4" class="content4">
           <PreferenceSetting :preferenceList="preferenceList" />
         </div>
@@ -85,8 +98,9 @@ import * as mypageApi from "@/api/mypageApi";
 import MyReviews from "@/components/static/mypage/MyReviews.vue";
 import Reviews from "@/components/static/reviews/Reviews.vue";
 import PreferenceSetting from "@/components/static/mypage/PreferenceSetting.vue";
-
 import ChartContent from "@/components/static/mypage/chart/ChartContent.vue";
+import Winelist from "@/components/articles/Winelist.vue";
+import WineItem from "@/components/articles/ScrapWineItem.vue";
 
 const SCRAP = 1;
 const REVIEW = 2;
@@ -96,10 +110,12 @@ const FRAVORITE = 4;
 export default {
   name: "Mypage",
   components: {
+    Winelist,
     MyReviews,
     Reviews,
     PreferenceSetting,
     ChartContent,
+    WineItem,
   },
   data: () => ({
     cnt: 4,
@@ -156,10 +172,13 @@ export default {
 
     async getScrap() {
       const response = await mypageApi.mypageScrap();
-      console.log("****************************");
+      console.log("스크랩와인!!!");
       console.log(response);
-      console.log("****************************");
       this.scarpList = response.data;
+    },
+
+    updateScrap() {
+      this.getScrap();
     },
   },
 };
@@ -270,7 +289,7 @@ export default {
   margin-top: 150px;
   width: 90%;
   height: auto;
-  background-color: #ffffff;
+  background-color: var(--basic-color-background);
   border-radius: 2em;
   display: flex;
   justify-content: center;
@@ -283,7 +302,7 @@ export default {
   height: 180px;
   border-radius: 70%;
   overflow: hidden;
-  background-image: url("https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg");
+  /* background-image: url("https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg"); */
   background-size: contain;
 }
 .profile {
@@ -327,133 +346,31 @@ export default {
   width: 90%;
   height: auto;
 }
-/* ########################### */
-.tabs {
-  position: relative;
-  margin: 35px auto;
-  height: 1200px;
-  width: 90%;
+
+/* 스크랩 페이지!!!! */
+.item-list {
+  width: 100%;
+  min-height: 600px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding-left: 22px;
 }
 
-.tabs input {
-  position: absolute;
-  z-index: 1000;
-  width: 120px;
-  height: 35px;
-  left: 0px;
-  top: 0px;
-  opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  filter: alpha(opacity=0);
-}
-.tabs input:not(:checked) {
-  cursor: pointer;
-}
-.tabs input:not(:checked) + label {
-  color: #fff;
-}
-.tabs input:checked + label {
-  background: #fff;
-  color: #a22;
-  z-index: 6;
-}
-.tabs input:hover + label {
-  background: #c44;
-  color: #fff;
-}
-.tabs input#tab-2 {
-  left: 600px;
-}
-.tabs input#tab-3 {
-  left: 1200px;
-}
-.tabs input.tab-selector-1:checked ~ .tab-content .tab-content-1,
-.tabs input.tab-selector-2:checked ~ .tab-content .tab-content-2,
-.tabs input.tab-selector-3:checked ~ .tab-content .tab-content-3 {
-  z-index: 100;
-  filter: alpha(opacity=100);
-  opacity: 1;
+.wine-item {
+  margin-left: 2px;
+  margin-right: 2px;
 }
 
-.tabs label {
-  height: 55px;
-  width: 500px;
-  background: #a22;
-  font-size: 30px;
-  font-weight: 600;
-  line-height: 35px;
-  position: relative;
-  padding: 4px 20px 0px 20px;
-  float: left;
-  display: block;
-  letter-spacing: 0px;
+.item-title {
+  width: 60%;
+  min-height: 80px;
+  font-size: 32px;
+  font-weight: 700;
   text-align: center;
-  margin-left: 3px;
-  margin-right: 3px;
-
-  border-radius: 12px 12px 0 0;
-  box-shadow: 2px 0 2px rgba(0, 0, 0, 0.1), -2px 0 2px rgba(0, 0, 0, 0.1);
-}
-.tabs label:after {
-  content: "";
-  background: #fff;
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  display: block;
-}
-.tabs label:first-of-type {
-  z-index: 4;
-  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.1);
-}
-
-.tab-label-2 {
-  z-index: 2;
-}
-.tab-label-3 {
-  z-index: 3;
-}
-.tab-label-4 {
-  z-index: 4;
-}
-
-.clear-shadow {
-  clear: both;
-}
-
-.tab-content {
-  background: #fff;
-  position: relative;
-  width: 100%;
-  height: 900px;
-  box-shadow: 0 -2px 3px -2px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.1);
-  border-radius: 0 12px 3px 3px;
-}
-.tab-content div {
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding: 10px 40px;
-  z-index: 1;
-  opacity: 0;
-  box-sizing: border-box;
-}
-.tab-content div h3 {
-  color: #398080;
-  border-bottom: 1px solid rgba(63, 148, 148, 0.1);
-}
-.tab-content div h3:before {
-  content: " - ";
-}
-.tab-content div p {
-  font-size: 14px;
-  line-height: 22px;
-  text-align: left;
-  margin: 0;
-  color: #777;
-  padding-left: 15px;
+  padding-top: 20px;
+  border-radius: 1rem;
+  background-color: #dadada;
 }
 </style>

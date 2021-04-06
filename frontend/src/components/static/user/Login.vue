@@ -128,6 +128,7 @@ export default {
       "SET_NICKNAME_TOGGLE",
       "SET_FINDPW_TOGGLE",
     ]),
+    ...mapMutations("userInfo", ["SET_KAKAO_TOKEN"]),
     ...mapMutations("guideBtn", [
       "SET_GUIDEBTN_TOGGLE",
       "SET_GUIDEBTNTIP_TOGGLE",
@@ -163,8 +164,7 @@ export default {
       this.password = "";
       this.SET_LOGIN_TOGGLE();
     },
-    onKakaoCallback(data) {
-      console.log(data);
+    async onKakaoCallback(data) {
       const response = this.$store
         .dispatch("userInfo/kakaoLogin", {
           data: data,
@@ -173,6 +173,9 @@ export default {
           console.log("333333333333333333333333");
           console.log(result);
         });
+      // const response = await authApi.kakaoLogin(data);
+      // console.log("카카오 로그인 시작!!");
+      // console.log(response);
     },
     onFailure() {},
     onJoin() {

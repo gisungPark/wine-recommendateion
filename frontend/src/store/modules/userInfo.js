@@ -35,6 +35,9 @@ const mutations = {
     localStorage.clear();
     state.userInfo = INIT_USER();
   },
+  SET_KAKAO_TOKEN(state, payload) {
+    state.token = payload;
+  }
 };
 // STATE 값 변경 O + 비동기
 const actions = {
@@ -42,10 +45,13 @@ const actions = {
   async login(context, { email, password }) {
     try {
       const response = await authApi.login(email, password);
+      console.log("첫번째~~~~~~~~~");
+      console.log(response);
       // 로그인 성공!!
       if (response.data.code === 0) {
         const userinfo = await authApi.getUserInfo();
-
+        console.log("두번째~~~~~~~~~");
+        console.log(userinfo);
 
         context.commit('SET_USER_INFO', {
           userInfo: {
@@ -67,7 +73,7 @@ const actions = {
   async kakaoLogin(context, { data }) {
     try {
       const response = await authApi.kakaoLogin(data);
-      console.log("카카오 로그인!!!!");
+      console.log("카카오 로그인11111111111111111111111111111");
       console.log(response);
       console.log("카카오 로그인 끝!!!!");
       // 로그인 성공!!
@@ -79,7 +85,10 @@ const actions = {
             profile: 'https://t1.daumcdn.net/cfile/tistory/99DBE73359AAC5D224',
           },
         });
+      } else if ( response.data.code === 3) {
+        alert("닉네임 추가 입력을 해주세요!!")
       }
+        
       return response;
     } catch (error) {
       alert('이메일 비밀번호를 확인하세요!!');

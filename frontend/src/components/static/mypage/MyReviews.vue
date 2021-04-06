@@ -114,21 +114,22 @@ export default {
   margin: 15px;
   border-radius: 2em;
   overflow: hidden;
+  border: 1px solid black;
 }
 .reviews-item:nth-child(1) {
-  background-color: #f4f4f4;
+  background-color: #dadada;
   width: 150px;
 }
 .reviews-item:nth-child(2) {
   flex: 2 1 0;
   display: flex;
   flex-direction: column;
-  background-color: #f4f4f4;
+  background-color: #dadada;
   padding-left: 5px;
 }
 .reviews-item:nth-child(3) {
   width: 250px;
-  background-color: #f4f4f4;
+  background-color: #dadada;
   display: flex;
   align-items: center;
 }

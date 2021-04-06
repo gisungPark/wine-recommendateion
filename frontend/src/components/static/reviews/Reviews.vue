@@ -27,6 +27,7 @@
                   class="review-item-frame"
                   :class="{
                     'myreview-border': userInfo.nickname == review.nickname,
+                    'myreview-border2': userInfo.nickname != review.nickname,
                   }"
                 >
                   <div class="review-top">
@@ -224,6 +225,9 @@ export default {
 
 .myreview-border {
   border: 1px solid var(--basic-color-key);
+}
+.myreview-border2 {
+  border: 1px solid black;
 }
 
 .review-top {

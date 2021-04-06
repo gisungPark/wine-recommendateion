@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       routeWithoutSidebar: ['Main'],
-      routeWithSidebar: ['Mypage', 'Recommendation'],
+      routeWithSidebar: ['Mypage', 'Recommendation', 'Wines'],
       logoState: false, //false => center, true => 사이드바 영역만큼 오른쪽으로 치우침
       // router 전환 상태 관리
       changeState: false,

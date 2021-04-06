@@ -7,8 +7,12 @@
           <strong>{{ notice.title }}</strong>
           {{ notice.text }}
         </p>
+
+        <div class="button-group">
+          <button v-if="contentState == 0" class="slider-toggle-btn" @click="clickedSliderToggleBtn">filter</button>
+          <button v-if="preferenceBasedRecom.dislikeFlavorList.length == 0" class="go-mypage-btn" @click="clickedGoMyapge">내정보 페이지 이동 ></button>
+        </div>
         <div id="taste-slider" v-if="contentState == 0">
-          <button class="slider-toggle-btn" @click="clickedSliderToggleBtn">filter</button>
           <div class="slider-group" :class="{ 'slider-group-active': filterToggleState }">
             <v-range-slider
               label="Sweet"
@@ -62,11 +66,15 @@
               track-fill-color="#821a33"
             >
             </v-range-slider>
-            <div class="group-btn">
+            <div class="slider-btn-group">
               <button class="reset" @click="clickedFilterReset">초기화</button>
               <button class="submit" @click="clickedFilterSubmit">적용</button>
             </div>
           </div>
+        </div>
+        <div v-if="contentState == 2" id="food-svg">
+          <FoodSvgGroup @clickedSvg="setFoodId" />
+          <p><span>"</span>{{ pairingBasedRecom.mention }}</p>
         </div>
       </div>
 
@@ -90,6 +98,7 @@ import { mapState, mapMutations, mapActions } from 'vuex';
 import Sidebar from '@/components/articles/Sidebar.vue';
 import Winelist from '@/components/articles/Winelist.vue';
 import InfiniteLoading from 'vue-infinite-loading';
+import FoodSvgGroup from '@/components/articles/FoodSvgGroup.vue';
 
 import axios from 'axios';
 
@@ -101,9 +110,10 @@ export default {
     Sidebar,
     Winelist,
     InfiniteLoading,
+    FoodSvgGroup,
   },
   data: () => ({
-    contentState: 0,
+    // contentState: 0,
     sidebar: {
       title: 'Recommendation',
       names: ['Preferences', 'Ratings', 'Pairings', 'Gifts'],
@@ -120,7 +130,7 @@ export default {
       preferenceBased: {
         title: '님의 선호도를 바탕으로 와인을 추천해드립니다.\n아래의 맛필터를 사용하여 원하는 와인을 찾아보세요!',
         favorite: '님이 선호하시는 향은 ',
-        favorite2: '님이 선호하지 않는 향은 선택되지 않았습니다.\n선호도 정보를 선택하면 더 자세한 추천을 받을 수 있습니다. 선호도 정보를 수정해보세요! >',
+        favorite2: '님이 선호하지 않는 향은 선택되지 않았습니다.\n선호도 정보를 선택하면 더 자세한 추천을 받을 수 있습니다. 선호도 정보를 수정해보세요!',
         both: '님이 선호하시는 향은 ',
         both2: '선호하지 않는 향은 ',
       },
@@ -154,43 +164,44 @@ export default {
   }),
   created() {
     // vuex init, 선호도 설정 여부 확인
-    console.log(this.checkPreference);
-    this.actGetCheckPreperence();
+    this.actGetCheckPreperence().then(() => {
+      this.getWine0(this.$refs.infiniteLoading.stateChanger);
+    });
   },
   mounted() {
-    //선호도 기반 리스트 1회 요청
-    this.infoTextMaker();
+    this.changeContent(this.contentState);
   },
   computed: {
     ...mapState('userInfo', ['userInfo']),
     ...mapState('nav', ['navActive']),
-    ...mapState('recommendation', ['checkPreference', 'preferenceBasedRecom', 'ratingBasedRecom']),
+    ...mapState('recommendation', ['contentState', 'foodId', 'checkPreference', 'preferenceBasedRecom', 'ratingBasedRecom', 'pairingBasedRecom']),
   },
   watch: {
     contentState: function() {
       this.$refs.infiniteLoading.stateChanger.reset();
     },
     checkPreference: function() {
-      console.log(this.checkPreference);
       if (this.checkPreference === null) return;
       if (!this.checkPreference) {
         alert(`해당 서비스는 선호도 설정이 필요합니다.\n'내정보' 페이지에서 선호도를 설정해주세요.`);
         $state.complete();
         return;
       }
-      this.infoTextMaker();
-      this.getWine0(this.$refs.infiniteLoading.stateChanger);
     },
   },
   methods: {
-    ...mapActions('recommendation', ['actGetCheckPreperence', 'actGetPreferenceBasedRecom', 'actGetPreferenceBasedRecomFilter', 'actGetRatingBasedRecom']),
+    ...mapActions('recommendation', [
+      'actGetCheckPreperence',
+      'actGetPreferenceBasedRecom',
+      'actGetPreferenceBasedRecomFilter',
+      'actGetRatingBasedRecom',
+      'actGetPairingBasedRecom',
+    ]),
 
     changeContent(index) {
-      this.contentState = index;
+      // this.contentState = index;
+      this.$store.commit('recommendation/SET_CONTENT_STATE', index);
       window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      this.infoTextMaker();
-
       switch (index) {
         case 1:
           this.getWine1(this.$refs.infiniteLoading.stateChanger);
@@ -205,17 +216,18 @@ export default {
       switch (this.contentState) {
         // 선호도 기반
         case 0:
-          console.log('선호도 기반 추천');
-          // console.log(this.checkPreference);
           this.getWine0($state);
+          break;
+        case 1:
+          // 평점 기반 추천
+          this.getWine1(this.$refs.infiniteLoading.stateChanger);
           break;
         // 음식 페어링
         case 2:
-          console.log('음식 페어링 추천');
+          this.getWine2($state);
           break;
         // 선물용
         case 3:
-          console.log('선물용 추천');
           break;
         default:
           break;
@@ -234,7 +246,6 @@ export default {
             this.preferenceBasedRecom.likeFlavorList.forEach((element) => {
               this.notice.text += `${element.name}, `;
             });
-            this.notice.text = this.notice.text.slice(0, -2);
             this.notice.text += `입니다.\n${this.notice.preferenceBased.both2}`;
             this.preferenceBasedRecom.dislikeFlavorList.forEach((element) => {
               this.notice.text += `${element.name}, `;
@@ -242,6 +253,13 @@ export default {
             this.notice.text = this.notice.text.slice(0, -2);
             this.notice.text += '입니다.';
             console.log(this.notice.text);
+          } else if (this.checkPreference && this.preferenceBasedRecom.dislikeFlavorList.length == 0) {
+            // 싫어하는 맛을 설정하지 않은 경우
+            this.notice.text = `${this.userInfo.nickname}${this.notice.preferenceBased.favorite}`;
+            this.preferenceBasedRecom.likeFlavorList.forEach((element) => {
+              this.notice.text += `${element.name}, `;
+            });
+            this.notice.text += `입니다.\n${this.userInfo.nickname}${this.notice.preferenceBased.favorite2}`;
           }
           break;
         // 평점 기반
@@ -256,9 +274,6 @@ export default {
           } else if (this.ratingBasedRecom.batchData) {
             this.notice.text = this.notice.ratingBased.batchFalse;
           }
-          break;
-        // 음식 페어링
-        case 2:
           break;
         // 선물용
         case 3:
@@ -288,6 +303,7 @@ export default {
             }
             this.wines0.push(...this.preferenceBasedRecom.wineList);
             this.page0 += 1;
+            this.infoTextMaker();
             setTimeout(() => {
               $state.loaded();
             }, 1000);
@@ -305,6 +321,7 @@ export default {
             }
             this.wines0.push(...this.preferenceBasedRecom.wineList);
             this.page0 += 1;
+            this.infoTextMaker();
             setTimeout(() => {
               $state.loaded();
             }, 1000);
@@ -321,6 +338,7 @@ export default {
           if (this.ratingBasedRecom.wineDtoList.length) {
             this.wines1 = this.ratingBasedRecom.wineDtoList;
             this.page1 += 1;
+            this.infoTextMaker();
           }
           0;
         } else {
@@ -331,7 +349,30 @@ export default {
         $state.complete();
       });
     },
+    getWine2($state) {
+      this.actGetPairingBasedRecom({
+        page: this.page2,
+        foodId: this.foodId,
+      }).then((result) => {
+        if (result) {
+          if (this.pairingBasedRecom.wineList.length === 0) {
+            // 더 이상 불러올 목록이 없는 경우
+            $state.complete();
+          }
+          this.wines2.push(...this.pairingBasedRecom.wineList);
+          this.page2 += 1;
+          setTimeout(() => {
+            $state.loaded();
+          }, 1000);
+        } else {
+          $state.error(); //통신에러
+          return;
+        }
+      });
+      console.log(this.page2);
+    },
 
+    // 추가 기능 버튼
     clickedFilterReset() {
       this.filterToggleState = false;
       this.filterActive = false;
@@ -360,6 +401,16 @@ export default {
     },
     clickedSliderToggleBtn() {
       this.filterToggleState = !this.filterToggleState;
+    },
+    clickedGoMyapge() {
+      this.$router.push({ name: 'Mypage' });
+    },
+    // 페어링 기반 버튼
+    setFoodId(foodId) {
+      this.wines2 = [];
+      this.page2 = 1;
+      this.$store.commit('recommendation/SET_FOOD_ID', foodId);
+      this.$refs.infiniteLoading.stateChanger.reset();
     },
   },
 };
@@ -440,11 +491,14 @@ export default {
   font-weight: 900;
 }
 
-/* 맛 필터 */
-#taste-slider {
-  position: relative;
+/* 추가 버튼 */
+.button-group {
+  display: flex;
+  justify-content: space-between;
 }
-.slider-toggle-btn {
+.slider-toggle-btn,
+.go-mypage-btn {
+  display: inline-block;
   width: 80px;
   height: 80px;
   position: relative;
@@ -458,8 +512,22 @@ export default {
 .slider-toggle-btn:hover {
   background-color: #e1aa5786;
 }
+.go-mypage-btn {
+  display: inline-block;
+  border: 1px solid var(--basic-color-key);
+  width: 200px;
+  border-radius: 40px;
+}
+.go-mypage-btn:hover {
+  background-color: #e1aa5786;
+}
+
+/* 맛 필터 */
+#taste-slider {
+  position: relative;
+}
 .slider-group {
-  top: -180px;
+  top: -280px;
   left: -260px;
   display: flex;
   flex-direction: column;
@@ -477,19 +545,19 @@ export default {
   opacity: 0;
 }
 .slider-group-active {
-  top: 2rem;
+  top: -80px;
   left: 6rem;
   visibility: visible;
   opacity: 1;
   transform: scale(1);
 }
-.group-btn {
+.slider-btn-group {
   display: flex;
   flex-direction: row;
   justify-content: center;
   width: 100%;
 }
-.group-btn button {
+.slider-btn-group button {
   width: 150px;
   height: 50px;
   margin: 0 1rem;
@@ -499,6 +567,27 @@ export default {
   color: black;
   font-size: 1.2rem;
 }
+
+/* 음식 필터 */
+#food-svg {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#food-svg p {
+  margin-top: 1rem;
+  padding: 0.2em;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  border-bottom: 1px solid var(--basic-color-key);
+}
+#food-svg span {
+  font-weight: 900;
+  color: var(--basic-color-key);
+  font-size: 3rem;
+}
 </style>
 
 <style>
@@ -507,11 +596,5 @@ export default {
 }
 #taste-slider .v-slider__tick-label {
   margin: 5px 0px 5px -2px;
-}
-#taste-slider .v-slider-value {
-  /* visibility: hidden;
-  width: 0;
-  height: 0;
-  font-size: 0px; */
 }
 </style>

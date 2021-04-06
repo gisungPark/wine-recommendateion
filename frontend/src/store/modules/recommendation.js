@@ -78,11 +78,45 @@ const INIT_PREFERENCE_BASED_RECOM = () => {
     ],
   };
 };
+const INIT_PAIRING_BASED_RECOM = () => {
+  return {
+    mention: '음식을 클릭하여 어울리는 와인을 찾아보세요.',
+    wineList: [
+      {
+        wineId: 0,
+        kname: '',
+        ename: '',
+        alcohol: '',
+        type: '',
+        temper: '',
+        avg: 0,
+        price: 0,
+        year: '2020',
+        detail: '',
+        shop: null,
+        sweet: 0,
+        acidity: 0,
+        body: 0,
+        tannin: 0,
+        area: '호주 ',
+        grape: {
+          grapeId: 0,
+          kname: '',
+          ename: '',
+          detail: '',
+        },
+      },
+    ],
+  };
+};
 
 const state = {
+  contentState: 0,
+  foodId: 0,
   checkPreference: null,
   ratingBasedRecom: INIT_RATING_BASED_RECOM(),
   preferenceBasedRecom: INIT_PREFERENCE_BASED_RECOM(),
+  pairingBasedRecom: INIT_PAIRING_BASED_RECOM(),
 };
 const getters = {};
 const actions = {
@@ -117,10 +151,8 @@ const actions = {
   // 평점 기반 와인 추천 목록 요청 + 필터링
   async actGetPreferenceBasedRecomFilter({ commit }, payload) {
     try {
-      console.log(payload);
       const response = await recommendationApi.getPreferenceBasedRecomFilter(payload);
       if (response.status === 200) {
-        console.log('sdfdsf');
         console.log(response.data);
         commit('SET_PREFERENCE_BASED_RECOM', response.data);
         return true;
@@ -147,9 +179,31 @@ const actions = {
       return false;
     }
   },
+
+  // 음식 페어링 추천 목록 요청
+  async actGetPairingBasedRecom({ commit }, payload) {
+    try {
+      const response = await recommendationApi.getPairingBasedRecom(payload);
+      if (response.status === 200) {
+        console.log(response.data);
+        commit('SET_FAIRING_BASED_RECOM', response.data);
+        return true;
+      }
+    } catch (error) {
+      console.log('음식 페어링 추천 리스트를 가져오는 도중 문제 발생!');
+      console.log(error);
+      return false;
+    }
+  },
 };
 
 const mutations = {
+  SET_CONTENT_STATE(state, tabNum) {
+    state.contentState = tabNum;
+  },
+  SET_FOOD_ID(state, tabNum) {
+    state.foodId = tabNum;
+  },
   SET_RATING_BASED_RECOM(state, payload) {
     state.ratingBasedRecom = payload;
   },
@@ -158,7 +212,9 @@ const mutations = {
   },
   SET_PREFERENCE_BASED_RECOM(state, payload) {
     state.preferenceBasedRecom = payload;
-    console.log(state.preferenceBasedRecom);
+  },
+  SET_FAIRING_BASED_RECOM(state, payload) {
+    state.pairingBasedRecom = payload;
   },
 };
 

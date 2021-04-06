@@ -286,7 +286,6 @@ export default {
               // 더 이상 불러올 목록이 없는 경우
               $state.complete();
             }
-            console.log(this.preferenceBasedRecom);
             this.wines0.push(...this.preferenceBasedRecom.wineList);
             this.page0 += 1;
             setTimeout(() => {
@@ -304,7 +303,6 @@ export default {
               // 더 이상 불러올 목록이 없는 경우
               $state.complete();
             }
-            console.log(this.preferenceBasedRecom);
             this.wines0.push(...this.preferenceBasedRecom.wineList);
             this.page0 += 1;
             setTimeout(() => {

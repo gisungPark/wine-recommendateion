@@ -120,7 +120,9 @@ const actions = {
       console.log(payload);
       const response = await recommendationApi.getPreferenceBasedRecomFilter(payload);
       if (response.status === 200) {
-        commit('SET_RATING_BASED_RECOM', response.data);
+        console.log('sdfdsf');
+        console.log(response.data);
+        commit('SET_PREFERENCE_BASED_RECOM', response.data);
         return true;
       }
     } catch (error) {

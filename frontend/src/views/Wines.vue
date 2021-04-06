@@ -53,9 +53,11 @@
           <option value="3">높은 별점순</option>
         </select>
       </div>
-      <transition-group name="slideup" mode="out-in">
-        <Winelist class="winelist" key="0" :wines="wines" />
-      </transition-group>
+      <div style="width: 100%">
+        <transition-group name="slideup" mode="out-in">
+          <Winelist class="winelist" key="0" :wines="wines" />
+        </transition-group>
+      </div>
 
       <!-- ################################ -->
       <!-- 필터링 모달 ###################### -->
@@ -64,7 +66,6 @@
         v-show="this.contentState === 1"
         id="priceModal"
         class="fillter-modal"
-        @click="onSearch"
       >
         <div id="scoreModal-info">
           <span id="scoreModal-info-item1">Price?</span>
@@ -80,6 +81,7 @@
             step="10000"
             color="#821a33"
             track-fill-color="#821a33"
+            @click="onSearch"
           ></v-range-slider>
         </div>
         <div id="price-slider-label">
@@ -106,6 +108,7 @@
           size="50"
           hover
         ></v-rating>
+        <v-btn id="resetBtn" @click="onReset">Reset</v-btn>
       </div>
 
       <!-- 3. 와인 종류 필터링!!!  -->
@@ -113,7 +116,6 @@
         v-show="this.contentState === 3"
         id="kindModal"
         class="fillter-modal"
-        @click="onSearch"
       >
         <div id="scoreModal-info">
           <span id="scoreModal-info-item1">What kind?</span>
@@ -190,6 +192,11 @@ export default {
   created() {
     this.onSearch();
   },
+  watch: {
+    typeFilter: function () {
+      this.onSearch();
+    },
+  },
   data: () => ({
     contentState: -1,
     page: 1,
@@ -209,6 +216,9 @@ export default {
     clickedBtn(index) {
       if (this.contentState === index) this.contentState = -1;
       else this.contentState = index;
+    },
+    onReset() {
+      this.pointFilter = 0;
     },
     async onSearch() {
       const response = await wineApi.search(
@@ -444,6 +454,15 @@ export default {
   font-size: 23px;
   margin-right: 10px;
   color: var(--basic-color-fill);
+}
+
+#resetBtn {
+  position: relative;
+  left: 120px;
+  width: 50px;
+  margin-top: 8px;
+  color: white;
+  background-color: var(--basic-color-bg2);
 }
 /* 와인 종류 모달 #################################### */
 #kindModal {

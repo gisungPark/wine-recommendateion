@@ -54,6 +54,29 @@ const actions = {
       return error;
     }
   },
+
+  async kakaoLogin(context, { data }) {
+    try {
+      const response = await authApi.kakaoLogin(data);
+      console.log("카카오 로그인!!!!");
+      console.log(response);
+      console.log("카카오 로그인 끝!!!!");
+      // 로그인 성공!!
+      if (response.data.code === 0) {
+        context.commit('SET_USER_INFO', {
+          userInfo: {
+            token: response.data.token,
+            nickname: response.data.nickname,
+            profile: 'https://t1.daumcdn.net/cfile/tistory/99DBE73359AAC5D224',
+          },
+        });
+      }
+      return response;
+    } catch (error) {
+      alert('이메일 비밀번호를 확인하세요!!');
+      return error;
+    }
+  },
 };
 
 export default {

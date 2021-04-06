@@ -163,7 +163,17 @@ export default {
       this.password = "";
       this.SET_LOGIN_TOGGLE();
     },
-    onKakaoCallback(data) {},
+    onKakaoCallback(data) {
+      console.log(data);
+      const response = this.$store
+        .dispatch("userInfo/kakaoLogin", {
+          data: data,
+        })
+        .then((result) => {
+          console.log("333333333333333333333333");
+          console.log(result);
+        });
+    },
     onFailure() {},
     onJoin() {
       this.SET_JOIN_TOGGLE();

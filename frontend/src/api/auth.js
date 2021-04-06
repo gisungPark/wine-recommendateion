@@ -7,7 +7,7 @@ export function login(email, password) {
     });
 }
 
-export function kakaoCallback(data) {
+export function kakaoLogin(data) {
     return http.post('/user/checkUser', {
         token: data.access_token
     });

@@ -51,7 +51,17 @@
             />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>
-          <div class="content-item" v-show="this.screenState == 3"></div>
+          <div class="content-item" v-show="this.screenState == 3">
+            <div class="item-list">
+              <div
+                class="wine-item"
+                v-for="(item, index) in scarpList"
+                :key="item + index"
+              >
+                <WineItem :wine="item" />
+              </div>
+            </div>
+          </div>
           <div class="content-item" v-show="this.screenState == 2">
             <MyReviews
               v-for="(review, idx) in reviews"
@@ -102,6 +112,7 @@ export default {
     screenState: 3,
     reviews: [],
     preferenceList: [],
+    scarpList: [],
   }),
   created() {
     // 1. 향 정보 읽어오기!!
@@ -110,7 +121,7 @@ export default {
     // 2. 리뷰 정보
     this.mypageReview(1);
     // 3. 스크랩 정보!!
-    // this.actGetScrap();
+    this.getScrap();
   },
 
   computed: {
@@ -140,6 +151,14 @@ export default {
       console.log(response.data);
       console.log("!!!!!!!!!!!!!!!!!!!!!!!");
       this.preferenceList = response.data;
+    },
+
+    async getScrap() {
+      const response = await mypageApi.mypageScrap();
+      console.log("****************************");
+      console.log(response);
+      console.log("****************************");
+      this.scarpList = response.data;
     },
   },
 };

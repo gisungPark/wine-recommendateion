@@ -15,3 +15,7 @@ export function getCheckPreference() {
 export function getPreferenceBasedRecom(page) {
   return http.get(`/reco/preference-recolist?page=${page}`);
 }
+// 선호도 기반 추천, 필터링 적용 리스트 요청
+export function getPreferenceBasedRecomFilter(payload) {
+  return http.put(`/reco/preference-recolist/taste?page=${payload.page}`, payload.filter);
+}

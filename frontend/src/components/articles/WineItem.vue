@@ -5,7 +5,7 @@
     :class="{ red: wine.type === '레드', white: wine.type === '화이트', rose: wine.type === '스파클링' }"
     @click="clickedWine"
   >
-    <img class="wineitem-img" :src="`${this.s3url}${wine.wineId}.png`" alt="와인 이미지" />
+    <img v-if="wine.wineId != 0" class="wineitem-img" :src="`${this.s3url}${wine.wineId}.png`" alt="와인 이미지" />
     <div class="wineitem-info">
       <div class="info-title">
         <p>{{ wine.kname }}</p>

@@ -19,3 +19,9 @@ export function getPreferenceBasedRecom(page) {
 export function getPreferenceBasedRecomFilter(payload) {
   return http.put(`/reco/preference-recolist/taste?page=${payload.page}`, payload.filter);
 }
+
+// 음식 페어링
+export function getPairingBasedRecom(payload) {
+  console.log(payload);
+  return http.get(`/reco/food-recolist/${payload.foodId}?page=${payload.page}`);
+}

@@ -16,3 +16,7 @@ export function writeReview(contents, cost, point, wineId) {
             wineId: wineId,
     });
 }
+
+export function deleteReview(wineId) {
+    return http.delete(`/wine/reivew/${wineId}`);
+}

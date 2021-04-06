@@ -23,7 +23,12 @@
             <!-- 리뷰 item #################################################  -->
             <v-row v-for="(review, idx) in review" :key="review + idx">
               <v-col>
-                <div class="review-item-frame">
+                <div
+                  class="review-item-frame"
+                  :class="{
+                    'myreview-border': userInfo.nickname == review.nickname,
+                  }"
+                >
                   <div class="review-top">
                     <div class="review-content">
                       <span>
@@ -32,10 +37,15 @@
                     </div>
                     <div class="review-icon">
                       <div
+                        v-show="userInfo.nickname == review.nickname"
                         class="review-icon-1"
                         @click="onModify(review)"
                       ></div>
-                      <div class="review-icon-2" @click="onDelete"></div>
+                      <div
+                        v-show="userInfo.nickname == review.nickname"
+                        class="review-icon-2"
+                        @click="onDelete(review)"
+                      ></div>
                     </div>
                   </div>
                   <div style="height: 30px"></div>
@@ -120,6 +130,9 @@ export default {
   components: {
     ReviewWrite,
   },
+  created() {
+    console.log(this.userInfo.nickname);
+  },
   mounted() {},
   watch: {
     reviewDialog: function () {
@@ -137,6 +150,7 @@ export default {
     },
   },
   computed: {
+    ...mapState("userInfo", ["userInfo"]),
     ...mapState("reviewDialog", [
       "reviewDialog",
       "reviewWriteDialog",
@@ -153,7 +167,6 @@ export default {
       "SET_REVIEW_WRITE_TOGGLE",
     ]),
     async readWineReviews() {
-      console.log(this.reviewByWineId + " 리뷰를 읽어오는 api  호출!!");
       const response = await reviewApi.getWineReviewById(
         1,
         this.reviewByWineId
@@ -165,8 +178,6 @@ export default {
 
     onModify(item) {
       if (window.confirm("리뷰룰 수정 하시겠습니까?")) {
-        console.log("호로로로로로롤로");
-        console.log(item);
         this.propsReview = {
           rating: item.point,
           costRating: item.cost,
@@ -175,8 +186,10 @@ export default {
         this.SET_REVIEW_WRITE_TOGGLE();
       }
     },
-    onDelete() {
+    async onDelete() {
       if (window.confirm("리뷰를 삭제 하시겠습니까?")) {
+        const response = await reviewApi.deleteReview(this.reviewByWineId);
+        this.readWineReviews();
       }
     },
 
@@ -207,6 +220,10 @@ export default {
   border-radius: 2em;
   overflow: hidden;
   position: relative;
+}
+
+.myreview-border {
+  border: 1px solid var(--basic-color-key);
 }
 
 .review-top {

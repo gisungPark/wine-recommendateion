@@ -410,7 +410,9 @@ export default {
       this.wines2 = [];
       this.page2 = 1;
       this.$store.commit('recommendation/SET_FOOD_ID', foodId);
-      this.$refs.infiniteLoading.stateChanger.reset();
+      setTimeout(() => {
+        this.$refs.infiniteLoading.stateChanger.reset();
+      }, 600);
     },
   },
 };

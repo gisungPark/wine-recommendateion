@@ -112,7 +112,7 @@ export default {
     };
   },
   mounted() {
-    this.svgs = document.querySelectorAll('.food-svg');
+    this.svgs = document.querySelectorAll('.food-svg-item');
     this.clickedSvg(this.foodId);
   },
 
@@ -123,6 +123,7 @@ export default {
   },
   methods: {
     clickedSvg(foodId) {
+      console.log(foodId);
       if (foodId === 0) return;
       this.$emit('clickedSvg', foodId);
       for (let i = 0; i < this.svgs.length; i++) {
@@ -150,7 +151,7 @@ export default {
   background-color: transparent;
   transition: all 0.5s ease;
 }
-.food-svg:hover {
+.food-svg-item:hover {
   background-color: #e1aa5786 !important;
 }
 </style>

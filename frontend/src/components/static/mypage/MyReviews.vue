@@ -21,7 +21,7 @@
           <span class="writer-nickname">
             {{ userInfo.nickname }}
           </span>
-          <span class="writing-date">{{ review.date }}</span>
+          <span class="writing-date">{{ review.time }}</span>
         </div>
         <!-- ######################################################## -->
         <!-- 가성비 아이콘, 별점 아이콘  -->
@@ -38,7 +38,7 @@
                 d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
               />
             </svg>
-            <span style="color: #626262">{{review.point}}</span>
+            <span style="color: #626262">{{ review.point }}</span>
           </div>
           <div v-show="this.review.cost == 1" class="cost-rating">
             <div class="cost-rating-icon blue">
@@ -65,7 +65,9 @@
     <div class="reviews-item">
       <div class="reviews-btn">
         <a href="#" class="button">와인으로 이동하기</a>
-        <a href="#" class="button" @click="goToReview">리뷰로 이동하기</a>
+        <a href="#" class="button" @click="goToReview(review.wineId)"
+          >리뷰로 이동하기</a
+        >
       </div>
     </div>
   </div>
@@ -79,8 +81,14 @@ export default {
   props: ["review", "userInfo"],
   components: {},
   methods: {
-    ...mapMutations("reviewDialog", ["SET_REVIEW_TOGGLE"]),
-    goToReview() {
+    ...mapMutations("reviewDialog", ["SET_REVIEW_WINEID", "SET_REVIEW_TOGGLE"]),
+
+    /**
+     * 해당 와인 전체리뷰 호출!
+     */
+    goToReview(wineId) {
+      console.log("이동할 와인 아이디는 : " + wineId + " 입니다.");
+      this.SET_REVIEW_WINEID(wineId);
       this.SET_REVIEW_TOGGLE();
     },
   },

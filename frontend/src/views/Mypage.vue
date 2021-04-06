@@ -57,9 +57,7 @@
                 class="wine-item"
                 v-for="(item, index) in scarpList"
                 :key="item + index"
-              >
-                <WineItem :wine="item" />
-              </div>
+              ></div>
             </div>
           </div>
           <div class="content-item" v-show="this.screenState == 2">

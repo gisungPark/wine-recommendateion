@@ -96,6 +96,7 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import * as reviewApi from "@/api/review";
 
 export default {
   name: "ReviewWrite",
@@ -126,6 +127,8 @@ export default {
       console.log("별점: " + this.rating);
       console.log("가성비: " + this.costRating);
       console.log("리뷰 내용: " + this.reviewContent);
+
+      const response = writeReview(contents, cost, point, wineId);
     },
   },
 };

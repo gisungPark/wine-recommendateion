@@ -53,9 +53,9 @@
                   </ul>
                 </v-col>
               </v-row>
-              <v-row no-gutters>
+              <!-- <v-row no-gutters>
                 <a id="findPw" @click="onFindPw">비밀번호 찾기</a>
-              </v-row>
+              </v-row> -->
               <v-row style="margin-top: 20px">
                 <v-col cols="auto" id="loginBtn-wrap">
                   <v-btn text id="loginBtn" @click="onLogin">CONTINUE</v-btn>
@@ -128,6 +128,7 @@ export default {
       "SET_NICKNAME_TOGGLE",
       "SET_FINDPW_TOGGLE",
     ]),
+    ...mapMutations("userInfo", ["SET_KAKAO_TOKEN"]),
     ...mapMutations("guideBtn", [
       "SET_GUIDEBTN_TOGGLE",
       "SET_GUIDEBTNTIP_TOGGLE",
@@ -143,6 +144,9 @@ export default {
           password: this.password,
         })
         .then((result) => {
+          console.log(this.email + " " + this.password);
+          console.log("로그인 간다!!!");
+          console.log(result);
           if (result.data.code === 1) {
             alert("아이디 비밀번호를 확인하세요!!");
           } else if (result.data.code === 0) {
@@ -163,7 +167,19 @@ export default {
       this.password = "";
       this.SET_LOGIN_TOGGLE();
     },
-    onKakaoCallback(data) {},
+    async onKakaoCallback(data) {
+      const response = this.$store
+        .dispatch("userInfo/kakaoLogin", {
+          data: data,
+        })
+        .then((result) => {
+          console.log("333333333333333333333333");
+          console.log(result);
+        });
+      // const response = await authApi.kakaoLogin(data);
+      // console.log("카카오 로그인 시작!!");
+      // console.log(response);
+    },
     onFailure() {},
     onJoin() {
       this.SET_JOIN_TOGGLE();

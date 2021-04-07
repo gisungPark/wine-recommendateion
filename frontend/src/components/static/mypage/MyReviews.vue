@@ -2,7 +2,11 @@
   <div class="reviews-fram">
     <div class="reviews-item">
       <div class="reviews-Img">
-        <img class="wineImg" src="@/assets/images/wine02.png" alt="" />
+        <img
+          class="wineImg"
+          :src="`${this.s3url}${review.wineId}.png`"
+          alt="리뷰 와인 이미지"
+        />
       </div>
     </div>
     <div class="reviews-item">
@@ -16,12 +20,12 @@
       <div class="review-writer">
         <div class="writer-info">
           <div class="writer-img">
-            <img :src="userInfo.profile" alt="" />
+            <!-- <img v-show="userInfo.profile != null" :src="userInfo.profile" /> -->
           </div>
           <span class="writer-nickname">
             {{ userInfo.nickname }}
           </span>
-          <span class="writing-date">{{ review.date }}</span>
+          <span class="writing-date">{{ review.time }}</span>
         </div>
         <!-- ######################################################## -->
         <!-- 가성비 아이콘, 별점 아이콘  -->
@@ -38,7 +42,7 @@
                 d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
               />
             </svg>
-            <span style="color: #626262">{{review.point}}</span>
+            <span style="color: #626262">{{ review.point }}</span>
           </div>
           <div v-show="this.review.cost == 1" class="cost-rating">
             <div class="cost-rating-icon blue">
@@ -65,7 +69,9 @@
     <div class="reviews-item">
       <div class="reviews-btn">
         <a href="#" class="button">와인으로 이동하기</a>
-        <a href="#" class="button" @click="goToReview">리뷰로 이동하기</a>
+        <a href="#" class="button" @click="goToReview(review.wineId)"
+          >리뷰로 이동하기</a
+        >
       </div>
     </div>
   </div>
@@ -77,10 +83,22 @@ import { mapState, mapMutations } from "vuex";
 export default {
   name: "MyReviews",
   props: ["review", "userInfo"],
-  components: {},
+  created() {
+    console.log(this.s3url);
+  },
+
+  computed: {
+    ...mapState(["s3url"]),
+  },
   methods: {
-    ...mapMutations("reviewDialog", ["SET_REVIEW_TOGGLE"]),
-    goToReview() {
+    ...mapMutations("reviewDialog", ["SET_REVIEW_WINEID", "SET_REVIEW_TOGGLE"]),
+
+    /**
+     * 해당 와인 전체리뷰 호출!
+     */
+    goToReview(wineId) {
+      console.log("이동할 와인 아이디는 : " + wineId + " 입니다.");
+      this.SET_REVIEW_WINEID(wineId);
       this.SET_REVIEW_TOGGLE();
     },
   },
@@ -96,21 +114,22 @@ export default {
   margin: 15px;
   border-radius: 2em;
   overflow: hidden;
+  border: 1px solid black;
 }
 .reviews-item:nth-child(1) {
-  background-color: #f4f4f4;
+  background-color: #dadada;
   width: 150px;
 }
 .reviews-item:nth-child(2) {
   flex: 2 1 0;
   display: flex;
   flex-direction: column;
-  background-color: #f4f4f4;
+  background-color: #dadada;
   padding-left: 5px;
 }
 .reviews-item:nth-child(3) {
   width: 250px;
-  background-color: #f4f4f4;
+  background-color: #dadada;
   display: flex;
   align-items: center;
 }
@@ -166,6 +185,8 @@ export default {
   height: 40px;
   border-radius: 70%;
   overflow: hidden;
+  background-image: url("https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg");
+  background-size: contain;
 }
 
 .writer-img > img {

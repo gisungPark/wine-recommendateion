@@ -5,7 +5,9 @@ const INIT_USER = () => {
   return {
     token: localStorage.getItem('token'),
     nickname: localStorage.getItem('nickname'),
-    profile: 'https://t1.daumcdn.net/cfile/tistory/99DBE73359AAC5D224',
+    provider: localStorage.getItem('provider'),
+    profile: localStorage.getItem('profile'),
+    defaultProfile: localStorage.getItem('defaultProfile'),
   };
 };
 
@@ -25,12 +27,17 @@ const mutations = {
     //로컬 저장
     localStorage.setItem('token', state.userInfo.token);
     localStorage.setItem('nickname', state.userInfo.nickname);
+    localStorage.setItem('provider', state.userInfo.provider);
     localStorage.setItem('profile', state.userInfo.profile);
+    localStorage.setItem('defaultProfile', state.userInfo.defaultProfile);
   },
   SET_LOGOUT(state) {
     localStorage.clear();
     state.userInfo = INIT_USER();
   },
+  SET_KAKAO_TOKEN(state, payload) {
+    state.token = payload;
+  }
 };
 // STATE 값 변경 O + 비동기
 const actions = {
@@ -38,6 +45,35 @@ const actions = {
   async login(context, { email, password }) {
     try {
       const response = await authApi.login(email, password);
+      console.log("첫번째~~~~~~~~~");
+      console.log(response);
+      // 로그인 성공!!
+      if (response.data.code === 0) {
+      
+
+        context.commit('SET_USER_INFO', {
+          userInfo: {
+            token: response.data.token,
+            nickname: response.data.nickname,
+            provider: "",
+            profile: "",
+            defaultProfile: "https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg",
+          },
+        });
+      }
+      return response;
+    } catch (error) {
+      alert('이메일 비밀번호를 확인하세요!!');
+      return error;
+    }
+  },
+
+  async kakaoLogin(context, { data }) {
+    try {
+      const response = await authApi.kakaoLogin(data);
+      console.log("카카오 로그인11111111111111111111111111111");
+      console.log(response);
+      console.log("카카오 로그인 끝!!!!");
       // 로그인 성공!!
       if (response.data.code === 0) {
         context.commit('SET_USER_INFO', {
@@ -47,7 +83,10 @@ const actions = {
             profile: 'https://t1.daumcdn.net/cfile/tistory/99DBE73359AAC5D224',
           },
         });
+      } else if ( response.data.code === 3) {
+        alert("닉네임 추가 입력을 해주세요!!")
       }
+        
       return response;
     } catch (error) {
       alert('이메일 비밀번호를 확인하세요!!');

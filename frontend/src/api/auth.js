@@ -6,11 +6,12 @@ export function login(email, password) {
             password: password
     });
 }
+export function kakaoLogin(data) {
+    return http.post(`/user/checkUser?token=${data.access_token}`);
+}
 
-export function kakaoCallback(data) {
-    return http.post('/user/checkUser', {
-        token: data.access_token
-    });
+export function getUserInfo() {
+    return http.get('/user/getUserInfo');
 }
 
 export function logout() {

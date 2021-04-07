@@ -23,22 +23,42 @@
             <!-- 리뷰 item #################################################  -->
             <v-row v-for="(review, idx) in review" :key="review + idx">
               <v-col>
-                <div class="review-item-frame">
-                  <div class="review-content">
-                    <span>
-                      {{ review.contents }}
-                    </span>
+                <div
+                  class="review-item-frame"
+                  :class="{
+                    'myreview-border': userInfo.nickname == review.nickname,
+                    'myreview-border2': userInfo.nickname != review.nickname,
+                  }"
+                >
+                  <div class="review-top">
+                    <div class="review-content">
+                      <span>
+                        {{ review.contents }}
+                      </span>
+                    </div>
+                    <div class="review-icon">
+                      <div
+                        v-show="userInfo.nickname == review.nickname"
+                        class="review-icon-1"
+                        @click="onModify(review)"
+                      ></div>
+                      <div
+                        v-show="userInfo.nickname == review.nickname"
+                        class="review-icon-2"
+                        @click="onDelete(review)"
+                      ></div>
+                    </div>
                   </div>
                   <div style="height: 30px"></div>
                   <div class="review-writer">
                     <div class="writer-info">
                       <div class="writer-img">
-                        <img :src="review.profile" alt="" />
+                        <img :src="review.userImg" alt="" />
                       </div>
                       <span class="writer-nickname">
                         {{ review.nickname }}
                       </span>
-                      <span class="writing-date">{{ review.date }}</span>
+                      <span class="writing-date">{{ review.time }}</span>
                     </div>
                     <!-- ######################################################## -->
                     <!-- 가성비 아이콘, 별점 아이콘  -->
@@ -55,21 +75,21 @@
                             d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
                           />
                         </svg>
-                        <span style="font-weight: 600">4.5</span>
+                        <span style="font-weight: 600">{{ review.point }}</span>
                       </div>
-                      <div v-show="review.priceScore == 1" class="cost-rating">
+                      <div v-show="review.cost == 1" class="cost-rating">
                         <div class="cost-rating-icon blue">
                           <img src="@/assets/images/smiley-1.png" />
                         </div>
                         <span>가성비</span>
                       </div>
-                      <div v-show="review.priceScore == 2" class="cost-rating">
+                      <div v-show="review.cost == 2" class="cost-rating">
                         <div class="cost-rating-icon orange">
                           <img src="@/assets/images/smiley-2.png" />
                         </div>
                         <span>가성비</span>
                       </div>
-                      <div v-show="review.priceScore == 3" class="cost-rating">
+                      <div v-show="review.cost == 3" class="cost-rating">
                         <div class="cost-rating-icon red">
                           <img src="@/assets/images/smiley-3.png" />
                         </div>
@@ -96,121 +116,84 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <ReviewWrite />
+      <ReviewWrite :propsReview="propsReview" />
     </v-row>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import * as reviewApi from "@/api/review";
 import ReviewWrite from "@/components/static/reviews/ReviewWrite.vue";
 
 export default {
   name: "Reviews",
-  props: [],
   components: {
     ReviewWrite,
   },
+  created() {
+    console.log(this.userInfo.nickname);
+  },
+  mounted() {},
+  watch: {
+    reviewDialog: function () {
+      this.readWineReviews();
+    },
+    reviewWriteDialog: function () {
+      this.readWineReviews();
+      if (this.reviewWriteDialog == false) {
+        this.propsReview = {
+          rating: 5,
+          costRating: -1,
+          reviewContent: "",
+        };
+      }
+    },
+  },
   computed: {
-    ...mapState("reviewDialog", ["reviewDialog"]),
+    ...mapState("userInfo", ["userInfo"]),
+    ...mapState("reviewDialog", [
+      "reviewDialog",
+      "reviewWriteDialog",
+      "reviewByWineId",
+    ]),
   },
   data: () => ({
-    review: [
-      {
-        contents: `Elementum eu facilisis sed odio morbi quis commodo odio. 
-        Mauris rhoncus aenean vel elit scelerisque mauris pellentesque. 
-        Accumsan sit amet nulla facilisi morbi tempus. Suscipit tellus mauris
-        a diam maecenas sed enim ut sem. Turpis egestas maecenas pharetra convallis
-        posuere. Nibh venenatis cras sed felis eget velit aliquet. Elementum nisi 
-        quis eleifend quam adipiscing. Amet cursus sit amet dictum sit amet justo 
-        donec enim. Odio pellentesque diam volutpat commodo sed egestas egestas fringilla.
-        Habitant morbi tristique senectus et netus et malesuada. Imperdiet dui accumsan 
-        sit amet nulla facilisi morbi tempus iaculis. 
-        c turpis egestas maecenas pharetra.`,
-        nickname: "와인최고!!!!",
-        profile:
-          "https://i.pinimg.com/474x/a3/62/e4/a362e4507fbfe50404cd374594e48825.jpg",
-        date: "2021.11.01",
-        priceScore: 1,
-      },
-      {
-        contents: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-        sed do eiusmod tempor incididunt ut 
-        labore et dolore magna aliqua. Nisl tincidunt eget nullam non. `,
-        nickname: "와인최고!!!!",
-        profile:
-          "https://i.pinimg.com/474x/a3/62/e4/a362e4507fbfe50404cd374594e48825.jpg",
-        date: "2021.11.01",
-        priceScore: 3,
-      },
-      {
-        contents: `Nunc pulvinar sapien et ligula ullamcorper malesuada proin. Neque 
-        convallis a cras semper auctor. Libero id faucibus nisl tincidunt eget. Leo a 
-        diam sollicitudin tempor id. A lacus vestibulum sed arcu non odio euismod lacinia.`,
-        nickname: "와인최고!!!!",
-        profile:
-          "https://i.pinimg.com/474x/a3/62/e4/a362e4507fbfe50404cd374594e48825.jpg",
-        date: "2021.11.01",
-        priceScore: 1,
-      },
-      {
-        contents: `Senectus et netus et malesuada. Nunc pulvinar 
-          sapien et ligula ullamcorper malesuada proin. Neque 
-          convallis a cras semper auctor. Libero id faucibus nisl tincidunt eget. 
-          Leo a diam sollicitudin tempor id. A lacus vestibulum sed arcu non odio 
-          euismod lacinia. In tellus integer feugiat scelerisque. Feugiat in fermentum 
-          posuere urna nec tincidunt praesent. Porttitor rhoncus dolor purus non enim praesent 
-          elementum facilisis. Nisi scelerisque eu ultrices vitae auctor eu augue ut lectus. 
-          Ipsum faucibus vitae aliquet nec ullamcorper sit amet risus. Et malesuada fames ac 
-          turpis egestas sed. Sit amet nisl suscipit adipiscing bibendum est ultricies. Arcu 
-          ac tortor dignissim convallis aenean et tortor at. Pretium viverra suspendisse potenti 
-          nullam ac tortor vitae purus. Eros donec ac odio tempor orci dapibus ultrices. Elementum 
-          nibh tellus molestie nunc. Et magnis dis parturient montes nascetur. Est placerat in 
-          egestas erat imperdiet. Consequat interdum varius sit amet mattis vulputate enim.`,
-
-        nickname: "와인최고!!!!",
-        profile:
-          "https://i.pinimg.com/474x/a3/62/e4/a362e4507fbfe50404cd374594e48825.jpg",
-        date: "2021.11.01",
-        priceScore: 1,
-      },
-      {
-        contents: `Senectus et netus et malesuada. Nunc pulvinar sapien et ligula ullamcorper
-        malesuada proin. Neque convallis a cras semper auctor. Libero id faucibus nisl tincidunt eget. 
-        Leo a diam sollicitudin tempor id. A lacus vestibulum sed arcu non odio euismod 
-        lacinia. In tellus integer feugiat scelerisque. Feugiat in fermentum posuere urna 
-        nec tincidunt praesent. Porttitor rhoncus dolor purus non enim praesent elementum 
-        facilisis. Nisi scelerisque eu ultrices vitae auctor eu augue ut lectus. Ipsum 
-        faucibus vitae aliquet nec ullamcorper sit amet risus. Et malesuada fames ac 
-        turpis egestas sed. Sit amet nisl suscipit adipiscing bibendum est ultricies. 
-        Arcu ac tortor dignissim convallis aenean et tortor at. Pretium viverra suspendisse 
-        potenti nullam ac tortor vitae purus. Eros donec ac odio tempor orci dapibus ultrices.
-        Elementum nibh tellus molestie nunc. Et magnis dis parturient montes nascetur. 
-        Est placerat in egestas erat imperdiet. Consequat interdum varius sit amet mattis 
-        vulputate enim.`,
-
-        nickname: "와인최고!!!!",
-        profile:
-          "https://i.pinimg.com/474x/a3/62/e4/a362e4507fbfe50404cd374594e48825.jpg",
-        date: "2021.11.01",
-        priceScore: 2,
-      },
-      {
-        contents: `Quis hendrerit dolor magna eget est lorem ipsum dolor sit. 
-        Volutpat odio facilisis mauris sit amet massa.`,
-        nickname: "와인최고!!!!",
-        profile:
-          "https://i.pinimg.com/474x/a3/62/e4/a362e4507fbfe50404cd374594e48825.jpg",
-        date: "2021.11.01",
-        priceScore: 2,
-      },
-    ],
+    review: [],
+    propsReview: {},
   }),
   methods: {
     ...mapMutations("reviewDialog", [
       "SET_REVIEW_TOGGLE",
       "SET_REVIEW_WRITE_TOGGLE",
     ]),
+    async readWineReviews() {
+      const response = await reviewApi.getWineReviewById(
+        1,
+        this.reviewByWineId
+      );
+      this.review = response.data;
+      console.log(response);
+      console.log("리뷰 읽어왔다. ");
+    },
+
+    onModify(item) {
+      if (window.confirm("리뷰룰 수정 하시겠습니까?")) {
+        this.propsReview = {
+          rating: item.point,
+          costRating: item.cost,
+          reviewContent: item.contents,
+        };
+        this.SET_REVIEW_WRITE_TOGGLE();
+      }
+    },
+    async onDelete() {
+      if (window.confirm("리뷰를 삭제 하시겠습니까?")) {
+        const response = await reviewApi.deleteReview(this.reviewByWineId);
+        this.readWineReviews();
+      }
+    },
+
     clickWriteBtn() {
       this.SET_REVIEW_WRITE_TOGGLE();
     },
@@ -239,12 +222,51 @@ export default {
   overflow: hidden;
   position: relative;
 }
+
+.myreview-border {
+  border: 1px solid var(--basic-color-key);
+}
+.myreview-border2 {
+  border: 1px solid black;
+}
+
+.review-top {
+  display: flex;
+  flex-direction: row;
+}
+.review-icon {
+  width: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: absolute;
+  right: 10px;
+}
+.review-icon-1 {
+  width: 40px;
+  height: 40px;
+  background-image: url("../../../assets/images/pencil.png");
+  background-size: contain;
+}
+
+.review-icon-2 {
+  width: 40px;
+  height: 40px;
+  background-image: url("../../../assets/images/close.png");
+  background-size: contain;
+}
 .review-content {
+  width: 88%;
   margin-top: 10px;
   margin-left: 15px;
   margin-right: 15px;
   display: flex;
   flex-direction: row;
+}
+.review-content > span {
+  color: black;
+  font-size: 18px;
+  line-height: 150%;
 }
 .review-content > img {
   width: 30px;
@@ -269,6 +291,8 @@ export default {
   height: 40px;
   border-radius: 70%;
   overflow: hidden;
+  background-image: url("https://blog.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg");
+  background-size: contain;
 }
 
 .writer-img > img {
@@ -356,7 +380,7 @@ export default {
 }
 #writeBtn {
   position: fixed;
-  right: 20%;
+  right: 25%;
   bottom: 8%;
   width: 64px;
   height: 64px;

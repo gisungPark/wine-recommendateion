@@ -11,6 +11,7 @@ import wineDetail from './modules/wineDetail';
 import main from './modules/main';
 import mypage from './modules/mypage';
 import recommendation from './modules/recommendation';
+import scrap from './modules/scrap';
 
 Vue.use(Vuex);
 
@@ -44,5 +45,6 @@ export default new Vuex.Store({
     wineDetail,
     mypage,
     recommendation,
+    scrap,
   },
 });

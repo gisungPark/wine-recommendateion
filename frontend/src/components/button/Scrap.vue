@@ -18,28 +18,34 @@ export default {
         return false;
       },
     },
+    wineId: {
+      type: Number,
+      default: function() {
+        return 0;
+      },
+    },
   },
   methods: {
     ...mapActions('scrap', ['actAddWineScrap', 'actRemoveWineScrap']),
     clickedScrap() {
       if (this.scraped) {
-        this.actRemoveWineScrap().then((result) => {
+        this.actRemoveWineScrap(this.wineId).then((result) => {
           if (result) {
             this.scraped = false;
             this.$toast.open({
               message: '찜목록에서 삭제되었습니다.',
-              type: 'warning',
+              type: 'error',
             });
           } else {
             this.$toast.open({
               message: '문제가 발생했습니다.',
-              type: 'error',
+              type: 'warning',
             });
             return;
           }
         });
       } else {
-        this.actAddWineScrap().then((result) => {
+        this.actAddWineScrap(this.wineId).then((result) => {
           if (result) {
             this.scraped = true;
             this.$toast.open({
@@ -49,7 +55,7 @@ export default {
           } else {
             this.$toast.open({
               message: '문제가 발생했습니다.',
-              type: 'error',
+              type: 'warning',
             });
           }
         });

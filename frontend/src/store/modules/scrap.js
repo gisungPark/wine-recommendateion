@@ -1,19 +1,14 @@
 import * as scrapApi from '@/api/scrap';
 
-const INIT_EVENT = () => {
-  return {
-    //state 초기화
-  };
-};
-
 const state = {};
 const getters = {};
 const actions = {
   // 스크랩 추가 요청
-  async actAddWineScrap(wineId) {
+  async actAddWineScrap(context, wineId) {
     try {
       const response = await scrapApi.postWineScrap(wineId);
-      if (response === 200) {
+      console.log(response);
+      if (response.status === 200) {
         return true;
       }
       return false;
@@ -23,10 +18,11 @@ const actions = {
     }
   },
 
-  async actRemoveWineScrap(wineId) {
+  async actRemoveWineScrap(context, wineId) {
     try {
       const response = await scrapApi.deleteWineScrap(wineId);
-      if (response === 200) {
+      console.log(response);
+      if (response.status === 200) {
         return true;
       }
       return false;
@@ -45,6 +41,3 @@ export default {
   actions,
   mutations,
 };
-
-//부가적인 기능 함수
-const getEventsTransfer = (arr) => {};

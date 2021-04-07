@@ -117,7 +117,7 @@
           </div>
         </div>
         <div class="bar" :style="{ backgroundColor: fontColor }"></div>
-        <Scrap class="scrap-btn" :scraped="true" />
+        <Scrap class="scrap-btn" :scraped="detail.scrap" :wineId="detail.wineDto.wineId" />
       </div>
     </section>
     <!--******************************************************************** -->
@@ -675,6 +675,7 @@ section {
   background-repeat: repeat-x;
 }
 .scrap-btn {
+  z-index: 6;
   margin: 30px auto 0 20px;
   transform: scale(1.4);
   margin-bottom: 14rem;

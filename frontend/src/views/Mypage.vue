@@ -64,14 +64,16 @@
           </div>
           <!-- 리뷰 페이지 ################################################ -->
           <div class="content-item" v-show="this.screenState == 2">
-            <div class="item-title gray">내가 쓴 리뷰</div>
+            <div id="review-title" class="item-title gray">내가 쓴 리뷰</div>
             <div style="height: 50px"></div>
-            <MyReviews
-              v-for="(review, idx) in reviews"
-              :key="idx"
-              :review="review"
-              :userInfo="userInfo"
-            />
+            <div id="review-wraps">
+              <MyReviews
+                v-for="(review, idx) in reviews"
+                :key="idx"
+                :review="review"
+                :userInfo="userInfo"
+              />
+            </div>
             <Reviews />
             <div style="height: 10px"></div>
           </div>
@@ -330,6 +332,14 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+
+#review-wraps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 600px;
+}
+
 .content3 {
   position: relative;
   width: 100%;

@@ -143,7 +143,6 @@ export default {
           console.log(result);
           if (result.data.code === 0) {
             // 로그인 완료 ##################################
-            alert(this.email + "님 환영합니다.");
             this.close();
             this.SET_GUIDEBTN_TOGGLE();
             this.$router.push({ name: "Mypage" });
@@ -168,6 +167,12 @@ export default {
         })
         .then((result) => {
           console.log("333333333333333333333333");
+          console.log(result);
+          this.close();
+          if (result.data.code === 2) {
+            this.SET_GUIDEBTN_TOGGLE();
+            this.$router.push({ name: "Mypage" });
+          }
         });
       // const response = await authApi.kakaoLogin(data);
       // console.log("카카오 로그인 시작!!");

@@ -82,9 +82,11 @@ export default {
   },
   methods: {
     ...mapMutations("loginDialog", ["SET_NICKNAME_TOGGLE"]),
+    ...mapMutations("userinfo", ["SET_TEMP_TOKEN"]),
     close() {
       this.nickname = "";
       this.msg.nicknameMsg = "";
+      this.SET_TEMP_TOKEN("");
       this.SET_NICKNAME_TOGGLE();
     },
     // ##################### nickname 중복체크 #####################
@@ -114,10 +116,12 @@ export default {
     join() {
       if (this.nicknameCheck()) {
         const response = this.$store
-          .dispatch("userInfo/kakaoJoin", this.nickname)
+          .dispatch("userInfo/kakaoJoin", {
+            nickname: this.nickname,
+          })
           .then((result) => {
             console.log("555555555555555555555555555555");
-            if (response.data.code === 5) {
+            if (result.data.code === 5) {
               console.log("닉네임 등록을 성공적으로 마쳤습니다.!");
               this.close();
             } else {

@@ -12,6 +12,8 @@ export function kakaoLogin(data) {
 }
 // 카카오 회원가입(닉네임 등록)
 export function kakaoJoin(nickname) {
+    console.log("쓱응으으으으응으");
+    console.log(nickname);
     return http.put(`/user/updateUser?nickname=${nickname}`);
 }
 // export function kakaoJoin(nickname) {

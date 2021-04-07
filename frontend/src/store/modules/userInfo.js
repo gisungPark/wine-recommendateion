@@ -3,7 +3,6 @@ import * as authApi from '../../api/auth';
 // 유저 정보 #######################
 const INIT_USER = () => {
   return {
-    kakaoToken: localStorage.getItem('kakaoToken'),
     token: localStorage.getItem('token'),
     nickname: localStorage.getItem('nickname'),
     provider: localStorage.getItem('provider'),
@@ -34,7 +33,6 @@ const mutations = {
     localStorage.setItem('provider', state.userInfo.provider);
     localStorage.setItem('profile', state.userInfo.profile);
     localStorage.setItem('defaultProfile', state.userInfo.defaultProfile);
-    localStorage.setItem('kakaoToken', state.userInfo.kakaoToken);
     
   },
   SET_LOGOUT(state) {
@@ -45,14 +43,6 @@ const mutations = {
     state.userInfo.token = token;
     localStorage.setItem('token', state.userInfo.token);
   },
-  SET_KAKAO_TOKEN(state, token) {
-    state.userInfo.kakaoToken = token;
-    localStorage.setItem('kakaoToken', state.userInfo.kakaoToken);
-  },
-  SET_SWAP_TOKEN(state, token) {
-    state.userInfo.token = state.userInfo.kakaoToken;
-    localStorage.setItem('token', state.userInfo.token);
-  }
   
 };
 // STATE 값 변경 O + 비동기
@@ -75,17 +65,19 @@ const actions = {
   async kakaoLogin(context, { data }) {
     try {
       const response = await authApi.kakaoLogin(data);
-      console.log("카카오 22222222222222222222222222222222222222222222");
+      console.log("222222222222222222222222222222");
       console.log(response);
       // 로그인 성공!! #############################
       if (response.data.code === 2) {
+        console.log("카카오 기존회원!!!!!!!!!!!!!!!!!!!!!!!!!");
         // 토큰 저장!!
-        context.commit('SET_KAKAO_TOKEN', response.data.token);
+        context.commit('SET_TEMP_TOKEN', response.data.token);
        // 최초 로그인 -> 회원가입 #############################
       } else if (response.data.code === 3) {
-        console.log("카카오 3333333333333333333333333333333333333333333333");
+        console.log("카카오 최초로그인!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        console.log(response.data);
         // 토큰 저장!!
-        context.commit('SET_KAKAO_TOKEN', response.data.token);
+        context.commit('SET_TEMP_TOKEN', response.data.token);
         context.commit('loginDialog/SET_NICKNAME_TOGGLE', null, { root: true });
         alert("닉네임을 등록 해주세요!!")
       } else {
@@ -103,7 +95,6 @@ const actions = {
    */
   async kakaoJoin(context, { nickname }) {
     try {
-      context.commit('SET_SWAP_TOKEN');
       const response = await authApi.kakaoJoin(nickname);
       console.log(response);
       if (response.data.code === 5) {

@@ -210,7 +210,7 @@ export default {
   },
   watch: {
     typeFilter: function () {
-      // this.onchageFilter(this.$refs.infiniteLoading.stateChanger);
+      this.onchageFilter();
     },
   },
   data: () => ({
@@ -237,6 +237,7 @@ export default {
       this.pointFilter = 0;
     },
     onchageFilter() {
+      this.wines = [];
       this.page = 1;
       this.onSearch(this.$refs.infiniteLoading.stateChanger);
     },
@@ -264,8 +265,6 @@ export default {
           if (response.status == 200) {
             this.wines.push(...response.data);
             this.page += 1; // 페이지 증가
-            console.log(this.wine);
-            console.log(this.page);
             setTimeout(() => {
               $state.loaded();
             }, 1000);

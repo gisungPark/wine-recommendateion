@@ -166,7 +166,6 @@
         v-show="this.contentState === 4"
         id="grapeModal"
         class="fillter-modal"
-        @click="onchageFilter"
       >
         <div id="scoreModal-info">
           <span id="scoreModal-info-item1">Grape?</span>
@@ -210,6 +209,9 @@ export default {
   },
   watch: {
     typeFilter: function () {
+      this.onchageFilter();
+    },
+    grapeFilter: function () {
       this.onchageFilter();
     },
   },

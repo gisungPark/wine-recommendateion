@@ -44,8 +44,11 @@
           class="content"
         >
           <div class="imgBox">
-            <input type="file" />
-            <img class="profile" :src="this.userInfo.profile" />
+            <img
+              class="profile"
+              @click="changeProfile"
+              :src="`${s3url_profile}${userInfo.profile}.jpg`"
+            />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>
           <!-- 스크랩 페이지 ################################################ -->
@@ -84,10 +87,14 @@
         </div>
         <!-- 선호도 페이지 ################################################ -->
         <div v-show="this.screenState == 4" class="content4">
-          <PreferenceSetting :preferenceList="preferenceList" />
+          <PreferenceSetting
+            :preferenceList="preferenceList"
+            :isUpdate="isUpdate"
+          />
         </div>
       </div>
     </div>
+    <ImgUpdate />
   </div>
 </template>
 
@@ -97,6 +104,7 @@ import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
 import * as mypageApi from "@/api/mypageApi";
 import MyReviews from "@/components/static/mypage/MyReviews.vue";
 import Reviews from "@/components/static/reviews/Reviews.vue";
+import ImgUpdate from "@/components/static/user/ImgUpdate.vue";
 import PreferenceSetting from "@/components/static/mypage/PreferenceSetting.vue";
 import ChartContent from "@/components/static/mypage/chart/ChartContent.vue";
 import Winelist from "@/components/articles/Winelist.vue";
@@ -113,11 +121,14 @@ export default {
     Winelist,
     MyReviews,
     Reviews,
+    ImgUpdate,
     PreferenceSetting,
     ChartContent,
     WineItem,
   },
+  watch: {},
   data: () => ({
+    isUpdate: false,
     cnt: 4,
     screenState: 3,
     reviews: [],
@@ -142,10 +153,12 @@ export default {
     },
   },
   computed: {
+    ...mapState(["s3url_profile"]),
     ...mapState("nav", ["navActive"]),
     ...mapState("userInfo", ["userInfo"]),
     ...mapState("mypage", ["flavors", "scraps"]),
     ...mapState("reviewDialog", ["reviewDialog"]),
+    ...mapMutations("loginDialog", ["SET_LOGIN_TOGGLE", "SET_PROFILE_TOGGLE"]),
   },
   methods: {
     ...mapActions("mypage", ["getMyPreference", "actGetScrap"]),
@@ -165,6 +178,7 @@ export default {
     },
 
     async getFlavor() {
+      this.preferenceList = [];
       const response = await mypageApi.mypageFlavor();
       console.log("!!!!!!!!!!!!!!!!!!!!!!!");
       console.log(response.data);
@@ -181,6 +195,9 @@ export default {
 
     updateScrap() {
       this.getScrap();
+    },
+    changeProfile() {
+      this.SET_PROFILE_TOGGLE();
     },
   },
 };
@@ -306,8 +323,9 @@ export default {
   display: flex;
   justify-content: center;
   overflow: hidden;
-  background-image: url("https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg");
-  background-size: contain;
+  background-color: white;
+  /* background-image: url("https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg"); */
+  /* background-size: contain; */
 }
 .profile {
   width: 100%;

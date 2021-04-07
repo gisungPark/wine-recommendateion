@@ -11,7 +11,7 @@
     <div class="review-icon">
       <div class="review-icon-1" @click="onDelete(wine.wineId)"></div>
     </div>
-    <div @click="clickedWine">
+    <div @click="clickedWine(wine.wineId)">
       <img
         class="wineitem-img"
         :src="`${this.s3url}${wine.wineId}.png`"
@@ -111,8 +111,11 @@ export default {
   mounted() {},
   destroyed() {},
   methods: {
-    clickedWine() {
-      this.$router.push(`/detail/${this.wine.id}`);
+    /**
+     * 해당 와인 상세페이지로 이동
+     */
+    clickedWine(wineId) {
+      this.$router.push(`/detail/${wineId}`);
     },
     async onDelete(windId) {
       if (window.confirm("와인을 삭제 하시겠습니까?")) {

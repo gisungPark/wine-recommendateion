@@ -19,6 +19,7 @@ const state = {
   s3url: 'https://s3.ap-northeast-2.amazonaws.com/www.yourwine.io/img/wine/',
   s3url_flavor: 'https://s3.ap-northeast-2.amazonaws.com/www.yourwine.io/img/flavor/',
   s3url_topic: 'https://s3.ap-northeast-2.amazonaws.com/www.yourwine.io/img/topic/',
+  s3url_profile: 'https://s3.ap-northeast-2.amazonaws.com/www.yourwine.io/img/profile/',
 };
 const getters = {
   //state에서 추가적인 작업 후 return

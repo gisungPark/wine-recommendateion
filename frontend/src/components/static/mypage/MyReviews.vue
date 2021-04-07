@@ -20,6 +20,10 @@
       <div class="review-writer">
         <div class="writer-info">
           <div class="writer-img">
+            <img
+              class="profile"
+              :src="`${s3url_profile}${review.userImg}.jpg`"
+            />
             <!-- <img v-show="userInfo.profile != null" :src="userInfo.profile" /> -->
           </div>
           <span class="writer-nickname">
@@ -68,7 +72,9 @@
     </div>
     <div class="reviews-item">
       <div class="reviews-btn">
-        <a href="#" class="button">와인으로 이동하기</a>
+        <a href="#" class="button" @click="clickedWine(review.wineId)"
+          >와인으로 이동하기</a
+        >
         <a href="#" class="button" @click="goToReview(review.wineId)"
           >리뷰로 이동하기</a
         >
@@ -88,6 +94,7 @@ export default {
   },
 
   computed: {
+    ...mapState(["s3url_profile"]),
     ...mapState(["s3url"]),
   },
   methods: {
@@ -100,6 +107,13 @@ export default {
       console.log("이동할 와인 아이디는 : " + wineId + " 입니다.");
       this.SET_REVIEW_WINEID(wineId);
       this.SET_REVIEW_TOGGLE();
+    },
+
+    /**
+     * 해당 와인 상세페이지로 이동
+     */
+    clickedWine(wineId) {
+      this.$router.push(`/detail/${wineId}`);
     },
   },
 };
@@ -185,8 +199,9 @@ export default {
   height: 40px;
   border-radius: 70%;
   overflow: hidden;
-  background-image: url("https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg");
-  background-size: contain;
+  background-color: white;
+  /* background-image: url("https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg");
+  background-size: contain; */
 }
 
 .writer-img > img {

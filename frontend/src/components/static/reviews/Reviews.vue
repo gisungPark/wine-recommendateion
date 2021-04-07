@@ -53,7 +53,10 @@
                   <div class="review-writer">
                     <div class="writer-info">
                       <div class="writer-img">
-                        <img :src="review.userImg" alt="" />
+                        <img
+                          class="profile"
+                          :src="`${s3url_profile}${review.userImg}.jpg`"
+                        />
                       </div>
                       <span class="writer-nickname">
                         {{ review.nickname }}
@@ -171,6 +174,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(["s3url_profile"]),
     ...mapState("userInfo", ["userInfo"]),
     ...mapState("reviewDialog", [
       "reviewDialog",

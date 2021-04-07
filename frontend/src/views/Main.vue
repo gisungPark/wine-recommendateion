@@ -61,7 +61,9 @@
       <div class="main-message wine-review sticky-elem">
         <div class="frame">
           <p class="b-desc">{{ todaysWine.avg.toFixed(1) }}</p>
-          <Scrap class="scrap-btn" :scraped="true" />
+          <button class="detail-move-btn b-desc" @click="clickedDetialMove">
+            상세보기 >
+          </button>
         </div>
         <div class="star-rate" :style="{ width: starRate + 'vw' }"></div>
       </div>
@@ -208,6 +210,9 @@ export default {
   },
   methods: {
     ...mapActions('main', ['actGetTodaysWine', 'actGetTop10']),
+    clickedDetialMove() {
+      this.$router.push(`/detail/${this.todaysWine.wineId}`);
+    },
   },
 };
 
@@ -474,12 +479,21 @@ span {
   background-size: contain;
   background-repeat: repeat-x;
 }
-.scrap-btn {
+.detail-move-btn {
   display: inline-block;
   align-self: flex-end;
-  margin-left: 1rem;
-  margin-bottom: 2rem;
-  transform: scale(1.5);
+  width: 180px;
+  height: 80px;
+  padding-bottom: 4px;
+  color: var(--basic-color-key);
+  font-size: 1.8rem !important;
+  background-color: transparent;
+  border: 4px solid var(--basic-color-key);
+  border-radius: 40px;
+  transition: all 0.5s ease;
+}
+.detail-move-btn:hover {
+  background-color: #e1aa5777;
 }
 .gradient-bg {
   width: 100%;

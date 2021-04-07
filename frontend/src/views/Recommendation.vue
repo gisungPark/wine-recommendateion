@@ -200,11 +200,22 @@ export default {
 
     changeContent(index) {
       // this.contentState = index;
+      console.log(this.contentState);
       this.$store.commit('recommendation/SET_CONTENT_STATE', index);
+      console.log(this.contentState);
       window.scrollTo({ top: 0, behavior: 'smooth' });
       switch (index) {
+        case 0:
+          this.infoTextMaker();
+          break;
         case 1:
           this.getWine1(this.$refs.infiniteLoading.stateChanger);
+          this.infoTextMaker();
+          break;
+        case 2:
+          this.notice.title = '';
+          this.notice.text = '';
+
           break;
         default:
           break;

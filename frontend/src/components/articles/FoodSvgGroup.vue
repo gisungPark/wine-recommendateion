@@ -123,7 +123,6 @@ export default {
   },
   methods: {
     clickedSvg(foodId) {
-      console.log(foodId);
       if (foodId === 0) return;
       this.$emit('clickedSvg', foodId);
       for (let i = 0; i < this.svgs.length; i++) {

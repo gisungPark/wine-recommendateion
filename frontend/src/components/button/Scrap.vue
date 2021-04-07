@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
   name: 'Scrap',
   props: {
@@ -19,8 +20,40 @@ export default {
     },
   },
   methods: {
+    ...mapActions('scrap', ['actAddWineScrap', 'actRemoveWineScrap']),
     clickedScrap() {
-      alert('clicked scrap btn!');
+      if (this.scraped) {
+        this.actRemoveWineScrap().then((result) => {
+          if (result) {
+            this.scraped = false;
+            this.$toast.open({
+              message: '찜목록에서 삭제되었습니다.',
+              type: 'warning',
+            });
+          } else {
+            this.$toast.open({
+              message: '문제가 발생했습니다.',
+              type: 'error',
+            });
+            return;
+          }
+        });
+      } else {
+        this.actAddWineScrap().then((result) => {
+          if (result) {
+            this.scraped = true;
+            this.$toast.open({
+              message: '찜목록에 추가되었습니다.',
+              type: 'success',
+            });
+          } else {
+            this.$toast.open({
+              message: '문제가 발생했습니다.',
+              type: 'error',
+            });
+          }
+        });
+      }
     },
   },
 };

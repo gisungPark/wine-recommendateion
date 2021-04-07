@@ -93,16 +93,19 @@ export default {
     },
   },
   created() {
-    window.addEventListener('resize', this.setMarginTop);
+    window.addEventListener('resize', this.initMarginTop);
   },
   destroyed() {
-    window.removeEventListener('resize', this.setMarginTop);
+    window.removeEventListener('resize', this.initMarginTop);
   },
   mounted() {
-    this.setMarginTop(0);
-    this.setSubtitle(0);
+    this.initMarginTop();
+    this.initMarginTop();
   },
   methods: {
+    initMarginTop() {
+      this.setMarginTop(0);
+    },
     setMarginTop(index) {
       // item 위치에 따른 margin-top 설정
       const winelistWidth = this.$refs.winelist.offsetWidth;

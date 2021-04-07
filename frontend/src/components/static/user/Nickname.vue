@@ -82,14 +82,56 @@ export default {
   },
   methods: {
     ...mapMutations("loginDialog", ["SET_NICKNAME_TOGGLE"]),
+    ...mapMutations("userinfo", ["SET_TEMP_TOKEN"]),
     close() {
+      this.nickname = "";
+      this.msg.nicknameMsg = "";
+      this.SET_TEMP_TOKEN("");
       this.SET_NICKNAME_TOGGLE();
     },
-    nicknameCheck() {
-      this.msg.nicknameMsg = "이미 존재하는 닉네임입니다.";
+    // ##################### nickname 중복체크 #####################
+    async nicknameCheck() {
+      if (this.nickname.length < 3) {
+        this.msg.nicknameMsg = "닉네임 최소 길이는 3글자 입니다.";
+        return false;
+      } else {
+        this.msg.nicknameMsg = "";
+        try {
+          const response = await authApi.nicknameDuplicate(this.nickname);
+          if (response.data) {
+            this.msg.nicknameMsg = "이미 존재하는 닉네임입니다. ";
+            return false;
+          } else {
+            this.msg.nicknameMsg =
+              this.nickname + " 은 사용가능한 닉네임 입니다.!";
+            return true;
+          }
+        } catch (error) {
+          console.log(error);
+          return false;
+        }
+      }
     },
 
-    join() {},
+    join() {
+      if (this.nicknameCheck()) {
+        const response = this.$store
+          .dispatch("userInfo/kakaoJoin", {
+            nickname: this.nickname,
+          })
+          .then((result) => {
+            console.log("555555555555555555555555555555");
+            if (result.data.code === 5) {
+              console.log("닉네임 등록을 성공적으로 마쳤습니다.!");
+              this.close();
+            } else {
+              alert("닉네임을 확인하세요!");
+            }
+          });
+      } else {
+        alert("닉네임을 확인하세요!");
+      }
+    },
   },
 };
 </script>

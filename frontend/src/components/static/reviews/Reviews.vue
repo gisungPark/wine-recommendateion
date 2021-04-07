@@ -100,7 +100,21 @@
                 </div>
               </v-col>
             </v-row>
-
+            <!-- 무한스크롤 ##################################################### -->
+            <infinite-loading
+              @infinite="infiniteHandler"
+              force-use-infinite-wrapper="true"
+              spinner="waveDots"
+              ref="infiniteLoading"
+              class="infinite"
+            >
+              <div slot="no-more">목록의 끝입니다.</div>
+              <div slot="no-results">요청 결과가 없습니다.</div>
+              <div slot="error" slot-scope="{ trigger }">
+                문제가 발생했습니다. 재시도 하려면
+                <a href="javascript:;" @click="trigger">여기</a>를 누르십시오.
+              </div>
+            </infinite-loading>
             <!-- 리뷰 item end #############################################  -->
             <!-- #########################################################  -->
           </v-card-text>
@@ -124,23 +138,29 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import * as reviewApi from "@/api/review";
+import InfiniteLoading from "vue-infinite-loading";
 import ReviewWrite from "@/components/static/reviews/ReviewWrite.vue";
 
 export default {
   name: "Reviews",
   components: {
     ReviewWrite,
+    InfiniteLoading,
   },
-  created() {
-    console.log(this.userInfo.nickname);
+  created() {},
+  mounted() {
+    this.readWineReviews(this.$refs.infiniteLoading.stateChanger);
   },
-  mounted() {},
   watch: {
     reviewDialog: function () {
-      this.readWineReviews();
+      this.page = 1;
+      this.review = [];
+      this.readWineReviews(this.$refs.infiniteLoading.stateChanger);
     },
     reviewWriteDialog: function () {
-      this.readWineReviews();
+      this.page = 1;
+      this.review = [];
+      this.readWineReviews(this.$refs.infiniteLoading.stateChanger);
       if (this.reviewWriteDialog == false) {
         this.propsReview = {
           rating: 5,
@@ -159,6 +179,7 @@ export default {
     ]),
   },
   data: () => ({
+    page: 1,
     review: [],
     propsReview: {},
   }),
@@ -167,14 +188,38 @@ export default {
       "SET_REVIEW_TOGGLE",
       "SET_REVIEW_WRITE_TOGGLE",
     ]),
-    async readWineReviews() {
-      const response = await reviewApi.getWineReviewById(
-        1,
-        this.reviewByWineId
-      );
-      this.review = response.data;
-      console.log(response);
-      console.log("리뷰 읽어왔다. ");
+    // infiniteHandler, props 전달
+    infiniteHandler($state) {
+      this.readWineReviews($state);
+    },
+
+    async readWineReviews($state) {
+      try {
+        const response = await reviewApi.getWineReviewById(
+          this.page,
+          this.reviewByWineId
+        );
+        if (response) {
+          console.log(response);
+          if (response.data.length === 0) {
+            // 더 이상 불러올 목록이 없는 경우
+            console.log("리뷰 끝났다.");
+            $state.complete();
+          } else {
+            console.log("리뷰 읽어왔다. ");
+            this.review.push(...response.data);
+            this.page += 1;
+            setTimeout(() => {
+              $state.loaded();
+            }, 1000);
+          }
+        } else {
+          $state.error(); //통신에러
+          return;
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     onModify(item) {
@@ -198,6 +243,8 @@ export default {
       this.SET_REVIEW_WRITE_TOGGLE();
     },
     close() {
+      this.page = 1;
+      this.review = [];
       this.SET_REVIEW_TOGGLE();
     },
   },

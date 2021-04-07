@@ -141,6 +141,12 @@ export default {
         writeFalse: '리뷰를 작성한 뒤 해당 서비스를 이용해주세요.',
         batchFalse: '데이터 분석 중...(최대 1시간)',
       },
+      giftsBased: {
+        title: 'Your Wine 유저가 선택한 0원 ~ 999999원 대의 선물용 TOP10 가지 와인을 추천해드립니다.',
+        sub1: '선물용 와인은 YourWine 유저가 남긴 리뷰 평점 데이터를 바탕으로 호불호가 낮은 top 10가지 와인을 추천해드립니다.',
+        sub2: '와인별 리뷰 평점 평균과 평점의 표준편차를 다음과 같은 계산식을 사용해 상위 10가지 데이터를 추출합니다.',
+        sub3: '계산식, 평균/(a+표준편차^n) a:a가 커지면 표준편차 영향 줄어들고, n이 커지면 표준편차의 숫자 변화에 대한 차이가 커진다.',
+      },
     },
     // 와인 정보
     wines0: [],
@@ -152,7 +158,6 @@ export default {
     page2: 1,
     wines3: [],
     page3: 1,
-    wine4: [],
     // TODO: 품종 필터
     filterToggleState: false,
     filterActive: false,
@@ -161,6 +166,11 @@ export default {
     tannin: [1, 5],
     body: [1, 5],
     step: ['1', '2', '3', '4', '5'],
+    // 선물용 추천
+    price: {
+      min: 0,
+      max: 9999999,
+    },
   }),
   created() {
     // vuex init, 선호도 설정 여부 확인
@@ -174,7 +184,15 @@ export default {
   computed: {
     ...mapState('userInfo', ['userInfo']),
     ...mapState('nav', ['navActive']),
-    ...mapState('recommendation', ['contentState', 'foodId', 'checkPreference', 'preferenceBasedRecom', 'ratingBasedRecom', 'pairingBasedRecom']),
+    ...mapState('recommendation', [
+      'contentState',
+      'foodId',
+      'checkPreference',
+      'preferenceBasedRecom',
+      'ratingBasedRecom',
+      'pairingBasedRecom',
+      'giftBasedRecom',
+    ]),
   },
   watch: {
     contentState: function() {
@@ -196,6 +214,7 @@ export default {
       'actGetPreferenceBasedRecomFilter',
       'actGetRatingBasedRecom',
       'actGetPairingBasedRecom',
+      'actGetTop10',
     ]),
 
     changeContent(index) {
@@ -215,7 +234,9 @@ export default {
         case 2:
           this.notice.title = '';
           this.notice.text = '';
-
+        case 3:
+          this.getWine3(this.$refs.infiniteLoading.stateChanger);
+          this.infoTextMaker();
           break;
         default:
           break;
@@ -239,6 +260,7 @@ export default {
           break;
         // 선물용
         case 3:
+          this.getWine3(this.$refs.infiniteLoading.stateChanger);
           break;
         default:
           break;
@@ -288,6 +310,8 @@ export default {
           break;
         // 선물용
         case 3:
+          this.notice.title = this.notice.giftsBased.title;
+          this.notice.text = '';
           break;
       }
     },
@@ -351,7 +375,6 @@ export default {
             this.page1 += 1;
             this.infoTextMaker();
           }
-          0;
         } else {
           $state.error(); //통신에러
           return;
@@ -361,6 +384,9 @@ export default {
       });
     },
     getWine2($state) {
+      if (this.foodId == 0) {
+        return;
+      }
       this.actGetPairingBasedRecom({
         page: this.page2,
         foodId: this.foodId,
@@ -381,6 +407,23 @@ export default {
         }
       });
       console.log(this.page2);
+    },
+    getWine3($state) {
+      console.log('sdfds');
+      this.actGetTop10(this.price).then((result) => {
+        if (result) {
+          if (this.giftBasedRecom.length) {
+            this.wines3 = this.giftBasedRecom;
+            this.page3 += 1;
+            this.infoTextMaker();
+          }
+        } else {
+          $state.error(); //통신에러
+          return;
+        }
+        $state.loaded(); //정상적 종료
+        $state.complete();
+      });
     },
 
     // 추가 기능 버튼

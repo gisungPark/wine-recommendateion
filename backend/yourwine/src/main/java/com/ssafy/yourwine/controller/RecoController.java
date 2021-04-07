@@ -134,7 +134,7 @@ public class RecoController {
             "Respnse(x)\n" +
             "- PreferenceDTO\n" +
             "--- flavorImg: 향 이미지 경로\n")
-    public WineDTO getTodayWine(){
+    public WineDTO getTodayWine(@RequestHeader("TOKEN") String token){
         return recoService.getTodayWine();
     }
 

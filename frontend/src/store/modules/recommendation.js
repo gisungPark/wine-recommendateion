@@ -109,7 +109,34 @@ const INIT_PAIRING_BASED_RECOM = () => {
     ],
   };
 };
-
+const INIT_GIFT_BASED_RECOM = () => {
+  return [
+    {
+      wineId: 0,
+      kname: '',
+      ename: '',
+      alcohol: '',
+      type: '',
+      temper: '',
+      avg: 0,
+      price: 0,
+      year: '2020',
+      detail: '',
+      shop: null,
+      sweet: 0,
+      acidity: 0,
+      body: 0,
+      tannin: 0,
+      area: '지역',
+      grape: {
+        grapeId: 0,
+        kname: '',
+        ename: '',
+        detail: '',
+      },
+    },
+  ];
+};
 const state = {
   contentState: 0,
   foodId: 0,
@@ -117,6 +144,7 @@ const state = {
   ratingBasedRecom: INIT_RATING_BASED_RECOM(),
   preferenceBasedRecom: INIT_PREFERENCE_BASED_RECOM(),
   pairingBasedRecom: INIT_PAIRING_BASED_RECOM(),
+  giftBasedRecom: INIT_GIFT_BASED_RECOM(),
 };
 const getters = {};
 const actions = {
@@ -195,6 +223,20 @@ const actions = {
       return false;
     }
   },
+
+  // top10 리스트 정보 요청
+  async actGetTop10({ commit }, payload) {
+    try {
+      console.log(payload);
+      const response = await mainApi.getWineTop10(payload);
+      if (response.status === 200) {
+        commit('SET_GIFT_BASED_RECOM', response.data);
+      }
+    } catch (error) {
+      error('top10 정보를 가져오는 도중 문제가 발생했습니다.');
+      sylde(pen);
+    }
+  },
 };
 
 const mutations = {
@@ -215,6 +257,9 @@ const mutations = {
   },
   SET_FAIRING_BASED_RECOM(state, payload) {
     state.pairingBasedRecom = payload;
+  },
+  SET_GIFT_BASED_RECOM(state, payload) {
+    state.giftBasedRecom = payload;
   },
 };
 

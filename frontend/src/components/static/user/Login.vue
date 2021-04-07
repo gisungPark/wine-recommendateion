@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 import * as authApi from "@/api/auth";
 import KakaoLogin from "vue-kakao-login";
 import JoinModal from "./Join.vue";
@@ -128,15 +128,11 @@ export default {
       "SET_NICKNAME_TOGGLE",
       "SET_FINDPW_TOGGLE",
     ]),
-    ...mapMutations("userInfo", ["SET_KAKAO_TOKEN"]),
+    ...mapMutations("userInfo", ["SET_TEMP_TOKEN"]),
     ...mapMutations("guideBtn", [
       "SET_GUIDEBTN_TOGGLE",
       "SET_GUIDEBTNTIP_TOGGLE",
     ]),
-    loginAPI(email, password) {
-      return authApi.login(email, password);
-    },
-
     onLogin() {
       const response = this.$store
         .dispatch("userInfo/login", {
@@ -144,18 +140,15 @@ export default {
           password: this.password,
         })
         .then((result) => {
-          console.log(this.email + " " + this.password);
-          console.log("로그인 간다!!!");
           console.log(result);
-          if (result.data.code === 1) {
-            alert("아이디 비밀번호를 확인하세요!!");
-          } else if (result.data.code === 0) {
+          if (result.data.code === 0) {
+            // 로그인 완료 ##################################
             alert(this.email + "님 환영합니다.");
-            this.email = "";
-            this.password = "";
-            this.SET_LOGIN_TOGGLE();
+            this.close();
             this.SET_GUIDEBTN_TOGGLE();
             this.$router.push({ name: "Mypage" });
+          } else {
+            alert("아이디 비밀번호를 확인하세요!!");
           }
         });
     },
@@ -168,13 +161,13 @@ export default {
       this.SET_LOGIN_TOGGLE();
     },
     async onKakaoCallback(data) {
+      console.log("1111111111111111111111111");
       const response = this.$store
         .dispatch("userInfo/kakaoLogin", {
           data: data,
         })
         .then((result) => {
           console.log("333333333333333333333333");
-          console.log(result);
         });
       // const response = await authApi.kakaoLogin(data);
       // console.log("카카오 로그인 시작!!");

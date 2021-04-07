@@ -44,6 +44,7 @@
           class="content"
         >
           <div class="imgBox">
+            <input type="file" />
             <img class="profile" :src="this.userInfo.profile" />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>
@@ -122,15 +123,16 @@ export default {
     scarpList: [],
   }),
   created() {
-    console.log("img!!!!!!!");
-    console.log(this.userInfo.profile);
-    console.log(this.userInfo.defaultProfile);
+    this.readUserInfo();
     // 1. 향 정보 읽어오기!!
     this.getFlavor();
     // 2. 리뷰 정보
     this.mypageReview(1);
     // 3. 스크랩 정보!!
     this.getScrap();
+  },
+  mounted() {
+    this.readUserInfo();
   },
   watch: {
     reviewDialog: function () {
@@ -145,6 +147,7 @@ export default {
   },
   methods: {
     ...mapActions("mypage", ["getMyPreference", "actGetScrap"]),
+    ...mapActions("userInfo", ["readUserInfo"]),
 
     isBtnClick(index) {
       if (index == this.screenState) return true;
@@ -298,6 +301,8 @@ export default {
   width: 180px;
   height: 180px;
   border-radius: 70%;
+  display: flex;
+  justify-content: center;
   overflow: hidden;
   background-image: url("https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg");
   background-size: contain;

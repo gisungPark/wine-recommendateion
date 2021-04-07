@@ -166,13 +166,6 @@ export default {
       this.inputInit();
       this.SET_JOIN_TOGGLE();
     },
-    emailDuplicate(email) {
-      return authApi.duplicate(email);
-    },
-
-    nicknameDuplicate(nickname) {
-      return authApi.nicknameDuplicate(nickname);
-    },
 
     // #########################################################
     //start 입력형식 체크
@@ -184,7 +177,7 @@ export default {
       } else {
         this.msg.emailMsg = "";
         try {
-          const response = await this.emailDuplicate(this.email);
+          const response = await authApi.duplicate(this.email);
           console.log(response);
           if (response.data) {
             console.log(this.email + " 은 이미 존재하는 이메일 입니다.!!!");
@@ -229,12 +222,13 @@ export default {
       } else {
         this.msg.nicknameMsg = "";
         try {
-          const response = await this.nicknameDuplicate(this.nickname);
+          const response = await authApi.nicknameDuplicate(this.nickname);
           if (response.data) {
             this.msg.nicknameMsg = "이미 존재하는 닉네임입니다. ";
             return false;
           } else {
             console.log(this.nickname + " 은 사용가능한 닉네임 입니다.!!!");
+            return true;
           }
         } catch (error) {
           console.log(error);

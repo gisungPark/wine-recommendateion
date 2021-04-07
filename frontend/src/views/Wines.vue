@@ -59,6 +59,7 @@
         </transition-group>
         <infinite-loading
           @infinite="infiniteHandler"
+          force-use-infinite-wrapper="true"
           spinner="waveDots"
           ref="infiniteLoading"
           class="infinite"
@@ -204,7 +205,9 @@ export default {
     Winelist,
     InfiniteLoading,
   },
-  created() {},
+  mounted() {
+    this.onSearch(this.$refs.infiniteLoading.stateChanger);
+  },
   watch: {
     typeFilter: function () {
       // this.onchageFilter(this.$refs.infiniteLoading.stateChanger);
@@ -233,9 +236,9 @@ export default {
     onReset() {
       this.pointFilter = 0;
     },
-    onchageFilter($state) {
+    onchageFilter() {
       this.page = 1;
-      this.onSearch();
+      this.onSearch(this.$refs.infiniteLoading.stateChanger);
     },
 
     // infiniteHandler, props 전달
@@ -244,32 +247,34 @@ export default {
     },
 
     async onSearch($state) {
-      const response = await wineApi.search(
-        this.page,
-        this.keyword,
-        this.sort,
-        this.pointFilter,
-        this.typeFilter,
-        this.grapeFilter,
-        this.priceRange[0],
-        this.priceRange[1]
-      );
-      console.log("와인 서치 결과!!!!!!!!!!!!!");
-      console.log(response);
-      if (response.date) {
-        if (response.status == 200) {
-          if (response.data.length) {
-            this.wines = this.wines.concat(response.data);
+      try {
+        const response = await wineApi.search(
+          this.page,
+          this.keyword,
+          this.sort,
+          this.pointFilter,
+          this.typeFilter,
+          this.grapeFilter,
+          this.priceRange[0],
+          this.priceRange[1]
+        );
+        console.log("와인 서치 결과!!!!!!!!!!!!!");
+        console.log(response);
+        if (response.data) {
+          if (response.status == 200) {
+            this.wines.push(...response.data);
             this.page += 1; // 페이지 증가
-            $state.loaded();
-          } else {
-            console.log("1111111111111111111111111111111111111111111");
             console.log(this.wine);
-            $state.complete();
+            console.log(this.page);
+            setTimeout(() => {
+              $state.loaded();
+            }, 1000);
           }
+        } else {
+          console.log("###########################");
+          $state.complete();
         }
-        console.log("###########################");
-      }
+      } catch {}
     },
   },
 };

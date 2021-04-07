@@ -114,9 +114,7 @@ export default {
     join() {
       if (this.nicknameCheck()) {
         const response = this.$store
-          .dispatch("userInfo/kakaoJoin", {
-            nickname: this.nickname,
-          })
+          .dispatch("userInfo/kakaoJoin", this.nickname)
           .then((result) => {
             console.log("555555555555555555555555555555");
             if (response.data.code === 5) {

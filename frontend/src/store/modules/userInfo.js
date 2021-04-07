@@ -49,16 +49,14 @@ const actions = {
       console.log(response);
       // 로그인 성공!!
       if (response.data.code === 0) {
-        const userinfo = await authApi.getUserInfo();
-        console.log("두번째~~~~~~~~~");
-        console.log(userinfo);
+      
 
         context.commit('SET_USER_INFO', {
           userInfo: {
             token: response.data.token,
             nickname: response.data.nickname,
-            provider: userinfo.data.provider,
-            profile: userinfo.data.img,
+            provider: "",
+            profile: "",
             defaultProfile: "https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg",
           },
         });

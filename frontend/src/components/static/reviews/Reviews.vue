@@ -291,6 +291,8 @@ export default {
   height: 40px;
   border-radius: 70%;
   overflow: hidden;
+  background-image: url("https://blog.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg");
+  background-size: contain;
 }
 
 .writer-img > img {

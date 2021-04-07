@@ -20,7 +20,7 @@
       <div class="review-writer">
         <div class="writer-info">
           <div class="writer-img">
-            <img :src="userInfo.profile" />
+            <!-- <img v-show="userInfo.profile != null" :src="userInfo.profile" /> -->
           </div>
           <span class="writer-nickname">
             {{ userInfo.nickname }}

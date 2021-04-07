@@ -43,10 +43,7 @@
           v-show="this.screenState == 3 || this.screenState == 2"
           class="content"
         >
-          <div
-            :style="{ 'background-image': `url(${userInfo.profile})` }"
-            class="imgBox"
-          >
+          <div class="imgBox">
             <img class="profile" :src="this.userInfo.profile" />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>
@@ -302,7 +299,7 @@ export default {
   height: 180px;
   border-radius: 70%;
   overflow: hidden;
-  /* background-image: url("https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg"); */
+  background-image: url("https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg");
   background-size: contain;
 }
 .profile {

@@ -53,9 +53,9 @@
                   </ul>
                 </v-col>
               </v-row>
-              <v-row no-gutters>
+              <!-- <v-row no-gutters>
                 <a id="findPw" @click="onFindPw">비밀번호 찾기</a>
-              </v-row>
+              </v-row> -->
               <v-row style="margin-top: 20px">
                 <v-col cols="auto" id="loginBtn-wrap">
                   <v-btn text id="loginBtn" @click="onLogin">CONTINUE</v-btn>
@@ -144,6 +144,9 @@ export default {
           password: this.password,
         })
         .then((result) => {
+          console.log(this.email + " " + this.password);
+          console.log("로그인 간다!!!");
+          console.log(result);
           if (result.data.code === 1) {
             alert("아이디 비밀번호를 확인하세요!!");
           } else if (result.data.code === 0) {

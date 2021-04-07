@@ -25,3 +25,8 @@ export function getPairingBasedRecom(payload) {
   console.log(payload);
   return http.get(`/reco/food-recolist/${payload.foodId}?page=${payload.page}`);
 }
+
+// 와인 top 10
+export function getWineTop10(payload) {
+  return http.get(`/reco/getTopten/${payload.min}/${payload.max}`);
+}

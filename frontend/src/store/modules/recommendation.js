@@ -227,14 +227,15 @@ const actions = {
   // top10 리스트 정보 요청
   async actGetTop10({ commit }, payload) {
     try {
-      console.log(payload);
-      const response = await mainApi.getWineTop10(payload);
+      const response = await recommendationApi.getWineTop10(payload);
       if (response.status === 200) {
         commit('SET_GIFT_BASED_RECOM', response.data);
+        return true;
       }
+      return false;
     } catch (error) {
       error('top10 정보를 가져오는 도중 문제가 발생했습니다.');
-      sylde(pen);
+      return false;
     }
   },
 };

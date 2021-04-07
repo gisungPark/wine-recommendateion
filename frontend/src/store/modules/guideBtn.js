@@ -32,8 +32,8 @@ const actions = {
         }
         // 추천 페이지
         // 디테일 페이지
-      }, sec * 10000);
-    }, 30000);
+      }, sec * 5000);
+    }, 15000);
   },
 };
 const mutations = {
@@ -63,9 +63,10 @@ export default {
 };
 
 const setGuideMsgMacker = (context) => {
+  console.log(router.currentRoute.name);
   switch (router.currentRoute.name) {
     case 'Mypage':
-      context.commit('SET_GUIDE_MSG', '');
+      context.commit('SET_GUIDE_MSG', '회원님의 정보를 관리할 수 있습니다. 저희와 함께했던 기록은 chart를 참고해주십시오.');
       break;
     case 'Main':
       context.commit('SET_GUIDE_MSG', `오늘의 와인은 ${context.rootState.main.todaysWine.type} 와인입니다.`);

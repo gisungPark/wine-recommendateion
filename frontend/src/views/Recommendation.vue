@@ -76,6 +76,34 @@
           <FoodSvgGroup @clickedSvg="setFoodId" />
           <p><span>"</span>{{ pairingBasedRecom.mention }}</p>
         </div>
+        <div class="gifts-btn-group" v-if="contentState == 3">
+          <button class="gifts-filter-toggle-btn" @click="clickedGiftsFilterToggleBtn">filter</button>
+          <div class="gifts-slider-group" :class="{ 'gifts-slider-group-active': giftsFilterState }">
+            <v-range-slider
+              label="Sweet"
+              :tick-labels="step"
+              :value="price"
+              v-model="price"
+              min="0"
+              max="999999"
+              ticks="always"
+              tick-size="4"
+              color="#821a33"
+              track-fill-color="#821a33"
+            >
+            </v-range-slider>
+            <div class="slider-btn-group">
+              <button class="reset" @click="clickedFilterReset">초기화</button>
+              <button class="submit" @click="clickedFilterSubmit">적용</button>
+            </div>
+          </div>
+          <button class="gifts-info-toggle-btn" @click="clickedGiftsInfoToggleBtn">?</button>
+          <div class="gifts-info-list" :class="{ 'gifts-info-list-active': giftsInfoState }">
+            <p>{{ notice.giftsBased.sub1 }}</p>
+            <p>{{ notice.giftsBased.sub2 }}</p>
+            <p>{{ notice.giftsBased.sub3 }}</p>
+          </div>
+        </div>
       </div>
 
       <transition-group name="slideup" mode="out-in" class="winelist-wrap">
@@ -167,10 +195,9 @@ export default {
     body: [1, 5],
     step: ['1', '2', '3', '4', '5'],
     // 선물용 추천
-    price: {
-      min: 0,
-      max: 9999999,
-    },
+    price: [0, 9999999],
+    giftsInfoState: false,
+    giftsFilterState: false,
   }),
   created() {
     // vuex init, 선호도 설정 여부 확인
@@ -409,8 +436,10 @@ export default {
       console.log(this.page2);
     },
     getWine3($state) {
-      console.log('sdfds');
-      this.actGetTop10(this.price).then((result) => {
+      this.actGetTop10({
+        min: this.price[0],
+        max: this.price[1],
+      }).then((result) => {
         if (result) {
           if (this.giftBasedRecom.length) {
             this.wines3 = this.giftBasedRecom;
@@ -467,6 +496,12 @@ export default {
       setTimeout(() => {
         this.$refs.infiniteLoading.stateChanger.reset();
       }, 600);
+    },
+    clickedGiftsInfoToggleBtn() {
+      this.giftsInfoState = !this.giftsInfoState;
+    },
+    clickedGiftsFilterToggleBtn() {
+      this.giftsFilterState = !this.giftsFilterState;
     },
   },
 };
@@ -553,7 +588,9 @@ export default {
   justify-content: space-between;
 }
 .slider-toggle-btn,
-.go-mypage-btn {
+.go-mypage-btn,
+.gifts-info-toggle-btn,
+.gifts-filter-toggle-btn {
   display: inline-block;
   width: 80px;
   height: 80px;
@@ -565,7 +602,10 @@ export default {
   transition: all 0.5s ease;
   margin-top: 2rem;
 }
-.slider-toggle-btn:hover {
+.slider-toggle-btn:hover,
+.go-mypage-btn:hover,
+.gifts-info-toggle-btn:hover,
+.gifts-filter-toggle-btn:hover {
   background-color: #e1aa5786;
 }
 .go-mypage-btn {
@@ -574,8 +614,28 @@ export default {
   width: 200px;
   border-radius: 40px;
 }
-.go-mypage-btn:hover {
-  background-color: #e1aa5786;
+.gifts-btn-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.gifts-info-list {
+  top: -280px;
+  left: -260px;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 3;
+  padding: 3rem;
+  width: 600px;
+  height: 500px;
+  border-radius: 2rem;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: saturate(180%) blur(30px);
+  transition: all 0.3s ease;
+  transform: scale(0);
+  visibility: hidden;
+  opacity: 0;
 }
 
 /* 맛 필터 */

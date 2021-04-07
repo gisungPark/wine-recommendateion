@@ -75,7 +75,9 @@ export default {
   created() {},
   mounted() {
     this.$store.dispatch('guideBtn/setGuideMsg');
-    this.$store.dispatch('guideBtn/initGuideMsg');
+    setTimeout(() => {
+      this.$store.dispatch('guideBtn/initGuideMsg');
+    }, 1000);
   },
   computed: {
     ...mapState('userInfo', ['userInfo']),

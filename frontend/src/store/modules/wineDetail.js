@@ -86,11 +86,7 @@ const INIT_DETAIL = () => {
 const state = {
   detail: INIT_DETAIL(),
 };
-const getters = {
-  getEventById: (state) => (id) => {
-    return state.events.find((event) => event.id === id);
-  },
-};
+const getters = {};
 const actions = {
   // 와인 id로 와인의 상세정보 요청
   async actGetWineDetail({ commit }, wineId) {

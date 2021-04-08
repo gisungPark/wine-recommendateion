@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from '../store';
 
 // Routes
 import paths from './paths';
@@ -27,6 +28,20 @@ const router = new Router({
     }
     return { x: 0, y: 0 };
   },
+});
+
+router.beforeEach((to, from, next) => {
+  console.log(to);
+  if (to.name === 'Mypage') {
+    if (store.state.userInfo.userInfo.token != null) {
+      return next();
+    } else {
+      alert('로그인 후 이용하실 수 있습니다.');
+      return next('/');
+    }
+  } else {
+    return next();
+  }
 });
 
 export default router;

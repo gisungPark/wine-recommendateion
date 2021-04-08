@@ -90,9 +90,7 @@ public class UserService {
     }
 
     public TokenResultDTO checkUser(String kakaotoken) {
-        String userId = UUID.randomUUID().toString();
         String uid = kakaoService.getKakaoProfile(kakaotoken);
-        String token = jwtTokenProvider.generateToken(userId);
 
         User user = userRepository.findByEmailAndProvider(uid, 1);
 
@@ -106,7 +104,7 @@ public class UserService {
 
                 return tokenResultDTO;
             } else {
-                token = jwtTokenProvider.generateToken(user.getUserId());
+                String token = jwtTokenProvider.generateToken(user.getUserId());
                 user.setToken(token);
 
                 userRepository.save(user);
@@ -116,6 +114,9 @@ public class UserService {
                 return tokenResultDTO;
             }
         } else {
+            String userId = UUID.randomUUID().toString();
+            String token = jwtTokenProvider.generateToken(userId);
+
             User newUser = new User();
 
             newUser.setUserId(userId);
@@ -222,5 +223,14 @@ public class UserService {
         }
 
         return flavorDTOList;
+    }
+
+    public void updateProfile(String token, String number) {
+        String user_id = jwtTokenProvider.getUserId(token);
+        User user = userRepository.findByUserId(user_id);
+
+        user.setImg(number);
+
+        userRepository.save(user);
     }
 }

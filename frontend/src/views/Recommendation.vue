@@ -76,27 +76,18 @@
           <FoodSvgGroup @clickedSvg="setFoodId" />
           <p><span>"</span>{{ pairingBasedRecom.mention }}</p>
         </div>
+
         <div class="gifts-btn-group" v-if="contentState == 3">
           <button class="gifts-filter-toggle-btn" @click="clickedGiftsFilterToggleBtn">filter</button>
           <div class="gifts-slider-group" :class="{ 'gifts-slider-group-active': giftsFilterState }">
-            <v-range-slider
-              label="Sweet"
-              :tick-labels="step"
-              :value="price"
-              v-model="price"
-              min="0"
-              max="999999"
-              ticks="always"
-              tick-size="4"
-              color="#821a33"
-              track-fill-color="#821a33"
-            >
+            <p class="tick-label">{{ price[0] | currency }}원 ~ {{ price[1] | currency }}원</p>
+            <v-range-slider label="Price" :value="price" v-model="price" min="0" max="999999" step="1" color="#821a33" track-fill-color="#821a33">
             </v-range-slider>
             <div class="slider-btn-group">
-              <button class="reset" @click="clickedFilterReset">초기화</button>
-              <button class="submit" @click="clickedFilterSubmit">적용</button>
+              <button class="reset" @click="clickedFilterReset2">초기화</button>
             </div>
           </div>
+
           <button class="gifts-info-toggle-btn" @click="clickedGiftsInfoToggleBtn">?</button>
           <div class="gifts-info-list" :class="{ 'gifts-info-list-active': giftsInfoState }">
             <p>{{ notice.giftsBased.sub1 }}</p>
@@ -130,10 +121,13 @@ import FoodSvgGroup from '@/components/articles/FoodSvgGroup.vue';
 
 import axios from 'axios';
 
-const api = '//hn.algolia.com/api/v1/search_by_date?tags=story';
-
 export default {
   name: 'Recommendation',
+  filters: {
+    currency(val) {
+      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    },
+  },
   components: {
     Sidebar,
     Winelist,
@@ -195,7 +189,7 @@ export default {
     body: [1, 5],
     step: ['1', '2', '3', '4', '5'],
     // 선물용 추천
-    price: [0, 9999999],
+    price: [0, 999999],
     giftsInfoState: false,
     giftsFilterState: false,
   }),
@@ -261,6 +255,7 @@ export default {
         case 2:
           this.notice.title = '';
           this.notice.text = '';
+          break;
         case 3:
           this.getWine3(this.$refs.infiniteLoading.stateChanger);
           this.infoTextMaker();
@@ -503,6 +498,9 @@ export default {
     clickedGiftsFilterToggleBtn() {
       this.giftsFilterState = !this.giftsFilterState;
     },
+    clickedFilterReset2() {
+      this.price = [0, 999999];
+    },
   },
 };
 </script>
@@ -615,20 +613,20 @@ export default {
   border-radius: 40px;
 }
 .gifts-btn-group {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
+.gifts-slider-group,
 .gifts-info-list {
-  top: -280px;
-  left: -260px;
+  top: -60px;
   display: flex;
   flex-direction: column;
   position: absolute;
   z-index: 3;
   padding: 3rem;
-  width: 600px;
-  height: 500px;
+  color: #000;
   border-radius: 2rem;
   background-color: rgba(255, 255, 255, 0.6);
   backdrop-filter: saturate(180%) blur(30px);
@@ -636,6 +634,39 @@ export default {
   transform: scale(0);
   visibility: hidden;
   opacity: 0;
+}
+.tick-label {
+  align-self: flex-end;
+}
+.gifts-slider-group {
+  width: 600px;
+  height: 240px;
+  left: -300px;
+}
+.gifts-info-list {
+  width: 600px;
+  height: auto;
+  right: -300px;
+}
+.gifts-info-list p {
+  margin: 0.5rem;
+}
+.gifts-info-list p::before {
+  content: '-';
+  margin-right: 0.5rem;
+}
+.gifts-slider-group-active,
+.gifts-info-list-active {
+  top: 2rem;
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1);
+}
+.gifts-slider-group-active {
+  left: 6rem;
+}
+.gifts-info-list-active {
+  right: 6rem;
 }
 
 /* 맛 필터 */

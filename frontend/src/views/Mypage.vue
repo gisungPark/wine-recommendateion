@@ -172,6 +172,9 @@ export default {
       this.reviews = [];
       this.mypageReview(this.$refs.infiniteLoading.stateChanger);
     },
+    profileDialog: function () {
+      this.readUserInfo();
+    },
   },
   computed: {
     ...mapState(["s3url_profile"]),
@@ -179,7 +182,8 @@ export default {
     ...mapState("userInfo", ["userInfo"]),
     ...mapState("mypage", ["flavors", "scraps"]),
     ...mapState("reviewDialog", ["reviewDialog"]),
-    ...mapMutations("loginDialog", ["SET_LOGIN_TOGGLE", "SET_PROFILE_TOGGLE"]),
+    ...mapState("loginDialog", ["profileDialog"]),
+    ...mapMutations("loginDialog", ["SET_PROFILE_TOGGLE"]),
   },
   methods: {
     ...mapActions("mypage", ["getMyPreference", "actGetScrap"]),
@@ -199,11 +203,8 @@ export default {
     async mypageReview($state) {
       try {
         const response = await mypageApi.mypageReview(this.page);
-        console.log("리뷰 호출한다.!!!!!!!!!!!!!!!!!!!");
-        console.log(response);
         if (response) {
           if (response.data.length === 0) {
-            console.log("내가 쓴 리뷰 끝났다.");
             $state.complete();
           } else {
             this.reviews.push(...response.data);
@@ -224,16 +225,11 @@ export default {
     async getFlavor() {
       this.preferenceList = [];
       const response = await mypageApi.mypageFlavor();
-      console.log("!!!!!!!!!!!!!!!!!!!!!!!");
-      console.log(response.data);
-      console.log("!!!!!!!!!!!!!!!!!!!!!!!");
       this.preferenceList = response.data;
     },
 
     async getScrap() {
       const response = await mypageApi.mypageScrap();
-      console.log("스크랩와인!!!");
-      console.log(response);
       this.scarpList = response.data;
     },
 
@@ -241,7 +237,7 @@ export default {
       this.getScrap();
     },
     changeProfile() {
-      this.SET_PROFILE_TOGGLE();
+      this.SET_PROFILE_TOGGLE;
     },
   },
 };

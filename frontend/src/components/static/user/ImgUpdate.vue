@@ -91,7 +91,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn id="changeBtn">Change</v-btn>
+            <v-btn id="changeBtn" @click="onChange">Change</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -101,6 +101,7 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from "vuex";
+import * as mypageApi from "@/api/mypageApi";
 
 export default {
   components: {},
@@ -123,7 +124,18 @@ export default {
       if (index === this.selectItem) return true;
       else return false;
     },
+    async onChange() {
+      if (this.selectItem == -1) {
+        alert("프로필 이미지를 선택해주세요!");
+      } else {
+        const response = await mypageApi.updateProfile(this.selectItem);
+        if (response.status == 200) {
+          this.close();
+        }
+      }
+    },
     close() {
+      this.selectItem = -1;
       this.SET_PROFILE_TOGGLE();
     },
   },

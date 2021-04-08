@@ -17,13 +17,3 @@ export function search(page, keyword, sort, pointFilter,
         }
     });
 }
-
-// export function getWineReviewById(pageNum, time, wineId) {
-//     console.log(pageNum + " " +  time + " "+ wineId);
-//     return http.get(`/wine/review-list/${wineId}`,{
-//         params: {
-//             page: pageNum,
-//             time: time,
-//         }
-//     });
-// }

@@ -47,7 +47,7 @@
             <img
               class="profile"
               @click="changeProfile"
-              :src="`${s3url_profile}${userInfo.profile}.jpg`"
+              :src="`${s3url_profile}${userInfo.profile}.svg`"
             />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>

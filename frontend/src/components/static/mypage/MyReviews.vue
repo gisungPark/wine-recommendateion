@@ -22,7 +22,7 @@
           <div class="writer-img">
             <img
               class="profile"
-              :src="`${s3url_profile}${review.userImg}.jpg`"
+              :src="`${s3url_profile}${review.userImg}.svg`"
             />
             <!-- <img v-show="userInfo.profile != null" :src="userInfo.profile" /> -->
           </div>

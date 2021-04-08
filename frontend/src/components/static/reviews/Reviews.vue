@@ -55,7 +55,7 @@
                       <div class="writer-img">
                         <img
                           class="profile"
-                          :src="`${s3url_profile}${review.userImg}.jpg`"
+                          :src="`${s3url_profile}${review.userImg}.svg`"
                         />
                       </div>
                       <span class="writer-nickname">

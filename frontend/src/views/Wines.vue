@@ -28,9 +28,9 @@
           type="text"
           placeholder="search your wine"
           v-model="keyword"
-          @keyup.enter="onSearch"
+          @keyup.enter="onchageFilter"
         />
-        <div class="search-icon-wrap" @click="onSearch">
+        <div class="search-icon-wrap" @click="onchageFilter">
           <svg
             id="search-icon"
             xmlns="http://www.w3.org/2000/svg"

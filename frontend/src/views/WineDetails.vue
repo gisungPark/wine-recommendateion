@@ -1,6 +1,11 @@
 <template>
   <div ref="wineDetails" id="wine-details" :style="{ color: fontColor }">
-    <img :src="`${this.s3url}${detail.wineDto.wineId}.png`" :alt="`${detail.wineDto.kname} 와인의 이미지`" id="detail-wine-img" />
+    <img
+      v-if="detail.wineDto.wineId != 0"
+      :src="`${this.s3url}${detail.wineDto.wineId}.png`"
+      :alt="`${detail.wineDto.kname} 와인의 이미지`"
+      id="detail-wine-img"
+    />
     <section id="detail-section-0" :style="{ backgroundColor: backgroundColor }">
       <!-- 왼쪽 -->
       <div class="sec-0-part">
@@ -112,7 +117,7 @@
           </div>
         </div>
         <div class="bar" :style="{ backgroundColor: fontColor }"></div>
-        <Scrap class="scrap-btn" :scraped="true" />
+        <Scrap class="scrap-btn" :scraped="detail.scrap" :wineId="detail.wineDto.wineId" />
       </div>
     </section>
     <!--******************************************************************** -->
@@ -670,6 +675,7 @@ section {
   background-repeat: repeat-x;
 }
 .scrap-btn {
+  z-index: 6;
   margin: 30px auto 0 20px;
   transform: scale(1.4);
   margin-bottom: 14rem;

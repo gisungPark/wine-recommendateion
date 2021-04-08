@@ -87,39 +87,33 @@ export default {
       deep: true,
       handler() {
         const beforeSize = this.wineStyles.length;
-        this.pushMarginTop(beforeSize);
+        this.setMarginTop(beforeSize);
+        this.setSubtitle(beforeSize);
       },
     },
   },
   created() {
-    window.addEventListener('resize', this.setMarginTop);
-
-    // subtitle 생성, enmae에서 쉼표까지 텍스트 자르기
-    for (let i = 0; i < this.wines.length; i++) {
-      let index = -1;
-      index = this.wines[i].ename.indexOf(',');
-      if (index !== -1) {
-        this.wineSubtitle.push(this.wines[i].ename.substring(0, index));
-      } else {
-        this.wineSubtitle.push(this.wines[i].ename);
-      }
-    }
+    window.addEventListener('resize', this.initMarginTop);
   },
   destroyed() {
-    window.removeEventListener('resize', this.setMarginTop);
+    window.removeEventListener('resize', this.initMarginTop);
   },
   mounted() {
-    console.log(this.s3url);
-    this.setMarginTop();
+    this.initMarginTop();
+    this.initMarginTop();
   },
   methods: {
-    setMarginTop() {
+    initMarginTop() {
+      this.setMarginTop(0);
+    },
+    setMarginTop(index) {
       // item 위치에 따른 margin-top 설정
       const winelistWidth = this.$refs.winelist.offsetWidth;
       this.itemCountInLine = Math.floor(winelistWidth / 300);
-      this.wineStyles = [];
-      5;
-      for (let i = 0; i < this.wines.length; i++) {
+      if (index == 0) {
+        this.wineStyles = [];
+      }
+      for (let i = index; i < this.wines.length; i++) {
         // 엇갈려 배치하기
         let nth = (i % this.itemCountInLine) + 1;
         if (nth % 2 === 0) {
@@ -127,27 +121,30 @@ export default {
         } else {
           this.wineStyles.push(true);
         }
-        // 와인 type 영문화
         this.wineType.push(common.getEType(this.wines[i].type));
       }
+
       // wrap의 padding 동적 계산
       const blank = winelistWidth - this.itemCountInLine * 300;
       this.$refs.winelist.style.paddingLeft = `${blank / 2}px`;
     },
-    pushMarginTop(index) {
-      const winelistWidth = this.$refs.winelist.offsetWidth;
-      this.itemCountInLine = Math.floor(winelistWidth / 300);
+    setSubtitle(index) {
+      // subtitle 생성, enmae에서 쉼표까지 텍스트 자르기
+      if (index == 0) {
+        this.wineSubtitle = [];
+      }
       for (let i = index; i < this.wines.length; i++) {
-        let nth = (i % this.itemCountInLine) + 1;
-        if (nth % 2 === 0) {
-          this.wineStyles.push(false);
+        let end = -1;
+        end = this.wines[index].ename.indexOf(',');
+        if (end !== -1) {
+          this.wineSubtitle.push(this.wines[index].ename.substring(0, end));
         } else {
-          this.wineStyles.push(true);
+          this.wineSubtitle.push(this.wines[index].ename);
         }
       }
     },
     clickedWine(index) {
-      this.$router.push(`/detail/${this.wines[index].id}`);
+      this.$router.push(`/detail/${this.wines[index].wineId}`);
     },
   },
 };

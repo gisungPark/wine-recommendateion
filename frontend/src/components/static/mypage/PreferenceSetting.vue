@@ -163,9 +163,14 @@ const FIRST_STAGE = 1,
   THIRD_STAGE = 3;
 
 export default {
-  props: ["preferenceList"],
+  props: ["preferenceList", "isUpdate"],
   components: {
     Card,
+  },
+  watch: {
+    isUpdate: function () {
+      this.onInit();
+    },
   },
   data: () => ({
     curStage: 1,

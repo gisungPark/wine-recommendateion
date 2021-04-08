@@ -3,6 +3,7 @@ const state = {
   joinDialog: false,
   nicknameDialog: false,
   findPwDialog: false,
+  profileDialog: false,
 };
 const getters = {};
 const actions = {};
@@ -18,6 +19,9 @@ const mutations = {
   },
   SET_FINDPW_TOGGLE(state) {
     state.findPwDialog = !state.findPwDialog;
+  },
+  SET_PROFILE_TOGGLE(state) {
+    state.profileDialog = !state.profileDialog;
   },
 };
 

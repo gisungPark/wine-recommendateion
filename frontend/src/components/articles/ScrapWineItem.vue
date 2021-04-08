@@ -2,44 +2,63 @@
   <div
     class="wineitem fadeup"
     :style="{ marginTop: wine.marginTop }"
-    :class="{ red: wine.type === '레드', white: wine.type === '화이트', rose: wine.type === '스파클링' }"
-    @click="clickedWine"
+    :class="{
+      red: wine.type === '레드',
+      white: wine.type === '화이트',
+      rose: wine.type === '스파클링',
+    }"
   >
-    <img v-if="wine.wineId != 0" class="wineitem-img" :src="`${this.s3url}${wine.wineId}.png`" alt="와인 이미지" />
-    <div class="wineitem-info">
-      <div class="info-title">
-        <p>{{ wine.kname }}</p>
-        <hr />
-        <p>{{ wine.ename }}</p>
-      </div>
-      <div class="info-sub">
-        <span>종류</span><span>{{ wine.type }}</span>
-      </div>
-      <div class="info-sub">
-        <span>연도</span><span>{{ wine.year }}</span>
-      </div>
-      <div class="info-sub">
-        <span>평점</span><span>{{ wine.avg }}</span>
-      </div>
-      <div class="info-sub">
-        <span>가격</span><span>{{ wine.price }}</span>
-      </div>
+    <div class="review-icon">
+      <div class="review-icon-1" @click="onDelete(wine.wineId)"></div>
     </div>
-    <div class="info-thumb m-desc">
-      <div class="info-thumb-part">
-        <div class="info-thumb-type">
-          <div class="circle"></div>
-          <span>{{ wineType }}</span>
+    <div @click="clickedWine(wine.wineId)">
+      <img
+        class="wineitem-img"
+        :src="`${this.s3url}${wine.wineId}.png`"
+        alt="와인 이미지"
+      />
+      <div class="wineitem-info">
+        <div class="info-title">
+          <p>{{ wine.kname }}</p>
+          <hr />
+          <p>{{ wine.ename }}</p>
         </div>
-        <p class="info-thumb-subtitle">{{ wineSubtitle }}</p>
+        <div class="info-sub">
+          <span>종류</span><span>{{ wine.type }}</span>
+        </div>
+        <div class="info-sub">
+          <span>연도</span><span>{{ wine.year }}</span>
+        </div>
+        <div class="info-sub">
+          <span>평점</span><span>{{ wine.avg }}</span>
+        </div>
+        <div class="info-sub">
+          <span>가격</span><span>{{ wine.price }}</span>
+        </div>
       </div>
-      <div class="info-thumb-part">
-        <p class="info-thumb-price">{{ wine.price | currency }} 원</p>
-        <div class="info-thumb-ave">
-          <svg class="star" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-          </svg>
-          <span>{{ wine.avg }}</span>
+      <div class="info-thumb m-desc">
+        <div class="info-thumb-part">
+          <div class="info-thumb-type">
+            <div class="circle"></div>
+            <span>{{ wineType }}</span>
+          </div>
+          <p class="info-thumb-subtitle">{{ wineSubtitle }}</p>
+        </div>
+        <div class="info-thumb-part2">
+          <div class="info-thumb-ave">
+            <svg
+              class="star"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
+              />
+            </svg>
+            <span>{{ wine.avg }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -47,19 +66,20 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import common from '@/assets/js/common.js';
+import { mapState } from "vuex";
+import common from "@/assets/js/common.js";
+import * as mypageApi from "@/api/mypageApi";
 export default {
-  name: 'WineItem',
+  name: "WineItem",
   filters: {
     currency(val) {
-      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
   },
   props: {
     wine: {
       type: Object,
-      default: function() {
+      default: function () {
         return;
       },
     },
@@ -67,19 +87,19 @@ export default {
   data() {
     return {
       wineListType: true,
-      wineSubtitle: '',
-      wineType: '',
+      wineSubtitle: "",
+      wineType: "",
       itemCountInLine: 0,
     };
   },
   computed: {
-    ...mapState(['s3url']),
+    ...mapState(["s3url"]),
   },
   watch: {},
   created() {
     // subtitle 생성, enmae에서 쉼표까지 텍스트 자르기
     let index = -1;
-    index = this.wine.ename.indexOf(',');
+    index = this.wine.ename.indexOf(",");
     if (index !== -1) {
       this.wineSubtitle = this.wine.ename.substring(0, index);
     } else {
@@ -91,8 +111,20 @@ export default {
   mounted() {},
   destroyed() {},
   methods: {
-    clickedWine() {
-      this.$router.push(`/detail/${this.wine.id}`);
+    /**
+     * 해당 와인 상세페이지로 이동
+     */
+    clickedWine(wineId) {
+      this.$router.push(`/detail/${wineId}`);
+    },
+    async onDelete(windId) {
+      if (window.confirm("와인을 삭제 하시겠습니까?")) {
+        const response = await mypageApi.deleteScrap(windId);
+        if (response.status == 200) {
+          this.$emit("deleteScrap");
+          console.log("성공적으로 스크랩을 삭제했습니다.");
+        }
+      }
     },
   },
 };
@@ -108,6 +140,7 @@ export default {
   height: 500px;
   border: 1px solid var(--basic-color-key);
   transition: border 0.3s ease;
+  position: relative;
 }
 .margin-top {
   margin-top: -250px;
@@ -141,6 +174,8 @@ export default {
   align-items: center;
   justify-content: center;
   position: absolute;
+  top: 0px;
+  left: 0px;
   width: 300px;
   margin-top: -2px;
   height: 497px;
@@ -157,7 +192,7 @@ export default {
 .info-sub {
   width: 90%;
   margin: 0.5rem;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-weight: 400;
   color: #fff;
 }
@@ -179,6 +214,8 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   position: absolute;
+  top: 0px;
+  right: -70px;
   width: 460px;
   height: 250px;
   padding: 1.5rem;
@@ -193,6 +230,13 @@ export default {
   justify-content: flex-start;
   color: white;
   text-shadow: 1px 1px 10px #000;
+}
+.info-thumb-part2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  color: white;
+  text-shadow: 1px 1px 10px rgb(223, 181, 181);
 }
 /* top 영역 */
 .info-thumb-type {
@@ -229,7 +273,7 @@ export default {
   display: flex;
   justify-content: flex-end;
   position: absolute;
-  top: 185px;
+  top: 180px;
   left: 350px;
   width: 110px;
 }
@@ -248,5 +292,23 @@ export default {
 
 .wineitem:hover .info-thumb {
   opacity: 0;
+}
+
+.review-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: absolute;
+  float: right;
+  right: 10px;
+  z-index: 10;
+}
+.review-icon-1 {
+  width: 100%;
+  height: 100%;
+  background-image: url("../../assets/images/close_black.png");
+  background-size: contain;
 }
 </style>

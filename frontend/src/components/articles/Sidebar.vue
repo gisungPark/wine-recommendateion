@@ -36,12 +36,22 @@ export default {
         };
       },
     },
+    // activeState: {
+    //   type: Number,
+    //   default: function() {
+    //     return 0;
+    //   },
+    // },
   },
   data() {
     return {
       show: false,
-      activeState: 0,
     };
+  },
+  computed: {
+    activeState() {
+      return this.$store.state.recommendation.contentState;
+    },
   },
   mounted() {
     this.show = true;
@@ -51,11 +61,7 @@ export default {
   },
   methods: {
     clickedBtn(index) {
-      this.activeState = index;
-      this.emitEvent();
-    },
-    emitEvent() {
-      this.$emit('clickedBtn', this.activeState);
+      this.$emit('clickedBtn', index);
     },
   },
 };

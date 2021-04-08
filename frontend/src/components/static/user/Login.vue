@@ -53,9 +53,9 @@
                   </ul>
                 </v-col>
               </v-row>
-              <v-row no-gutters>
+              <!-- <v-row no-gutters>
                 <a id="findPw" @click="onFindPw">비밀번호 찾기</a>
-              </v-row>
+              </v-row> -->
               <v-row style="margin-top: 20px">
                 <v-col cols="auto" id="loginBtn-wrap">
                   <v-btn text id="loginBtn" @click="onLogin">CONTINUE</v-btn>
@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex";
 import * as authApi from "@/api/auth";
 import KakaoLogin from "vue-kakao-login";
 import JoinModal from "./Join.vue";
@@ -128,14 +128,11 @@ export default {
       "SET_NICKNAME_TOGGLE",
       "SET_FINDPW_TOGGLE",
     ]),
+    ...mapMutations("userInfo", ["SET_TEMP_TOKEN"]),
     ...mapMutations("guideBtn", [
       "SET_GUIDEBTN_TOGGLE",
       "SET_GUIDEBTNTIP_TOGGLE",
     ]),
-    loginAPI(email, password) {
-      return authApi.login(email, password);
-    },
-
     onLogin() {
       const response = this.$store
         .dispatch("userInfo/login", {
@@ -143,15 +140,14 @@ export default {
           password: this.password,
         })
         .then((result) => {
-          if (result.data.code === 1) {
-            alert("아이디 비밀번호를 확인하세요!!");
-          } else if (result.data.code === 0) {
-            alert(this.email + "님 환영합니다.");
-            this.email = "";
-            this.password = "";
-            this.SET_LOGIN_TOGGLE();
+          console.log(result);
+          if (result.data.code === 0) {
+            // 로그인 완료 ##################################
+            this.close();
             this.SET_GUIDEBTN_TOGGLE();
             this.$router.push({ name: "Mypage" });
+          } else {
+            alert("아이디 비밀번호를 확인하세요!!");
           }
         });
     },
@@ -163,8 +159,8 @@ export default {
       this.password = "";
       this.SET_LOGIN_TOGGLE();
     },
-    onKakaoCallback(data) {
-      console.log(data);
+    async onKakaoCallback(data) {
+      console.log("1111111111111111111111111");
       const response = this.$store
         .dispatch("userInfo/kakaoLogin", {
           data: data,
@@ -172,7 +168,15 @@ export default {
         .then((result) => {
           console.log("333333333333333333333333");
           console.log(result);
+          this.close();
+          if (result.data.code === 2) {
+            this.SET_GUIDEBTN_TOGGLE();
+            this.$router.push({ name: "Mypage" });
+          }
         });
+      // const response = await authApi.kakaoLogin(data);
+      // console.log("카카오 로그인 시작!!");
+      // console.log(response);
     },
     onFailure() {},
     onJoin() {

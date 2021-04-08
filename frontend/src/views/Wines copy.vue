@@ -57,20 +57,6 @@
         <transition-group name="slideup" mode="out-in">
           <Winelist class="winelist" key="0" :wines="wines" />
         </transition-group>
-        <infinite-loading
-          @infinite="infiniteHandler"
-          force-use-infinite-wrapper="true"
-          spinner="waveDots"
-          ref="infiniteLoading"
-          class="infinite"
-        >
-          <div slot="no-more">목록의 끝입니다.</div>
-          <div slot="no-results">요청 결과가 없습니다.</div>
-          <div slot="error" slot-scope="{ trigger }">
-            문제가 발생했습니다. 재시도 하려면
-            <a href="javascript:;" @click="trigger">여기</a>를 누르십시오.
-          </div>
-        </infinite-loading>
       </div>
 
       <!-- ################################ -->
@@ -95,7 +81,7 @@
             step="10000"
             color="#821a33"
             track-fill-color="#821a33"
-            @click="onchageFilter"
+            @click="onSearch"
           ></v-range-slider>
         </div>
         <div id="price-slider-label">
@@ -109,7 +95,7 @@
         v-show="this.contentState === 2"
         id="scoreModal"
         class="fillter-modal"
-        @click="onchageFilter"
+        @click="onSearch"
       >
         <div id="scoreModal-info">
           <span id="scoreModal-info-item1">Point?</span>
@@ -166,6 +152,7 @@
         v-show="this.contentState === 4"
         id="grapeModal"
         class="fillter-modal"
+        @click="onSearch"
       >
         <div id="scoreModal-info">
           <span id="scoreModal-info-item1">Grape?</span>
@@ -195,24 +182,19 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import * as wineApi from "@/api/wine";
-import InfiniteLoading from "vue-infinite-loading";
 import Winelist from "@/components/articles/Winelist.vue";
 
 export default {
   name: "Wines",
   components: {
     Winelist,
-    InfiniteLoading,
   },
-  mounted() {
-    this.onSearch(this.$refs.infiniteLoading.stateChanger);
+  created() {
+    this.onSearch();
   },
   watch: {
     typeFilter: function () {
-      this.onchageFilter();
-    },
-    grapeFilter: function () {
-      this.onchageFilter();
+      this.onSearch();
     },
   },
   data: () => ({
@@ -238,44 +220,35 @@ export default {
     onReset() {
       this.pointFilter = 0;
     },
-    onchageFilter() {
-      this.wines = [];
-      this.page = 1;
-      this.onSearch(this.$refs.infiniteLoading.stateChanger);
-    },
-
-    // infiniteHandler, props 전달
-    infiniteHandler($state) {
-      this.onSearch($state);
-    },
-
-    async onSearch($state) {
-      try {
-        const response = await wineApi.search(
-          this.page,
-          this.keyword,
-          this.sort,
-          this.pointFilter,
-          this.typeFilter,
-          this.grapeFilter,
-          this.priceRange[0],
-          this.priceRange[1]
-        );
-        console.log("와인 서치 결과!!!!!!!!!!!!!");
-        console.log(response);
-        if (response.data) {
-          if (response.status == 200) {
-            this.wines.push(...response.data);
-            this.page += 1; // 페이지 증가
-            setTimeout(() => {
-              $state.loaded();
-            }, 1000);
-          }
-        } else {
-          console.log("###########################");
-          $state.complete();
+    async onSearch() {
+      const response = await wineApi.search(
+        this.page,
+        this.keyword,
+        this.sort,
+        this.pointFilter,
+        this.typeFilter,
+        this.grapeFilter,
+        this.priceRange[0],
+        this.priceRange[1]
+      );
+      console.log(response);
+      if (response.status == 200) {
+        this.wines = response.data;
+        for (var i = 0; i < this.wines.length; i++) {
+          console.log(
+            this.wines[i].wineId +
+              "/ " +
+              this.wines[i].kname +
+              "/ " +
+              this.wines[i].grape.kname +
+              "/ " +
+              this.wines[i].avg +
+              "/ " +
+              this.wines[i].price
+          );
         }
-      } catch {}
+        console.log("###########################");
+      }
     },
   },
 };

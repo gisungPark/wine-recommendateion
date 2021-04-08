@@ -111,7 +111,7 @@
         <p class="price">₩ {{ detail.wineDto.price | currency }}</p>
         <div class="bar" :style="{ backgroundColor: fontColor }"></div>
         <div class="avg">
-          <span>{{ detail.wineDto.avg }}</span>
+          <span>{{ detail.wineDto.avg.toFixed(1) }}</span>
           <div class="star">
             <div class="star-rate" :style="{ width: starRate + 'rem' }"></div>
             <div class="star-rate-bg"></div>

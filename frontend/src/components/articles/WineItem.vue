@@ -92,7 +92,8 @@ export default {
   destroyed() {},
   methods: {
     clickedWine() {
-      this.$router.push(`/detail/${this.wine.id}`);
+      console.log(this.wine);
+      this.$router.push(`/detail/${this.wine.wineId}`);
     },
   },
 };

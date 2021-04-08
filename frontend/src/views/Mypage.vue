@@ -5,32 +5,16 @@
       <div class="left-wrap">
         <span class="nav-title">Mypage</span>
         <div class="nav-btn">
-          <button
-            class="nav-btn-item1"
-            :class="{ 'nav-btn-active': isBtnClick(3) }"
-            @click="setStage(3)"
-          >
+          <button class="nav-btn-item1" :class="{ 'nav-btn-active': isBtnClick(3) }" @click="setStage(3)">
             Scrap
           </button>
-          <button
-            class="nav-btn-item2"
-            :class="{ 'nav-btn-active': isBtnClick(2) }"
-            @click="setStage(2)"
-          >
+          <button class="nav-btn-item2" :class="{ 'nav-btn-active': isBtnClick(2) }" @click="setStage(2)">
             Review
           </button>
-          <button
-            class="nav-btn-item3"
-            :class="{ 'nav-btn-active': isBtnClick(1) }"
-            @click="setStage(1)"
-          >
+          <button class="nav-btn-item3" :class="{ 'nav-btn-active': isBtnClick(1) }" @click="setStage(1)">
             Statistics
           </button>
-          <button
-            class="nav-btn-item4"
-            :class="{ 'nav-btn-active': isBtnClick(4) }"
-            @click="setStage(4)"
-          >
+          <button class="nav-btn-item4" :class="{ 'nav-btn-active': isBtnClick(4) }" @click="setStage(4)">
             Favorite
           </button>
         </div>
@@ -39,16 +23,9 @@
 
     <div class="item">
       <div class="right-wrap">
-        <div
-          v-show="this.screenState == 3 || this.screenState == 2"
-          class="content"
-        >
+        <div v-show="this.screenState == 3 || this.screenState == 2" class="content">
           <div class="imgBox">
-            <img
-              class="profile"
-              @click="changeProfile"
-              :src="`${s3url_profile}${userInfo.profile}.svg`"
-            />
+            <img class="profile" @click="changeProfile" :src="`${s3url_profile}${userInfo.profile}.svg`" />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>
           <!-- 스크랩 페이지 ################################################ -->
@@ -56,11 +33,7 @@
             <div class="item-title gray">스크랩한 와인</div>
             <div style="height: 50px"></div>
             <div class="item-list">
-              <div
-                class="wine-item"
-                v-for="(item, index) in scarpList"
-                :key="item + index"
-              >
+              <div class="wine-item" v-for="(item, index) in scarpList" :key="item + index">
                 <WineItem v-on:deleteScrap="updateScrap" :wine="item" />
               </div>
             </div>
@@ -129,7 +102,7 @@ const STATISTICS = 3;
 const FRAVORITE = 4;
 
 export default {
-  name: "Mypage",
+  name: 'Mypage',
   components: {
     Winelist,
     MyReviews,

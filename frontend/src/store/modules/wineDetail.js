@@ -104,6 +104,9 @@ const mutations = {
   SET_DETAIL(state, payload) {
     state.detail = payload;
   },
+  MODIFY_DETAIL(state, scrapState) {
+    state.detail.scrap = scrapState;
+  },
 };
 
 export default {

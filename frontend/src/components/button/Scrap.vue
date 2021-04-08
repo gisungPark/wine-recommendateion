@@ -31,7 +31,7 @@ export default {
       if (this.scraped) {
         this.actRemoveWineScrap(this.wineId).then((result) => {
           if (result) {
-            this.scraped = false;
+            this.$store.commit('wineDetail/MODIFY_DETAIL', false);
             this.$toast.open({
               message: '찜목록에서 삭제되었습니다.',
               type: 'error',
@@ -47,7 +47,7 @@ export default {
       } else {
         this.actAddWineScrap(this.wineId).then((result) => {
           if (result) {
-            this.scraped = true;
+            this.$store.commit('wineDetail/MODIFY_DETAIL', true);
             this.$toast.open({
               message: '찜목록에 추가되었습니다.',
               type: 'success',

@@ -131,7 +131,7 @@
           <div class="detail-torus"></div>
           <span>SWEET</span>
           <div class="frame">
-            <div v-for="n in 4" :key="n" class="line" :style="{ backgroundColor: backgroundColor }"></div>
+            <div v-for="n in 4" :key="'sweet' + n" class="line" :style="{ backgroundColor: backgroundColor }"></div>
             <div class="gauge" ref="sweet"></div>
           </div>
         </div>
@@ -139,7 +139,7 @@
           <div class="detail-torus"></div>
           <span>ACIDITY</span>
           <div class="frame">
-            <div v-for="n in 4" :key="n" class="line" :style="{ backgroundColor: backgroundColor }"></div>
+            <div v-for="n in 4" :key="'acidity' + n" class="line" :style="{ backgroundColor: backgroundColor }"></div>
             <div class="gauge" ref="acidity"></div>
           </div>
         </div>
@@ -156,7 +156,7 @@
           <div class="detail-torus"></div>
           <span>TANNIN</span>
           <div class="frame">
-            <div v-for="n in 4" :key="n" class="line" :style="{ backgroundColor: backgroundColor }"></div>
+            <div v-for="n in 4" :key="'tannin' + n" class="line" :style="{ backgroundColor: backgroundColor }"></div>
             <div class="gauge" ref="tannin"></div>
           </div>
         </div>
@@ -164,7 +164,7 @@
           <div class="detail-torus"></div>
           <span>BODY</span>
           <div class="frame">
-            <div v-for="n in 4" :key="n" class="line" :style="{ backgroundColor: backgroundColor }"></div>
+            <div v-for="n in 4" :key="'body' + n" class="line" :style="{ backgroundColor: backgroundColor }"></div>
             <div class="gauge" ref="body"></div>
           </div>
         </div>
@@ -251,11 +251,12 @@
         Wines?
       </div>
       <swiper class="swiper" :options="swiperOption2" ref="moreWineSwiper">
-        <swiper-slide v-for="(item, index) in detail.moreWineList" :key="item.wineId + index" class="slide"><WineItem :wine="item"/></swiper-slide>
+        <swiper-slide v-for="(item, index) in detail.moreWineList" :key="'detial' + item.wineId + index" class="slide"><WineItem :wine="item"/></swiper-slide>
         <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
         <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
+      <Reviews />
     </section>
   </div>
 </template>
@@ -268,8 +269,9 @@ import 'swiper/css/swiper.css';
 
 import WineItem from '@/components/articles/WineItem.vue';
 import FoodSvgs from '@/components/articles/FoodSvgs.vue';
+import Reviews from '@/components/static/reviews/Reviews.vue';
 
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapMutations } from 'vuex';
 
 export default {
   name: 'WineDetails',
@@ -284,6 +286,7 @@ export default {
     SwiperSlide,
     WineItem,
     FoodSvgs,
+    Reviews,
   },
   data() {
     return {
@@ -373,23 +376,28 @@ export default {
       this.$refs.body.style.transform = `translateY(-${bodyGauge}rem)`;
 
       // wine.img position chanager
-      this.targetImg = document.querySelector('#detail-wine-img');
-      this.targetYScroll = document.body.offsetHeight - window.innerHeight * 2;
+      this.imgStopPoint = document.body.offsetHeight - window.innerHeight * 2; // img가 absolute로 변경되는 시점
+      this.img = document.querySelector('#main-wine-img');
     });
   },
   destroyed() {
     window.removeEventListener('resize', this.initModalPosition);
     window.removeEventListener('scroll', this.imgPositionChanger);
   },
-  mounted() {
-    this.imgStopPoint = document.body.offsetHeight - window.innerHeight * 2; // img가 absolute로 변경되는 시점
-    this.img = document.querySelector('#main-wine-img');
-  },
   computed: {
     ...mapState(['s3url']),
     ...mapState('wineDetail', ['detail']),
   },
+  mounted() {
+    setTimeout(() => {
+      this.imgStopPoint = document.body.offsetHeight - window.innerHeight * 2; // img가 absolute로 변경되는 시점
+    }, 600);
+  },
   methods: {
+    // vuex!
+    ...mapActions('wineDetail', ['actGetWineDetail']),
+    ...mapMutations('reviewDialog', ['SET_REVIEW_TOGGLE', 'SET_REVIEW_WINEID']),
+
     //와인 이미지 position changer
     imgPositionChanger() {
       console.log(window.pageYOffset, this.imgStopPoint);
@@ -401,9 +409,6 @@ export default {
         this.$refs.detailWineImg.style.top = `${this.imgStopPoint + window.innerHeight / 2}px`;
       }
     },
-
-    // vuex!
-    ...mapActions('wineDetail', ['actGetWineDetail']),
 
     // modal 위치 초기화
     initModalPosition() {
@@ -456,7 +461,8 @@ export default {
       this.closeModal();
     },
     clickedShowReview() {
-      alert('리뷰 모달 뿅!');
+      this.SET_REVIEW_WINEID(this.detail.wineDto.wineId);
+      this.SET_REVIEW_TOGGLE();
     },
   },
 
@@ -572,7 +578,7 @@ section {
 .modal-background-active {
   visibility: visible;
   opacity: 1;
-  z-index: 4;
+  z-index: 5;
 }
 .prevent-scroll {
   position: fixed;
@@ -580,7 +586,7 @@ section {
 }
 .grape-info-modal {
   position: absolute;
-  z-index: 5;
+  z-index: 6;
   width: 2rem;
   height: 2rem;
   margin-left: 0.5rem;
@@ -688,7 +694,7 @@ section {
   background-repeat: repeat-x;
 }
 .scrap-btn {
-  z-index: 6;
+  z-index: 5;
   margin: 30px auto 0 20px;
   transform: scale(1.4);
   margin-bottom: 14rem;

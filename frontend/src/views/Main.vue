@@ -1,6 +1,6 @@
 <template>
   <div id="wrap">
-    <img src="../assets/images/wine.png" alt="오늘의 와인 이미지" id="main-wine-img" />
+    <img v-if="todaysWine.wineId != 0" :src="`${this.s3url}${todaysWine.wineId}.png`" alt="오늘의 와인 이미지" id="main-wine-img" />
     <section id="main-section-0">
       <div class="marquee-container tilt">
         <div class="marquee">
@@ -15,44 +15,44 @@
       <span class="title wine-title-sub b-desc-e tilt" ref="titleSub">{{ subtitle }}</span>
     </section>
     <section id="main-section-1">
-      <div class="main-message wine-top sticky-elem"></div>
+      <div ref="area" class="main-message wine-top sticky-elem"></div>
       <div class="main-message wine-name sticky-elem">
-        <h2 class="ename b-desc-e real-shadow-text">{{ wine.ename }}</h2>
+        <h2 class="ename b-desc-e real-shadow-text">{{ todaysWine.ename }}</h2>
       </div>
       <div class="main-message wine-name-sub sticky-elem">
         <hr />
-        <p class="kname">{{ wine.kname }}</p>
+        <p class="kname">{{ todaysWine.kname }}</p>
       </div>
       <div class="main-message wine-desc sticky-elem">
         <div class="pin"></div>
         <p class="r-desc">
-          <strong>{{ wine.year }}</strong>
-          {{ wine.detail }}
+          <strong>{{ todaysWine.year }}</strong>
+          {{ todaysWine.detail }}
         </p>
       </div>
       <div class="main-message wine-info sticky-elem">
         <div class="wine-info-item a">
-          <span>지역</span><span>{{ wine.area }}</span>
+          <span>지역</span><span>{{ todaysWine.area }}</span>
         </div>
         <hr />
         <div class="wine-info-item b">
-          <span>품종</span><span>{{ wine.grape_id }}</span>
+          <span>품종</span><span>{{ todaysWine.grape.kname }}</span>
         </div>
         <hr />
         <div class="wine-info-item c">
-          <span>종류</span><span>{{ wine.type }}</span>
+          <span>종류</span><span>{{ todaysWine.type }}</span>
         </div>
         <hr />
         <div class="wine-info-item d">
-          <span>알코올 도수</span><span>{{ wine.alchol }}</span>
+          <span>알코올 도수</span><span>{{ todaysWine.alcohol }}</span>
         </div>
         <hr />
         <div class="wine-info-item e">
-          <span>음용 온도</span><span>{{ wine.temper }}</span>
+          <span>음용 온도</span><span>{{ todaysWine.temper }}</span>
         </div>
         <hr />
         <div class="wine-info-item f">
-          <span>가격</span><span>{{ wine.price | currency }} 원</span>
+          <span>가격</span><span>{{ todaysWine.price | currency }} 원</span>
         </div>
         <hr />
       </div>
@@ -60,8 +60,10 @@
     <section id="main-section-2">
       <div class="main-message wine-review sticky-elem">
         <div class="frame">
-          <p class="b-desc">{{ avg }}</p>
-          <Scrap class="scrap-btn" :scraped="true" />
+          <p class="b-desc">{{ todaysWine.avg.toFixed(1) }}</p>
+          <button class="detail-move-btn b-desc" @click="clickedDetialMove">
+            상세보기 >
+          </button>
         </div>
         <div class="star-rate" :style="{ width: starRate + 'vw' }"></div>
       </div>
@@ -70,16 +72,9 @@
     <section id="main-section-3">
       <p class="topten-title b-title">Top 10</p>
       <swiper class="swiper" :options="swiperOption">
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
-        <swiper-slide><Topten /></swiper-slide>
+        <swiper-slide class="topten-item" v-for="(item, index) in top10" :key="item.wineId + index"><Topten :wine="item"/></swiper-slide>
+        <div class="swiper-button-prev swiper-button-white" slot="button-prev"></div>
+        <div class="swiper-button-next swiper-button-white" slot="button-next"></div>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
     </section>
@@ -87,13 +82,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import Scrap from '@/components/button/Scrap.vue';
 import * as interaction from '@/assets/js/interaction.js';
-import { Swiper, SwiperSlide, directive } from 'vue-awesome-swiper';
-import 'swiper/swiper-bundle.css';
-import Topten from '@/components/static/main/Topten.vue';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
+import 'swiper/css/swiper.css';
+import Topten from '@/components/main/Topten.vue';
 
+// import * as scroll from '@/assets/js/scroll.js';
 export default {
   name: 'Main',
   components: {
@@ -109,52 +105,114 @@ export default {
   },
   data() {
     return {
+      show: false,
       title: `TODAY'S WINE`,
       subtitle: '',
-      wine: {
-        wine_id: `0`,
-        img: ``,
-        ename: `Morande, Pionero Rose`,
-        kname: `모란데, 피오네로 로제`,
-        type: `로제`,
-        area: `칠레`,
-        alchol: `13~14도`,
-        grape_id: `카베르네 소비뇽`,
-        temper: `11~14℃`,
-        price: `5100000`,
-        year: `2013`,
-        detail: `딸기, 블랙 베리의 향이 신선하게 다가오며 달콤한 맛이 적절한 산도와 상쾌한 과일 느낌과 함께 잘 어우러지는 와인이다.`,
-        sweet: 2,
-        acidity: 3,
-        body: 3,
-        tannin: 1,
-      },
-      avg: 4.5,
       starRate: 10,
       //swiper
       swiperOption: {
-        slidesPerView: 4.5,
+        slidesPerView: 'auto',
         spaceBetween: 30,
         freeMode: true,
         pagination: {
           el: '.swiper-pagination',
-          clickable: true,
+          dynamicBullets: true,
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
         },
       },
     };
   },
+  computed: {
+    ...mapState(['s3url']),
+    ...mapState('main', ['todaysWine', 'top10']),
+  },
   created() {
-    // 별점에 따라 별 개수 동적 표시를 위해 width값 계산
-    this.starRate = this.starRate * this.avg;
-    // subtitle 생성, enmae에서 쉼표까지 텍스트 자르기
-    let index = null;
-    index = this.wine.ename.indexOf(',');
-    this.subtitle = this.wine.ename.substring(0, index);
+    // vuex
+    this.actGetTodaysWine().then(() => {
+      // subtitle 생성, enmae에서 쉼표까지 텍스트 자르기
+      let index = -1;
+      index = this.todaysWine.ename.indexOf(',');
+      if (index !== -1) {
+        this.subtitle = this.todaysWine.ename.substring(0, index);
+      } else {
+        this.subtitle = this.todaysWine.ename;
+      }
+
+      // 국기 아이콘 출력을 위한 sprite position
+      const area = this.$refs.area;
+      const wineArea = this.todaysWine.area.replace(/\s/gi, ''); //db에 저장된 지역에 공백이 들어가있어서 제거
+      switch (wineArea) {
+        case '미국':
+          area.style.backgroundPosition = '-700px -700px';
+          break;
+        case '뉴질랜드':
+          area.style.backgroundPosition = '-452px -452px';
+          break;
+          break;
+        case '칠레':
+          area.style.backgroundPosition = '-948px -80px';
+          break;
+          break;
+        case '프랑스':
+          area.style.backgroundPosition = '-824px -204px';
+          break;
+          break;
+        case '호주':
+          area.style.backgroundPosition = '-328px -80px';
+          break;
+          break;
+        case '슬로베니아':
+          area.style.backgroundPosition = '-576px -576px';
+          break;
+          break;
+        case '남아프리카 공화국':
+          area.style.backgroundPosition = '-700px -576px';
+          break;
+          break;
+        case '스페인':
+          area.style.backgroundPosition = '-824px -576px';
+          break;
+          break;
+        case '아르헨티나':
+          area.style.backgroundPosition = '-80px -80px';
+          break;
+          break;
+        case '포르투갈':
+          area.style.backgroundPosition = '-1196px -452px';
+          break;
+          break;
+        case '그리스':
+          area.style.backgroundPosition = '-1072px -204px';
+          break;
+          break;
+        case '이탈리아':
+          area.style.backgroundPosition = '-576px -328px';
+          break;
+        default:
+          area.style.backgroundPosition = '-947px -700px;';
+          break;
+      }
+
+      // 별점에 따라 별 개수 동적 표시를 위해 width값 계산
+      this.starRate = this.starRate * this.todaysWine.avg;
+
+      interaction.main();
+    });
+    this.actGetTop10().then(() => {});
   },
   mounted() {
     // interaction section 제어
-    interaction.main();
     // breath(this.$refs.titleSub);
+    // scroll.smoothScroll(this.$refs.main);
+  },
+  methods: {
+    ...mapActions('main', ['actGetTodaysWine', 'actGetTop10']),
+    clickedDetialMove() {
+      this.$router.push(`/detail/${this.todaysWine.wineId}`);
+    },
   },
 };
 
@@ -230,14 +288,15 @@ section {
   top: 50%;
   transform: translate(-50%, -50%);
   width: auto;
-  height: 60%;
+  height: 60vh;
   min-height: 550px;
 }
 .stop {
 }
-
+/* *************************************************************************** */
 /* TODO: section 1 영역 */
 /* FIXME:  */
+/* **************************************************************************** */
 #main-section-0 {
   overflow: hidden;
 }
@@ -294,7 +353,7 @@ section {
   background-image: url(../assets/images/sprite_area.png);
   background-repeat: no-repeat;
   background-size: 1360px 864px;
-  background-position: -824px -80px;
+  /* background-position: -576px -328px; */
 }
 .wine-name,
 .wine-name-sub {
@@ -416,16 +475,25 @@ span {
 .star-rate {
   width: 50vw;
   height: 10vw;
-  background-image: url(../assets/images/start.png);
+  background-image: url(../assets/images/star.png);
   background-size: contain;
   background-repeat: repeat-x;
 }
-.scrap-btn {
+.detail-move-btn {
   display: inline-block;
   align-self: flex-end;
-  margin-left: 1rem;
-  margin-bottom: 2rem;
-  transform: scale(1.5);
+  width: 180px;
+  height: 80px;
+  padding-bottom: 4px;
+  color: var(--basic-color-key);
+  font-size: 1.8rem !important;
+  background-color: transparent;
+  border: 4px solid var(--basic-color-key);
+  border-radius: 40px;
+  transition: all 0.5s ease;
+}
+.detail-move-btn:hover {
+  background-color: #e1aa5777;
 }
 .gradient-bg {
   width: 100%;
@@ -440,7 +508,8 @@ span {
 }
 
 /* TODO: swiper */
-/* FIXME:  */
+/* FIXME: 1. 웹 사이즈 크기에 따른 예기치 못한 뷰 형태 수정
+          2. type과 와인 명을 하나의 wrap으로 감싼 뒤 처리하면 될 것 같음.*/
 .topten-title {
   width: 100%;
   position: absolute;
@@ -453,5 +522,53 @@ span {
   top: 20%;
   width: 100%;
   height: 80%;
+}
+.topten-item {
+  width: 380px;
+}
+.swiper-pagination {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  pointer-events: none;
+  background-color: transparent;
+  transform: translateX(-50%);
+}
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: 0;
+}
+.swiper-button-prev {
+  left: 42%;
+}
+.swiper-button-next {
+  right: 42%;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  transform: scale(0.5);
+  margin-top: 30px;
+}
+</style>
+
+<style>
+.swiper-pagination-bullet {
+  border-radius: 1rem;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 10rem;
+  display: inline-block;
+  background-color: #e4c18c;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+.swiper-pagination-bullet-active {
+  background-color: var(--basic-color-key) !important;
+  /* width: 2rem; */
+  opacity: 1;
+}
+.swiper-pagination-bullet {
+  margin: 0 1rem;
 }
 </style>

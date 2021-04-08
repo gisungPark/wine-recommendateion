@@ -1,7 +1,6 @@
 <template>
-  <div class="topten-frame">
-    <!-- <div class="topten-img" :style="{ backgroundImage: `url(${wine.img})` }"></div> -->
-    <div class="topten-img"></div>
+  <div class="topten-frame" @click="clickedItem">
+    <div v-if="wine.wineId != 0" class="topten-img" :style="{ 'background-image': `url(${this.s3url}${wine.wineId}.png)` }"></div>
     <div class="topten-img-fade"></div>
     <p>{{ wine.img }}</p>
     <div class="type">
@@ -13,6 +12,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 export default {
   name: 'Topten',
   props: {
@@ -20,9 +20,10 @@ export default {
       type: Object,
       default: () => {
         return {
-          type: '레드',
+          type: '',
           img: ``,
-          ename: 'Hardys, Nottage Hill Cabernet Shiraz',
+          wineId: '',
+          ename: '',
         };
       },
     },
@@ -49,6 +50,14 @@ export default {
         break;
     }
   },
+  computed: {
+    ...mapState(['s3url']),
+  },
+  methods: {
+    clickedItem() {
+      this.$router.push(`/detail/${this.wine.wineId}`);
+    },
+  },
 };
 </script>
 
@@ -57,23 +66,20 @@ export default {
   position: absolute;
   top: 30%;
   width: 100%;
+  cursor: pointer;
   height: 100%;
+
   transition: top 0.5s, transform 0.5s ease;
 }
 .topten-frame:hover {
   top: 0;
   transform: scale(1.2);
 }
-.topten-frame:hover .type {
-  left: 13%;
-}
-.topten-frame:hover .name {
-  bottom: 40%;
-}
+
 .topten-img {
+  margin-top: 20px;
   width: 110%;
   height: 100%;
-  background-image: url('../../../assets/images/wine.png');
   background-size: contain;
   background-position: center;
   filter: drop-shadow(15px 15px 30px rgb(0, 0, 0));
@@ -86,6 +92,7 @@ export default {
   background-size: contain;
   background-position: center;
   /* background: transparent; */
+  z-index: 0;
   background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 1) 75%, rgba(0, 0, 0, 1) 100%);
   opacity: 1;
   transition: opacity 0.5s ease;
@@ -95,13 +102,19 @@ export default {
 }
 
 .type {
-  position: absolute;
-  bottom: 70%;
-  left: 0;
+  position: relative;
+  top: -50vh;
+  left: -130px;
+  display: flex;
+  flex-direction: row;
   z-index: -1;
   transform: rotate(270deg);
-  display: flex;
-  transition: left 0.5s ease;
+  justify-content: flex-end;
+  transition: all 0.5s ease;
+  pointer-events: none;
+}
+.topten-frame:hover .type {
+  left: -70px;
 }
 .indicator {
   width: 2rem;
@@ -110,20 +123,26 @@ export default {
 }
 .type span {
   color: white;
+  white-space: nowrap;
   font-size: 2rem;
   margin-top: 0.3rem;
   margin-left: 1rem;
 }
 .name {
   position: absolute;
-  bottom: 70%;
-  left: -5%;
-  width: 70vh;
+  top: 350px;
+  right: -430px;
+  white-space: nowrap;
   text-align: end;
+  width: 1000px;
   z-index: 1;
   font-size: 2rem;
-  color: var(--basic-color-fill);
   transform: rotate(270deg);
-  transition: bottom 0.5s ease;
+  color: var(--basic-color-fill);
+  transition: all 0.5s ease;
+  pointer-events: none;
+}
+.topten-frame:hover .name {
+  top: calc(380px + 30%);
 }
 </style>

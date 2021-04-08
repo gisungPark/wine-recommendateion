@@ -8,6 +8,9 @@ export const main = () => {
 
   let endScrollHeight = 0; // section-2 애니메이션 종료 후 자연스럽게 스크롤을 따라 올라가도록 계산하기 위한 기본 값
 
+  let imgStopPoint = 0; // img가 absolute로 변경되는 시점
+  let img = document.querySelector('#main-wine-img');
+
   //section interaction과 관련된 변수들
   const sceneInfo = [
     {
@@ -82,9 +85,9 @@ export const main = () => {
         wineRate: document.querySelector('#main-section-2 .star-rate'),
       },
       values: {
-        wineImg_left_in: [50, 30, { start: 0.02, end: 0.2 }],
-        wineImg_height_in: [60, 80, { start: 0.05, end: 0.25 }],
-        wineReview_opacity_in: [0, 1, { start: 0.15, end: 0.3 }],
+        wineImg_left_in: [50, 30, { start: 0.02, end: 0.25 }],
+        wineImg_height_in: [60, 80, { start: 0.05, end: 0.3 }],
+        wineReview_opacity_in: [0, 1, { start: 0.15, end: 0.42 }],
         wineAvg_text_in: [0, document.querySelector('#main-section-2 .wine-review> .frame> p').innerText, { start: 0.15, end: 0.4 }],
         wineRate_width_in: [0, document.querySelector('#main-section-2 .wine-review> .frame> p').innerText * 10, { start: 0.15, end: 0.4 }],
       },
@@ -172,10 +175,10 @@ export const main = () => {
         } else if (scrollRatio > 0.5 && scrollRatio <= 0.7) {
           objs.wineAvg.innerText = objs.wineAvgValue;
           objs.wineRate.style.width = objs.wineAvgValue * 10;
-          objs.wineImg.style.marginTop = `0px`;
+          // objs.wineImg.style.marginTop = `0px`;
           objs.wineReview.style.marginTop = `0px`;
         } else {
-          objs.wineImg.style.marginTop = `${endScrollHeight - currentYOffset}px`;
+          // objs.wineImg.style.marginTop = `${endScrollHeight - currentYOffset}px`;
           objs.wineReview.style.marginTop = `${endScrollHeight - currentYOffset}px`;
         }
         break;
@@ -242,9 +245,32 @@ export const main = () => {
       stickys[index].style.opacity = 0;
     }
     endScrollHeight = sceneInfo[2].scrollHeight * 0.7;
+
+    // 이미지 position 전환
+    let documentHeight = document.body.offsetHeight;
+    let vheight = window.innerHeight;
+    imgStopPoint = documentHeight - vheight * 2 - vheight / 4;
+    imgPotisionChanger();
+  }
+
+  function imgPotisionChanger() {
+    if (yOffset <= imgStopPoint) {
+      img.style.position = 'fixed';
+      img.style.top = '50%';
+      img.style.transform = 'translate(-50%, -50%)';
+    } else {
+      img.style.position = 'absolute';
+      img.style.transform = 'translate(-50%, 13%)';
+      img.style.top = `${imgStopPoint}px`;
+    }
   }
 
   function scrollLoop() {
+    let documentHeight = document.body.offsetHeight;
+    let vheight = document.documentElement.clientHeight;
+    imgStopPoint = documentHeight - vheight * 2 - vheight / 4;
+    imgPotisionChanger();
+
     enterNewScene = false;
 
     prevScrollHeight = 0;

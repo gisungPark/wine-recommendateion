@@ -1,5 +1,11 @@
 <template>
   <div class="preference-fram">
+    <div id="stage-line">
+      <div
+        id="preference-stages-line1"
+        :class="{ 'active-stage': isCurStage(2) }"
+      ></div>
+    </div>
     <div class="preference-stages">
       <div class="preference-stages-wrap">
         <div
@@ -29,88 +35,74 @@
           >싫어하는 향</a
         >
       </div>
-      <div class="preference-stages-wrap">
-        <div
-          class="stage"
-          :class="{ 'active-stage': isCurStage(3) }"
-          @click="onClickStage(3)"
-        ></div>
-        <a
-          class="stage-name"
-          :class="{ 'active-stage-name': isCurStage(3) }"
-          @click="onClickStage(3)"
-          href="#"
-          >와인 취향</a
-        >
-      </div>
     </div>
     <div class="preference-fillter">
       <div v-show="curStage != 3" class="preference-item1">
         <!-- ######################### CARD LIST ################################## -->
         <div class="lists list-1">
-          <div
+          <Card
             class="list-item-cards"
             :class="{
               'list-item-cards-active': currentCardState(item),
               'list-item-cards-inactive': isInactive(item),
             }"
-            v-for="(item, idx) in list1"
-            :key="item + idx"
-            @click="onCardActive(item)"
-            :style="{ backgroundImage: `url(${item.img})` }"
-          ></div>
+            v-for="(item, index) in this.list1"
+            :key="item.name + index"
+            @onClickCart="onCardActive(item)"
+            :item="item"
+          />
         </div>
         <div class="lists list-2">
-          <div
+          <Card
             class="list-item-cards"
             :class="{
               'list-item-cards-active': currentCardState(item),
               'list-item-cards-inactive': isInactive(item),
             }"
-            v-for="(item, idx) in list2"
+            v-for="(item, idx) in this.list2"
             :key="item + idx"
-            @click="onCardActive(item)"
-            :style="{ backgroundImage: `url(${item.img})` }"
-          ></div>
+            @onClickCart="onCardActive(item)"
+            :item="item"
+          />
         </div>
         <div class="lists list-3">
-          <div
+          <Card
             class="list-item-cards"
             :class="{
               'list-item-cards-active': currentCardState(item),
               'list-item-cards-inactive': isInactive(item),
             }"
-            v-for="(item, idx) in list3"
+            v-for="(item, idx) in this.list3"
             :key="item + idx"
-            @click="onCardActive(item)"
-            :style="{ backgroundImage: `url(${item.img})` }"
-          ></div>
+            @onClickCart="onCardActive(item)"
+            :item="item"
+          />
         </div>
         <div class="lists list-4">
-          <div
+          <Card
             class="list-item-cards"
             :class="{
               'list-item-cards-active': currentCardState(item),
               'list-item-cards-inactive': isInactive(item),
             }"
-            v-for="(item, idx) in list4"
+            v-for="(item, idx) in this.list4"
             :key="item + idx"
-            @click="onCardActive(item)"
-            :style="{ backgroundImage: `url(${item.img})` }"
-          ></div>
+            @onClickCart="onCardActive(item)"
+            :item="item"
+          />
         </div>
         <div class="lists list-5">
-          <div
+          <Card
             class="list-item-cards"
             :class="{
               'list-item-cards-active': currentCardState(item),
               'list-item-cards-inactive': isInactive(item),
             }"
-            v-for="(item, idx) in list5"
+            v-for="(item, idx) in this.list5"
             :key="item + idx"
-            @click="onCardActive(item)"
-            :style="{ backgroundImage: `url(${item.img})` }"
-          ></div>
+            @onClickCart="onCardActive(item)"
+            :item="item"
+          />
         </div>
 
         <!-- ############################################ -->
@@ -128,8 +120,12 @@
               :key="item + idx"
             >
               <h1>{{ item.name }}</h1>
+              <div id="cancleBtn" @click="removeItemFromList(1, item)"></div>
             </div>
           </div>
+          <span v-show="curStage == 1" class="count-display"
+            >{{ this.lickCnt }} / 3</span
+          >
           <div v-show="curStage == 2" class="selected-list-hate">
             <div
               class="selected-list-item"
@@ -137,139 +133,45 @@
               :key="item + idx"
             >
               <h1>{{ item.name }}</h1>
+              <div id="cancleBtn" @click="removeItemFromList(2, item)"></div>
             </div>
           </div>
+          <span v-show="curStage == 2" class="count-display"
+            >{{ this.hateCnt }} / 3</span
+          >
         </div>
 
         <!-- ############################################ -->
         <!-- ########## end 우측 선택된 아이템 목록  ########### -->
+
+        <!-- ############################################ -->
+        <!-- ########## start 와인 취향 ########### -->
+        <button id="okBtn" @click="submit()">선택완료</button>
       </div>
       <!-- <div v-show="curStage == 2" class="preference-item2"></div> -->
-      <div v-show="curStage == 3" class="preference-item3">
-        <div class="preference-item3-item">
-          <span>낮다</span>
-          <div id="slider-space">
-            <v-slider
-              v-model="slider1"
-              :max="4"
-              step="1"
-              :thumb-size="24"
-              ticks="always"
-              tick-size="5"
-              color="#e1a957"
-              track-color="#821a33"
-              track-fill-color="#821a33"
-            ></v-slider>
-          </div>
-          <span>높다</span>
-        </div>
-        <div class="preference-item3-item">
-          <span>낮다</span>
-          <div id="slider-space">
-            <v-slider
-              v-model="slider2"
-              :max="4"
-              step="1"
-              :thumb-size="24"
-              ticks="always"
-              tick-size="5"
-              color="#e1a957"
-              track-color="#821a33"
-              track-fill-color="#821a33"
-            ></v-slider>
-          </div>
-          <span>높다</span>
-        </div>
-        <div class="preference-item3-item">
-          <span>낮다</span>
-          <div id="slider-space">
-            <v-slider
-              v-model="slider3"
-              :max="4"
-              step="1"
-              :thumb-size="24"
-              ticks="always"
-              tick-size="5"
-              color="#e1a957"
-              track-color="#821a33"
-              track-fill-color="#821a33"
-            ></v-slider>
-          </div>
-          <span>높다</span>
-        </div>
-        <div class="preference-item3-item">
-          <span>가볍다</span>
-          <div id="slider-space">
-            <v-slider
-              v-model="slider4"
-              :max="4"
-              step="1"
-              :thumb-size="24"
-              ticks="always"
-              tick-size="5"
-              color="#e1a957"
-              track-color="#821a33"
-              track-fill-color="#821a33"
-            ></v-slider>
-          </div>
-          <span>무겁다</span>
-        </div>
-        <div class="preference-item3-item">
-          <span>적다</span>
-          <!-- <div id="slider-space">
-            <input
-              type="range"
-              min="1"
-              max="100"
-              value="50"
-              class="slider"
-              id="myRange"
-            /> -->
-          <div id="slider-space">
-            <v-slider
-              v-model="slider5"
-              :max="4"
-              step="1"
-              :thumb-size="24"
-              ticks="always"
-              tick-size="5"
-              color="#e1a957"
-              track-color="#821a33"
-              track-fill-color="#821a33"
-            ></v-slider>
-          </div>
-          <span>많다</span>
-        </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
+import Card from "@/components/item/Card.vue";
+import * as mypageApi from "@/api/mypageApi";
+
 const FIRST_STAGE = 1,
   SECOND_STAGE = 2,
   THIRD_STAGE = 3;
 
 export default {
-  props: ["preferenceList"],
-  created() {
-    for (var i = 0; i < this.preferenceList.length; i++) {
-      const item = {
-        flavor_id: this.preferenceList[i].flavor_id,
-        name: this.preferenceList[i].name,
-        img: this.preferenceList[i].img,
-        isLike: false,
-        isHate: false,
-      };
-
-      if (i % 5 == 0) this.list1.push(item);
-      else if (i % 5 == 1) this.list2.push(item);
-      else if (i % 5 == 2) this.list3.push(item);
-      else if (i % 5 == 3) this.list4.push(item);
-      else this.list5.push(item);
-    }
+  props: ["preferenceList", "isUpdate"],
+  components: {
+    Card,
   },
-  mounted() {},
+  watch: {
+    isUpdate: function () {
+      this.onInit();
+    },
+  },
   data: () => ({
     curStage: 1,
     lickCnt: 0,
@@ -281,19 +183,41 @@ export default {
     list5: [],
     likeList: [],
     hateList: [],
-    slider1: 1,
-    slider2: 2,
-    slider3: 2,
-    slider4: 2,
-    slider5: 2,
   }),
+  created() {
+    this.onInit();
+  },
+  watch: {
+    preferenceList: function () {
+      this.onInit();
+    },
+  },
+  mounted() {},
+  computed: {},
   methods: {
+    onInit() {
+      for (var i = 0; i < this.preferenceList.length; i++) {
+        if (this.preferenceList[i].isLike) {
+          this.lickCnt++;
+          this.likeList.push(this.preferenceList[i]);
+        } else if (this.preferenceList[i].isHate) {
+          this.hateCnt++;
+          this.hateList.push(this.preferenceList[i]);
+        }
+
+        if (i % 5 == 0) this.list1.push(this.preferenceList[i]);
+        else if (i % 5 == 1) this.list2.push(this.preferenceList[i]);
+        else if (i % 5 == 2) this.list3.push(this.preferenceList[i]);
+        else if (i % 5 == 3) this.list4.push(this.preferenceList[i]);
+        else this.list5.push(this.preferenceList[i]);
+      }
+    },
     onClickStage(stage) {
       this.curStage = stage;
     },
     // 상단 stage 클릭시 stage 변경 함수
     isCurStage(stage) {
-      if (this.curStage == stage) return true;
+      if (this.curStage >= stage) return true;
       else return false;
     },
     /*
@@ -334,20 +258,22 @@ export default {
       let removeIdx = -1;
       if (stage == FIRST_STAGE) {
         itemToFine = this.likeList.find(function (item) {
-          return item.flavor_id === targe.flavor_id;
+          return item.flavorId === targe.flavorId;
         });
         removeIdx = this.likeList.indexOf(itemToFine);
         if (removeIdx > -1) {
           this.likeList.splice(removeIdx, 1);
+          targe.isLike = false;
           this.lickCnt--;
         }
       } else if (stage == SECOND_STAGE) {
         itemToFine = this.hateList.find(function (item) {
-          return item.flavor_id === targe.flavor_id;
+          return item.flavorId === targe.flavorId;
         });
         removeIdx = this.hateList.indexOf(itemToFine);
         if (removeIdx > -1) {
           this.hateCnt--;
+          targe.isHate = false;
           this.hateList.splice(removeIdx, 1);
         }
       }
@@ -370,7 +296,7 @@ export default {
           }
         } else {
           // 3. 좋아한다고 했다가 취소하는 경우
-          item.isLike = false;
+
           this.removeItemFromList(FIRST_STAGE, item);
         }
       }
@@ -389,14 +315,26 @@ export default {
           }
         } else {
           // 3. 좋아한다고 했다가 취소하는 경우
-          item.isHate = false;
           this.removeItemFromList(SECOND_STAGE, item);
         }
-        console.log("싫어하는 리스트!!!   " + this.hateCnt);
-        for (var i = 0; i < this.hateList.length; i++) {
-          console.log(this.hateList[i]);
+      }
+    },
+    async submit() {
+      if (this.lickCnt < 1) {
+        alert("좋아하는 향을 한가지 이상 선택해주세요!");
+        return;
+      }
+      const preferenceDTO = {
+        dislikeList: this.hateList,
+        likeList: this.likeList,
+      };
+      try {
+        const response = await mypageApi.updatePreference(preferenceDTO);
+        if (response.status === 200) {
+          alert("취향 설정을 완료했습니다.");
         }
-        console.log();
+      } catch (error) {
+        alert("취향 설정에 실패했습니다.");
       }
     },
   },
@@ -409,23 +347,44 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
-.preference-stages {
-  width: 80%;
+
+#stage-line {
+  width: 100%;
   position: fixed;
-  top: 100px;
-  left: 230px;
+  top: 133px;
+  left: calc(50% + 86px);
+  transform: translateX(-50%);
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+#preference-stages-line1 {
+  width: 32%;
+  height: 1px;
+  background-color: #4e4c4c;
+}
+/* #preference-stages-line2 {
+  width: 18%;
+  height: 1px;
+  background-color: #4e4c4c;
+} */
+.preference-stages {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  position: fixed;
+  top: 100px;
+  left: calc(50% + 86px);
+  transform: translateX(-50%);
   z-index: 10;
   pointer-events: none;
 }
 .preference-stages-wrap {
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  flex: 1 1 0;
+  align-items: center;
   /* 상단 스테이지값 고정시 삭제 요망!!! */
   /* position: relative;
   z-index: 10 !important; */
@@ -435,19 +394,20 @@ export default {
   width: 65px;
   height: 65px;
   border-radius: 70%;
-  background-color: white;
+  background-color: #4e4c4c;
+  z-index: 3;
   pointer-events: all;
 }
 
 .active-stage {
-  background-color: var(--basic-color-key);
+  background-color: white !important;
 }
 .active-stage-name {
-  color: var(--basic-color-key) !important;
+  color: white !important;
 }
 
 .stage-name {
-  color: white;
+  color: #4e4c4c;
   border: none;
   padding: 15px 0;
   text-align: center;
@@ -463,84 +423,85 @@ export default {
 .preference-fillter {
   height: 100%;
   width: 100%;
-}
-.preference-item1 {
-  position: relative;
-  left: -60px;
-  margin-top: 160px;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
+}
+.preference-item1 {
+  margin-top: 130px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: relative;
 }
 
 .preference-item3 {
-  position: relative;
-  left: -15px;
+  width: 100%;
+  height: 100%;
   margin-top: 130px;
-  height: 90%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 .preference-item3-item {
   width: 100%;
   height: 80px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 50px;
 }
 .preference-item3-item > span {
-  color: white;
+  position: relative;
+  top: -10px;
+  margin-bottom: 2px;
+  color: var(--basic-color-fill);
   font-size: 32px;
   font-weight: bold;
 }
-#slider-space {
-  width: 500px;
-  margin-left: 45px;
-  margin-right: 40px;
+#item3-item-slider {
+  width: 900px;
+  display: flex;
+  flex-direction: column;
+}
+#item3-item-slider > div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  color: white;
 }
 
-.slidecontainer {
-  width: 100%;
+#slider-left {
+  font-size: 20px;
+  position: absolute;
+  right: 905px;
+  top: 5px;
 }
 
-.slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 25px;
-  background: #d3d3d3;
-  outline: none;
-  opacity: 0.7;
-  -webkit-transition: 0.2s;
-  transition: opacity 0.2s;
+#slider-right {
+  font-size: 20px;
+  position: absolute;
+  left: 905px;
+  top: 5px;
 }
-
-.slider:hover {
-  opacity: 1;
+.slider-value {
+  position: absolute;
+  top: -20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
-
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 25px;
-  height: 25px;
-  background: #4caf50;
-  cursor: pointer;
+.slider-value > span {
+  color: white;
+  font-size: 18px;
 }
-
-.slider::-moz-range-thumb {
-  width: 25px;
-  height: 25px;
-  background: #4caf50;
-  cursor: pointer;
-}
-
 .lists {
   height: auto;
-  width: 200px;
-  margin: 4px;
+  width: 240px;
   display: flex;
   flex-direction: column;
   transform: scale(1.1);
@@ -553,8 +514,8 @@ export default {
 
 .list-item-cards {
   width: 100%;
-  height: 300px;
-  margin-top: 10px;
+  height: 280px;
+  margin-top: 20px;
   background-size: contain;
   background-position: center;
   opacity: 0.7;
@@ -571,7 +532,7 @@ export default {
 
 .selected-list {
   position: fixed;
-  right: 38px;
+  right: 48px;
   top: 250px;
   display: flex;
   flex-direction: column;
@@ -579,22 +540,75 @@ export default {
   text-align: center;
 }
 .selected-list-title {
-  width: 100%;
+  width: 160px;
   display: flex;
   justify-content: center;
 }
+
 .selected-list-title > span {
   color: white;
   font-size: 28px;
   font-weight: bold;
-  margin-bottom: 2px;
+  margin-bottom: 10px;
   text-align: center;
 }
+.selected-list-like,
+.selected-list-hate {
+  width: 100%;
+  min-height: 130px;
+  border: 2px solid var(--basic-color-key);
+  border-top: 0px;
+  border-radius: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .selected-list-item {
-  background-color: white;
-  width: 150px;
+  width: 140px;
   height: 30px;
   margin: 3px;
+  background-color: var(--basic-color-key);
   text-align: center;
+  border-radius: 1em;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.selected-list-item > h1 {
+  margin-left: 12px;
+  color: #e4e4e4;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.count-display {
+  position: relative;
+  left: 45px;
+  font-size: 22px;
+  font-weight: 900;
+  color: white;
+}
+
+#cancleBtn {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+  background-image: url(../../../assets/images/cross-icon.png);
+}
+
+#okBtn {
+  width: 150px;
+  height: 45px;
+  border-radius: 1em;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  background-color: var(--basic-color-bg2);
+  position: fixed;
+  right: 48px;
+  top: 450px;
 }
 </style>

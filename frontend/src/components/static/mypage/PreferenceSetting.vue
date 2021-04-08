@@ -146,7 +146,12 @@
 
         <!-- ############################################ -->
         <!-- ########## start 와인 취향 ########### -->
-        <button id="okBtn" @click="submit()">선택완료</button>
+        <button v-show="this.curStage == 1" class="button" @click="next()">
+          다음
+        </button>
+        <button v-show="this.curStage == 2" class="button" @click="submit()">
+          선택완료
+        </button>
       </div>
       <!-- <div v-show="curStage == 2" class="preference-item2"></div> -->
     </div>
@@ -163,12 +168,19 @@ const FIRST_STAGE = 1,
   THIRD_STAGE = 3;
 
 export default {
-  props: ["preferenceList", "isUpdate"],
+  props: [],
   components: {
     Card,
   },
+  created() {
+    this.getFlavor();
+    this.onInit();
+  },
   watch: {
-    isUpdate: function () {
+    screenState: function () {
+      if (this.screenState == 4) {
+        this.getFlavor();
+      }
       this.onInit();
     },
   },
@@ -183,19 +195,30 @@ export default {
     list5: [],
     likeList: [],
     hateList: [],
+    preferenceList: [],
   }),
   created() {
     this.onInit();
   },
-  watch: {
-    preferenceList: function () {
-      this.onInit();
-    },
+
+  mounted() {
+    this.getFlavor();
+    this.onInit();
   },
-  mounted() {},
-  computed: {},
+  computed: {
+    ...mapState("mypage", ["screenState"]),
+  },
   methods: {
     onInit() {
+      this.likeList = [];
+      this.hateList = [];
+      this.list1 = [];
+      this.list2 = [];
+      this.list3 = [];
+      this.list4 = [];
+      this.list5 = [];
+      this.lickCnt = 0;
+      this.hateCnt = 0;
       for (var i = 0; i < this.preferenceList.length; i++) {
         if (this.preferenceList[i].isLike) {
           this.lickCnt++;
@@ -212,8 +235,15 @@ export default {
         else this.list5.push(this.preferenceList[i]);
       }
     },
+    async getFlavor() {
+      const response = await mypageApi.mypageFlavor();
+      this.preferenceList = response.data;
+    },
     onClickStage(stage) {
       this.curStage = stage;
+    },
+    next() {
+      this.curStage = 2;
     },
     // 상단 stage 클릭시 stage 변경 함수
     isCurStage(stage) {
@@ -322,6 +352,7 @@ export default {
     async submit() {
       if (this.lickCnt < 1) {
         alert("좋아하는 향을 한가지 이상 선택해주세요!");
+        this.curStage = 1;
         return;
       }
       const preferenceDTO = {
@@ -347,7 +378,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .preference-fram {
   width: 100%;
   flex-direction: column;
@@ -605,7 +636,7 @@ export default {
   background-image: url(../../../assets/images/cross-icon.png);
 }
 
-#okBtn {
+.button {
   width: 150px;
   height: 45px;
   border-radius: 1em;

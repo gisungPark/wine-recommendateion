@@ -30,3 +30,9 @@ export function mypageScrap(){
  export function deleteScrap(windId){
     return http.delete(`/wine/scrap/${windId}`);
 }
+/**
+ * 프로필 이미지 변경
+ */
+ export function updateProfile(index){
+    return http.put(`/user/updateProfile?number=${index}`);
+}

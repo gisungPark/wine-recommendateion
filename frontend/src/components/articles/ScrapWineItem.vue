@@ -12,11 +12,7 @@
       <div class="review-icon-1" @click="onDelete(wine.wineId)"></div>
     </div>
     <div @click="clickedWine(wine.wineId)">
-      <img
-        class="wineitem-img"
-        :src="`${this.s3url}${wine.wineId}.png`"
-        alt="와인 이미지"
-      />
+      <img class="wineitem-img" :src="`${this.s3url}${wine.wineId}.png`" alt="와인 이미지" />
       <div class="wineitem-info">
         <div class="info-title">
           <p>{{ wine.kname }}</p>
@@ -46,16 +42,8 @@
         </div>
         <div class="info-thumb-part2">
           <div class="info-thumb-ave">
-            <svg
-              class="star"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
-              <path
-                d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
-              />
+            <svg class="star" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
             </svg>
             <span>{{ wine.avg }}</span>
           </div>
@@ -66,20 +54,20 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import common from "@/assets/js/common.js";
-import * as mypageApi from "@/api/mypageApi";
+import { mapState } from 'vuex';
+import common from '@/assets/js/common.js';
+import * as mypageApi from '@/api/mypageApi';
 export default {
-  name: "WineItem",
+  name: 'WineItem',
   filters: {
     currency(val) {
-      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     },
   },
   props: {
     wine: {
       type: Object,
-      default: function () {
+      default: function() {
         return;
       },
     },
@@ -87,19 +75,19 @@ export default {
   data() {
     return {
       wineListType: true,
-      wineSubtitle: "",
-      wineType: "",
+      wineSubtitle: '',
+      wineType: '',
       itemCountInLine: 0,
     };
   },
   computed: {
-    ...mapState(["s3url"]),
+    ...mapState(['s3url']),
   },
   watch: {},
   created() {
     // subtitle 생성, enmae에서 쉼표까지 텍스트 자르기
     let index = -1;
-    index = this.wine.ename.indexOf(",");
+    index = this.wine.ename.indexOf(',');
     if (index !== -1) {
       this.wineSubtitle = this.wine.ename.substring(0, index);
     } else {
@@ -118,11 +106,11 @@ export default {
       this.$router.push(`/detail/${wineId}`);
     },
     async onDelete(windId) {
-      if (window.confirm("와인을 삭제 하시겠습니까?")) {
+      if (window.confirm('와인을 삭제 하시겠습니까?')) {
         const response = await mypageApi.deleteScrap(windId);
         if (response.status == 200) {
-          this.$emit("deleteScrap");
-          console.log("성공적으로 스크랩을 삭제했습니다.");
+          this.$emit('deleteScrap');
+          console.log('성공적으로 스크랩을 삭제했습니다.');
         }
       }
     },
@@ -177,8 +165,8 @@ export default {
   top: 0px;
   left: 0px;
   width: 300px;
-  margin-top: -2px;
-  height: 497px;
+  margin-top: 0;
+  height: 500px;
   border-radius: 150px;
   background-color: rgba(0, 0, 0, 0.3);
   opacity: 0;
@@ -192,7 +180,7 @@ export default {
 .info-sub {
   width: 90%;
   margin: 0.5rem;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   font-weight: 400;
   color: #fff;
 }
@@ -306,9 +294,11 @@ export default {
   z-index: 10;
 }
 .review-icon-1 {
+  position: absolute;
+  cursor: pointer;
   width: 100%;
   height: 100%;
-  background-image: url("../../assets/images/close_black.png");
+  background-image: url('../../assets/images/close_black.png');
   background-size: contain;
 }
 </style>

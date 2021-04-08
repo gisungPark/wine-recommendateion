@@ -1,3 +1,5 @@
+import store from '../store';
+
 export default [
   {
     path: '',
@@ -8,6 +10,12 @@ export default [
     path: '/mypage',
     view: 'Mypage',
     name: 'Mypage',
+    beforeEnter: (to, from, next) => {
+      if (store.userInfo.userInfo.token != null) {
+        return next();
+      }
+      next('/login');
+    },
   },
   {
     path: '/recommendation',

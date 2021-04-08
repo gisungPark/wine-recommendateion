@@ -2,10 +2,19 @@
   <div
     class="wineitem fadeup"
     :style="{ marginTop: wine.marginTop }"
-    :class="{ red: wine.type === '레드', white: wine.type === '화이트', rose: wine.type === '스파클링' }"
-    @click="clickedWine"
+    :class="{
+      red: wine.type === '레드',
+      white: wine.type === '화이트',
+      rose: wine.type === '스파클링',
+    }"
+    @click="clickedWine(wine.wineId)"
   >
-    <img v-if="wine.wineId != 0" class="wineitem-img" :src="`${this.s3url}${wine.wineId}.png`" alt="와인 이미지" />
+    <img
+      v-if="wine.wineId != 0"
+      class="wineitem-img"
+      :src="`${this.s3url}${wine.wineId}.png`"
+      alt="와인 이미지"
+    />
     <div class="wineitem-info">
       <div class="info-title">
         <p>{{ wine.kname }}</p>
@@ -36,8 +45,16 @@
       <div class="info-thumb-part">
         <p class="info-thumb-price">{{ wine.price | currency }} 원</p>
         <div class="info-thumb-ave">
-          <svg class="star" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
+          <svg
+            class="star"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
+            />
           </svg>
           <span>{{ wine.avg }}</span>
         </div>
@@ -47,19 +64,19 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import common from '@/assets/js/common.js';
+import { mapState } from "vuex";
+import common from "@/assets/js/common.js";
 export default {
-  name: 'WineItem',
+  name: "WineItem",
   filters: {
     currency(val) {
-      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     },
   },
   props: {
     wine: {
       type: Object,
-      default: function() {
+      default: function () {
         return;
       },
     },
@@ -67,19 +84,19 @@ export default {
   data() {
     return {
       wineListType: true,
-      wineSubtitle: '',
-      wineType: '',
+      wineSubtitle: "",
+      wineType: "",
       itemCountInLine: 0,
     };
   },
   computed: {
-    ...mapState(['s3url']),
+    ...mapState(["s3url"]),
   },
   watch: {},
   created() {
     // subtitle 생성, enmae에서 쉼표까지 텍스트 자르기
     let index = -1;
-    index = this.wine.ename.indexOf(',');
+    index = this.wine.ename.indexOf(",");
     if (index !== -1) {
       this.wineSubtitle = this.wine.ename.substring(0, index);
     } else {
@@ -91,9 +108,8 @@ export default {
   mounted() {},
   destroyed() {},
   methods: {
-    clickedWine() {
-      console.log(this.wine);
-      this.$router.push(`/detail/${this.wine.wineId}`);
+    clickedWine(index) {
+      this.$router.push(`/detail/${index}`);
     },
   },
 };
@@ -158,7 +174,7 @@ export default {
 .info-sub {
   width: 90%;
   margin: 0.5rem;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   font-weight: 400;
   color: #fff;
 }

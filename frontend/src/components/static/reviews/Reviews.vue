@@ -4,12 +4,7 @@
       <v-dialog v-model="reviewDialog" persistent max-width="1000px">
         <v-card>
           <div id="closeBtn" @click="close">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
               <path
                 class="blue"
                 d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212
@@ -37,26 +32,15 @@
                       </span>
                     </div>
                     <div class="review-icon">
-                      <div
-                        v-show="userInfo.nickname == review.nickname"
-                        class="review-icon-1"
-                        @click="onModify(review)"
-                      ></div>
-                      <div
-                        v-show="userInfo.nickname == review.nickname"
-                        class="review-icon-2"
-                        @click="onDelete(review)"
-                      ></div>
+                      <div v-show="userInfo.nickname == review.nickname" class="review-icon-1" @click="onModify(review)"></div>
+                      <div v-show="userInfo.nickname == review.nickname" class="review-icon-2" @click="onDelete(review)"></div>
                     </div>
                   </div>
                   <div style="height: 30px"></div>
                   <div class="review-writer">
                     <div class="writer-info">
                       <div class="writer-img">
-                        <img
-                          class="profile"
-                          :src="`${s3url_profile}${review.userImg}.svg`"
-                        />
+                        <img class="profile" :src="`${s3url_profile}${review.userImg}.svg`" />
                       </div>
                       <span class="writer-nickname">
                         {{ review.nickname }}
@@ -67,16 +51,8 @@
                     <!-- 가성비 아이콘, 별점 아이콘  -->
                     <div class="review-rating-wrap">
                       <div class="star-rating">
-                        <svg
-                          class="star"
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"
-                          />
+                        <svg class="star" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                          <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
                         </svg>
                         <span style="font-weight: 600">{{ review.point }}</span>
                       </div>
@@ -104,13 +80,7 @@
               </v-col>
             </v-row>
             <!-- 무한스크롤 ##################################################### -->
-            <infinite-loading
-              @infinite="infiniteHandler"
-              force-use-infinite-wrapper="true"
-              spinner="waveDots"
-              ref="infiniteLoading"
-              class="infinite"
-            >
+            <infinite-loading @infinite="infiniteHandler" force-use-infinite-wrapper="true" spinner="waveDots" ref="infiniteLoading" class="infinite">
               <div slot="no-more">목록의 끝입니다.</div>
               <div slot="no-results">요청 결과가 없습니다.</div>
               <div slot="error" slot-scope="{ trigger }">
@@ -124,12 +94,7 @@
 
           <div class="writeBtn-wrap"></div>
           <v-card-actions>
-            <v-btn
-              text
-              id="writeBtn"
-              class="writePop"
-              @click="clickWriteBtn"
-            ></v-btn>
+            <v-btn text id="writeBtn" class="writePop" @click="clickWriteBtn"></v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -139,13 +104,13 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
-import * as reviewApi from "@/api/review";
-import InfiniteLoading from "vue-infinite-loading";
-import ReviewWrite from "@/components/static/reviews/ReviewWrite.vue";
+import { mapState, mapMutations } from 'vuex';
+import * as reviewApi from '@/api/review';
+import InfiniteLoading from 'vue-infinite-loading';
+import ReviewWrite from '@/components/static/reviews/ReviewWrite.vue';
 
 export default {
-  name: "Reviews",
+  name: 'Reviews',
   components: {
     ReviewWrite,
     InfiniteLoading,
@@ -155,12 +120,12 @@ export default {
     this.readWineReviews(this.$refs.infiniteLoading.stateChanger);
   },
   watch: {
-    reviewDialog: function () {
+    reviewDialog: function() {
       this.page = 1;
       this.review = [];
       this.readWineReviews(this.$refs.infiniteLoading.stateChanger);
     },
-    reviewWriteDialog: function () {
+    reviewWriteDialog: function() {
       this.page = 1;
       this.review = [];
       this.readWineReviews(this.$refs.infiniteLoading.stateChanger);
@@ -168,19 +133,15 @@ export default {
         this.propsReview = {
           rating: 5,
           costRating: -1,
-          reviewContent: "",
+          reviewContent: '',
         };
       }
     },
   },
   computed: {
-    ...mapState(["s3url_profile"]),
-    ...mapState("userInfo", ["userInfo"]),
-    ...mapState("reviewDialog", [
-      "reviewDialog",
-      "reviewWriteDialog",
-      "reviewByWineId",
-    ]),
+    ...mapState(['s3url_profile']),
+    ...mapState('userInfo', ['userInfo']),
+    ...mapState('reviewDialog', ['reviewDialog', 'reviewWriteDialog', 'reviewByWineId']),
   },
   data: () => ({
     page: 1,
@@ -188,10 +149,7 @@ export default {
     propsReview: {},
   }),
   methods: {
-    ...mapMutations("reviewDialog", [
-      "SET_REVIEW_TOGGLE",
-      "SET_REVIEW_WRITE_TOGGLE",
-    ]),
+    ...mapMutations('reviewDialog', ['SET_REVIEW_TOGGLE', 'SET_REVIEW_WRITE_TOGGLE']),
     // infiniteHandler, props 전달
     infiniteHandler($state) {
       this.readWineReviews($state);
@@ -199,18 +157,15 @@ export default {
 
     async readWineReviews($state) {
       try {
-        const response = await reviewApi.getWineReviewById(
-          this.page,
-          this.reviewByWineId
-        );
+        const response = await reviewApi.getWineReviewById(this.page, this.reviewByWineId);
         if (response) {
           console.log(response);
           if (response.data.length === 0) {
             // 더 이상 불러올 목록이 없는 경우
-            console.log("리뷰 끝났다.");
+            console.log('리뷰 끝났다.');
             $state.complete();
           } else {
-            console.log("리뷰 읽어왔다. ");
+            console.log('리뷰 읽어왔다. ');
             this.review.push(...response.data);
             this.page += 1;
             setTimeout(() => {
@@ -227,7 +182,7 @@ export default {
     },
 
     onModify(item) {
-      if (window.confirm("리뷰룰 수정 하시겠습니까?")) {
+      if (window.confirm('리뷰룰 수정 하시겠습니까?')) {
         this.propsReview = {
           rating: item.point,
           costRating: item.cost,
@@ -237,7 +192,7 @@ export default {
       }
     },
     async onDelete() {
-      if (window.confirm("리뷰를 삭제 하시겠습니까?")) {
+      if (window.confirm('리뷰를 삭제 하시겠습니까?')) {
         const response = await reviewApi.deleteReview(this.reviewByWineId);
         this.readWineReviews();
       }
@@ -296,14 +251,14 @@ export default {
 .review-icon-1 {
   width: 40px;
   height: 40px;
-  background-image: url("../../../assets/images/pencil.png");
+  background-image: url('../../../assets/images/pencil.png');
   background-size: contain;
 }
 
 .review-icon-2 {
   width: 40px;
   height: 40px;
-  background-image: url("../../../assets/images/close.png");
+  background-image: url('../../../assets/images/close.png');
   background-size: contain;
 }
 .review-content {
@@ -342,7 +297,7 @@ export default {
   height: 40px;
   border-radius: 70%;
   overflow: hidden;
-  background-image: url("https://blog.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg");
+  background-image: url('https://blog.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg');
   background-size: contain;
 }
 

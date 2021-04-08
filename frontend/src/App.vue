@@ -4,7 +4,7 @@
     <GuideBtn id="guide-btn" />
     <LoginModal id="login-modal" />
     <transition name="opacity">
-      <router-view id="router-view" ref="routerView" />
+      <router-view id="router-view" ref="routerView" :key="$route.path" />
     </transition>
   </div>
 </template>

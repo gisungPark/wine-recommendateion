@@ -2,16 +2,8 @@
   <div data-app>
     <v-row justify="center">
       <v-dialog v-model="loginDialog" persistent max-width="600px">
-        <v-card>
-          <div
-            style="
-              position: absolute;
-              right: 15px;
-              margin-top: 15px;
-              cursor: pointer;
-            "
-            @click="close"
-          >
+        <v-card height="480">
+          <div id="closeBtn" @click="close">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -24,131 +16,166 @@
               />
             </svg>
           </div>
-          <v-card-title>
-            <span class="headline">Login</span>
+          <v-card-title align="center">
+            <v-row>
+              <v-col>
+                <span class="modal-name">Login</span>
+              </v-col>
+            </v-row>
           </v-card-title>
           <v-card-text>
-            <v-container justify-content: center;>
-              <v-col cols="12" sm="6" md="4">
-                <input v-model="userId" placeholder="ID" />
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <input v-model="userPw" placeholder="PW" />
-              </v-col>
-              <!-- STRART ################################# -->
-              <!-- 로그인 버튼 중앙 정렬 필요 -->
+            <v-container>
               <v-row>
-                <div id="loginBtn" class="btnBar">
-                  <v-btn style="width: 200px" text @click="onLogin">
-                    CONTINUE
-                  </v-btn>
-                </div>
+                <v-col>
+                  <ul>
+                    <li>
+                      <input
+                        class="underline"
+                        type="text"
+                        placeholder="Email"
+                        v-model="email"
+                      />
+                    </li>
+                  </ul>
+                </v-col>
               </v-row>
-              <!-- END ################################# -->
-              <v-spacer></v-spacer>
-              <v-col cols="12">
-                <div
-                  style="
-                    font-size: 30px;
-                    font-weight: bold;
-                    margin: 10px 10px;
-                    text-align: center;
-                  "
-                >
-                  <span>OR</span>
-                </div>
-              </v-col>
-              <v-spacer></v-spacer>
               <v-row>
-                <div class="btnBar">
+                <v-col>
+                  <ul>
+                    <li>
+                      <input
+                        class="underline"
+                        type="password"
+                        placeholder="Password"
+                        v-model="password"
+                      />
+                    </li>
+                  </ul>
+                </v-col>
+              </v-row>
+              <v-row no-gutters>
+                <a id="findPw" @click="onFindPw">비밀번호 찾기</a>
+              </v-row>
+              <v-row style="margin-top: 20px">
+                <v-col cols="auto" id="loginBtn-wrap">
+                  <v-btn text id="loginBtn" @click="onLogin">CONTINUE</v-btn>
+                </v-col>
+              </v-row>
+              <v-row justify="center" no-gutters>
+                <v-col cols="auto" id="btn-range">OR</v-col>
+              </v-row>
+              <v-row justify="center" no-gutters>
+                <v-col cols="auto" id="kakao-login">
                   <KakaoLogin
                     :api-key="getKakaoApiKey"
-                    :on-success="onSuccess"
+                    image="kakao_account_login_btn_medium_wide_ov"
+                    :on-success="onKakaoCallback"
                     :on-failure="onFailure"
                   />
-                </div>
+                </v-col>
               </v-row>
             </v-container>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue darken-1" text @click="onJoin">
-              JOIN YourWine
-            </v-btn>
+            <v-btn color="blue darken-1" text id="joinBtn" @click="onJoin"
+              >JOIN YourWine</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
     </v-row>
+    <JoinModal />
+    <NicknameModal />
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
+import * as authApi from "@/api/auth";
 import KakaoLogin from "vue-kakao-login";
-import { login } from "@/api/login.js";
+import JoinModal from "./Join.vue";
+import NicknameModal from "./Nickname.vue";
 
-const API_KEY = process.env.VUE_APP_KAKAO_LOGIN_API_KEY;
+const API_KEY = "ba1e87a869408be092569e9742130104";
 
 export default {
   components: {
     KakaoLogin,
+    JoinModal,
+    NicknameModal,
   },
   data: () => ({
-    userId: "",
-    userPw: "",
+    email: "",
+    password: "",
   }),
   computed: {
-    ...mapState("loginDialog", ["loginDialog", "joinDialog"]),
+    ...mapState("userInfo", ["userInfo"]),
+    ...mapState("loginDialog", [
+      "loginDialog",
+      "joinDialog",
+      "nicknameDialog",
+      "findPwDialog",
+    ]),
     getKakaoApiKey() {
       return API_KEY;
     },
   },
   methods: {
-    ...mapMutations("loginDialog", ["SET_LOGIN_TOGGLE", "SET_JOIN_TOGGLE"]),
+    ...mapMutations("loginDialog", [
+      "SET_LOGIN_TOGGLE",
+      "SET_JOIN_TOGGLE",
+      "SET_NICKNAME_TOGGLE",
+      "SET_FINDPW_TOGGLE",
+    ]),
     ...mapMutations("guideBtn", [
       "SET_GUIDEBTN_TOGGLE",
       "SET_GUIDEBTNTIP_TOGGLE",
     ]),
+    loginAPI(email, password) {
+      return authApi.login(email, password);
+    },
 
     onLogin() {
-      const success = (response) => {
-        //1. respose.code
-        switch (response.code) {
-          case 0: // 로그인 성공 => 토큰, 닉네임 저장
-            break;
-          case 1: // 로그인 실패 => 토큰, 닉네임 저장 x
-            break;
-          case 2: // 소셜 로그인 성공 => 토큰, 닉네임 저장
-            break;
-          case 3: // 소셜 최초 로그인 => 회원 가입 이동
-            break;
-          case 4: // 토큰 유효성 검사 실패
-            break;
-          case 5: // 정상 가입 완료
-            break;
-          case 6: // 가입 실패
-            break;
-        }
-      };
-      const fail = {};
-      const userInfo = {};
-
-      login(userInfo, success, fail);
-
-      this.SET_LOGIN_TOGGLE();
-      this.SET_GUIDEBTN_TOGGLE();
-      this.$router.push({ name: "Mypage" });
+      const response = this.$store
+        .dispatch("userInfo/login", {
+          email: this.email,
+          password: this.password,
+        })
+        .then((result) => {
+          if (result.data.code === 1) {
+            alert("아이디 비밀번호를 확인하세요!!");
+          } else if (result.data.code === 0) {
+            alert(this.email + "님 환영합니다.");
+            this.email = "";
+            this.password = "";
+            this.SET_LOGIN_TOGGLE();
+            this.SET_GUIDEBTN_TOGGLE();
+            this.$router.push({ name: "Mypage" });
+          }
+        });
     },
-
+    onFindPw() {
+      this.SET_NICKNAME_TOGGLE();
+    },
     close() {
+      this.email = "";
+      this.password = "";
       this.SET_LOGIN_TOGGLE();
     },
-    onSuccess() {
-      alert("로그인 성공");
+    onKakaoCallback(data) {
+      console.log(data);
+      const response = this.$store
+        .dispatch("userInfo/kakaoLogin", {
+          data: data,
+        })
+        .then((result) => {
+          console.log("333333333333333333333333");
+          console.log(result);
+        });
     },
     onFailure() {},
     onJoin() {
-      console.log("click join btn!!");
       this.SET_JOIN_TOGGLE();
     },
   },
@@ -156,24 +183,59 @@ export default {
 </script>
 
 <style scoped>
-input {
-  margin-left: 50px;
-  height: 20px;
-  font-size: 20px;
-}
-
-.btnBar {
-  cursor: pointer;
-  border-radius: 25px;
-  height: 49px;
-  margin: auto;
-  background-color: rgb(226, 43, 134);
-}
-
-.headline {
-  font-size: 40px;
+.modal-name {
+  font-size: 32px;
   font-weight: bold;
-  padding-top: 5px;
   margin: 0 auto;
+}
+ul {
+  margin-left: 35px;
+  margin-bottom: 5px;
+}
+li > input {
+  width: 90%;
+  font-size: 22px;
+}
+li > span {
+  font-size: 12px;
+  color: #f44336;
+}
+.underline {
+  border: 1px solid black;
+  border-top-width: 0px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-bottom-width: 1px;
+}
+#findPw {
+  position: relative;
+  top: 3px;
+  left: 390px;
+}
+#closeBtn {
+  position: absolute;
+  right: 15px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+#loginBtn-wrap {
+  margin: 0 auto;
+}
+#loginBtn {
+  width: 300px;
+  height: 49px;
+  background-color: var(--basic-color-btn);
+  color: white;
+}
+#btn-range {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 8px auto;
+}
+#kakao-login {
+  margin: 0 auto;
+}
+#joinBtn {
+  font-size: 15px;
 }
 </style>

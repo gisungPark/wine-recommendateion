@@ -196,7 +196,7 @@ public class UserService {
     public List<ReviewDTO> getReview(String token, int page){
         String userId = jwtTokenProvider.getUserId(token);
         User user = userRepository.findByUserId(userId);
-        PageRequest pageRequest = PageRequest.of(page-1,5,Sort.by("time").descending());
+        PageRequest pageRequest = PageRequest.of(page-1,10,Sort.by("time").descending());
         List<ReviewDTO> reviewDTOList = reviewRepository.findByUser(user, pageRequest).stream().map(ReviewDTO::new).collect(Collectors.toList());
        //리뷰 최신순으로 정렬시킴. 코드추가
         return reviewDTOList;

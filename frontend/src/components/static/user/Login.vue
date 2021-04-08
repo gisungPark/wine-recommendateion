@@ -140,7 +140,6 @@ export default {
           password: this.password,
         })
         .then((result) => {
-          console.log(result);
           if (result.data.code === 0) {
             // 로그인 완료 ##################################
             this.close();

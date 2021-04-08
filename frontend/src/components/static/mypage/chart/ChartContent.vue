@@ -249,7 +249,7 @@ import WinePie from "@/components/static/mypage/chart/WinePie.vue";
 import GrapePie from "@/components/static/mypage/chart/GrapePie.vue";
 import FlavorDoughnut from "@/components/static/mypage/chart/FlavorDoughnut.vue";
 import TasteRadar from "@/components/static/mypage/chart/TasteRadar.vue";
-import WineItem from "@/components/articles/WineItem.vue";
+import WineItem from "@/components/articles/WineItemRec.vue";
 
 export default {
   name: "ChartContent",
@@ -299,7 +299,6 @@ export default {
       if (this.grapeList !== null && this.grapeList !== undefined) {
         this.grapeList.shift();
       }
-      console.log(this.grapeList);
     },
 
     async getFlavor() {
@@ -320,9 +319,6 @@ export default {
     async getSimilar() {
       const response = await chartApi.getSimilarStatistic();
       this.writeFlag3 = response.data.writeReview;
-      console.log("#############");
-      console.log(response);
-      console.log("#############");
       this.similarHighList = response.data.similarHighList;
       this.similarLowList = response.data.similarLowList;
     },

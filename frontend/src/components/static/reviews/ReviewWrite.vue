@@ -147,10 +147,10 @@ export default {
       );
 
       if (response.status === 200) {
-        alert(this.reviewByWineId + "와인 리뷰 작성에 성공했습니다.!!");
+        alert("와인 리뷰 작성에 성공했습니다.!!");
         this.close();
       } else {
-        alert(this.reviewByWineId + "와인 리뷰 작성에 실패했습니다.!!");
+        alert("와인 리뷰 작성에 실패했습니다.!!");
       }
     },
   },

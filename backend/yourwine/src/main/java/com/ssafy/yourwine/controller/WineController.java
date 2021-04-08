@@ -74,7 +74,7 @@ public class WineController {
 		@ApiImplicitParam(name="endPrice",value = "끝가격 - max(기본)", required = true, defaultValue = "99999999", dataType = "int"),
 		@ApiImplicitParam(name="sort",value = "정렬 - 0(낮은가격,기본)/1(높은가격)/2(낮은별점)/3(높은별점)", required = true, defaultValue = "0", dataType = "int"),
 		@ApiImplicitParam(name="keyword",value = "검색키워드 - 없으면. 있으면 해당키워드값", defaultValue = ".", required = true),
-		@ApiImplicitParam(name="page",value = "기본-1(아이템 8개 기준) ex) 1-(1~8) 2-(9~16)", defaultValue = "1", required = true),
+		@ApiImplicitParam(name="page",value = "기본-1(아이템 15개 기준) ex) 1-(1~8) 2-(9~16)", defaultValue = "1", required = true),
 	})
 	@GetMapping("/list")
 	public List<WineDTO> getWineList(@RequestParam String typeFilter, @RequestParam String grapeFilter,

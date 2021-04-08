@@ -18,7 +18,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long>{
 	List<Review> findByUser (User user, Pageable pageable);
 	List<Review> findByWine (Wine wine);
 	
-	@Query(value = "select * from review where wine_id = ? and time <= ? order by time DESC", nativeQuery = true)
-	List<Review> findAllByWine (Wine wine, String time, Pageable pageable );
+	@Query(value = "select * from review where wine_id = ? order by time DESC", nativeQuery = true)
+	List<Review> findAllByWine (Wine wine, Pageable pageable );
 	//List<Review> findByWineId (Long wineId);
 }

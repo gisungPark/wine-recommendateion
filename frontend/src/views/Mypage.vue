@@ -1,101 +1,212 @@
 <template>
-  <!-- fram -> container -> wrap -->
-  <div class="fram">
+  <!-- frame -> container -> wrap -->
+  <div class="frame">
     <div class="item">
       <div class="left-wrap">
         <span class="nav-title">Mypage</span>
         <div class="nav-btn">
-          <button class="nav-btn-item1">스크랩한 와인</button>
-          <button class="nav-btn-item2">내가 남긴 리뷰</button>
-          <button class="nav-btn-item3">내 취향 통계</button>
+          <button
+            class="nav-btn-item1"
+            :class="{ 'nav-btn-active': isBtnClick(3) }"
+            @click="setStage(3)"
+          >
+            Scrap
+          </button>
+          <button
+            class="nav-btn-item2"
+            :class="{ 'nav-btn-active': isBtnClick(2) }"
+            @click="setStage(2)"
+          >
+            Review
+          </button>
+          <button
+            class="nav-btn-item3"
+            :class="{ 'nav-btn-active': isBtnClick(1) }"
+            @click="setStage(1)"
+          >
+            Statistics
+          </button>
+          <button
+            class="nav-btn-item4"
+            :class="{ 'nav-btn-active': isBtnClick(4) }"
+            @click="setStage(4)"
+          >
+            Favorite
+          </button>
         </div>
       </div>
     </div>
 
-    <div class="item" style="background-color: #0f0f0f">
+    <div class="item">
       <div class="right-wrap">
-        <div class="content">
+        <div
+          v-show="this.screenState == 3 || this.screenState == 2"
+          class="content"
+        >
           <div class="imgBox">
             <img
               class="profile"
-              :src="this.userInfo.profile"
-              alt="프로필 이미지"
+              @click="changeProfile"
+              :src="`${s3url_profile}${userInfo.profile}.jpg`"
             />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>
-          <div class="content-item">
-            <MyReviews
-              v-for="(review, idx) in reviews"
-              :key="idx"
-              :review="review"
-              :userInfo="userInfo"
-            />
+          <!-- 스크랩 페이지 ################################################ -->
+          <div class="content-item" v-show="this.screenState == 3">
+            <div class="item-title gray">스크랩한 와인</div>
+            <div style="height: 50px"></div>
+            <div class="item-list">
+              <div
+                class="wine-item"
+                v-for="(item, index) in scarpList"
+                :key="item + index"
+              >
+                <WineItem v-on:deleteScrap="updateScrap" :wine="item" />
+              </div>
+            </div>
           </div>
+          <!-- 리뷰 페이지 ################################################ -->
+          <div class="content-item" v-show="this.screenState == 2">
+            <div id="review-title" class="item-title gray">내가 쓴 리뷰</div>
+            <div style="height: 50px"></div>
+            <div id="review-wraps">
+              <MyReviews
+                v-for="(review, idx) in reviews"
+                :key="idx"
+                :review="review"
+                :userInfo="userInfo"
+              />
+            </div>
+            <Reviews />
+            <div style="height: 10px"></div>
+          </div>
+        </div>
+        <!-- 차트 페이지 ################################################ -->
+        <div class="content3" v-show="this.screenState == 1">
+          <ChartContent />
+        </div>
+        <!-- 선호도 페이지 ################################################ -->
+        <div v-show="this.screenState == 4" class="content4">
+          <PreferenceSetting
+            :preferenceList="preferenceList"
+            :isUpdate="isUpdate"
+          />
         </div>
       </div>
     </div>
+    <ImgUpdate />
   </div>
 </template>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
+import * as mypageApi from "@/api/mypageApi";
 import MyReviews from "@/components/static/mypage/MyReviews.vue";
+import Reviews from "@/components/static/reviews/Reviews.vue";
+import ImgUpdate from "@/components/static/user/ImgUpdate.vue";
+import PreferenceSetting from "@/components/static/mypage/PreferenceSetting.vue";
+import ChartContent from "@/components/static/mypage/chart/ChartContent.vue";
+import Winelist from "@/components/articles/Winelist.vue";
+import WineItem from "@/components/articles/ScrapWineItem.vue";
 
-// const aa = "@/assets/images/wine01.png";
+const SCRAP = 1;
+const REVIEW = 2;
+const STATISTICS = 3;
+const FRAVORITE = 4;
 
 export default {
   name: "Mypage",
   components: {
+    Winelist,
     MyReviews,
+    Reviews,
+    ImgUpdate,
+    PreferenceSetting,
+    ChartContent,
+    WineItem,
   },
-
+  watch: {},
   data: () => ({
+    isUpdate: false,
     cnt: 4,
-    info: "",
-    reviews: [
-      {
-        img: "https://img.maisonkorea.com/2020/04/msk_5e8d712726056.jpg",
-        wineTitle: "까베르네 소비뇽",
-        reviewTitle: "딸기맛이 나요",
-        reviewScore: 4,
-        date: "2021.03.22",
-      },
-      {
-        img: "https://img.maisonkorea.com/2020/04/msk_5e8d7129f1d53.jpg",
-        wineTitle: "샤르도네",
-        reviewTitle: "바나나맛이 나요",
-        reviewScore: 4,
-        date: "2021.02.18",
-      },
-      {
-        img:
-          "http://www.sommeliertimes.com/news/photo/201905/13382_26893_4347.jpg",
-        wineTitle: "피노 누아",
-        reviewTitle: "사과맛이 나요",
-        reviewScore: 4,
-        date: "2021.01.29",
-      },
-      {
-        img:
-          "http://www.sommeliertimes.com/news/photo/201905/13382_26893_4347.jpg",
-        wineTitle: "소비뇽 블랑",
-        reviewTitle: "사과맛이 나요",
-        date: "2020.12.08",
-      },
-    ],
+    screenState: 3,
+    reviews: [],
+    preferenceList: [],
+    scarpList: [],
   }),
+  created() {
+    this.readUserInfo();
+    // 1. 향 정보 읽어오기!!
+    this.getFlavor();
+    // 2. 리뷰 정보
+    this.mypageReview(1);
+    // 3. 스크랩 정보!!
+    this.getScrap();
+  },
+  mounted() {
+    this.readUserInfo();
+  },
+  watch: {
+    reviewDialog: function () {
+      this.mypageReview(1);
+    },
+  },
   computed: {
-    ...mapState("userInfo", ["userInfo"]),
+    ...mapState(["s3url_profile"]),
     ...mapState("nav", ["navActive"]),
+    ...mapState("userInfo", ["userInfo"]),
+    ...mapState("mypage", ["flavors", "scraps"]),
+    ...mapState("reviewDialog", ["reviewDialog"]),
+    ...mapMutations("loginDialog", ["SET_LOGIN_TOGGLE", "SET_PROFILE_TOGGLE"]),
+  },
+  methods: {
+    ...mapActions("mypage", ["getMyPreference", "actGetScrap"]),
+    ...mapActions("userInfo", ["readUserInfo"]),
+
+    isBtnClick(index) {
+      if (index == this.screenState) return true;
+      else return false;
+    },
+    setStage(index) {
+      this.screenState = index;
+    },
+    async mypageReview(num) {
+      const response = await mypageApi.mypageReview(num);
+      console.log(response.data);
+      this.reviews = response.data;
+    },
+
+    async getFlavor() {
+      this.preferenceList = [];
+      const response = await mypageApi.mypageFlavor();
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!");
+      console.log(response.data);
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!");
+      this.preferenceList = response.data;
+    },
+
+    async getScrap() {
+      const response = await mypageApi.mypageScrap();
+      console.log("스크랩와인!!!");
+      console.log(response);
+      this.scarpList = response.data;
+    },
+
+    updateScrap() {
+      this.getScrap();
+    },
+    changeProfile() {
+      this.SET_PROFILE_TOGGLE();
+    },
   },
 };
 </script>
 
 <style scoped>
-.fram {
-  height: 100vh;
-  width: 100vw;
-  background-color: white;
+.frame {
+  width: 100%;
+  background-color: var(--basic-color-bg);
   display: flex;
   z-index: 0;
 }
@@ -109,14 +220,15 @@ export default {
   flex: 14 1 0;
 } */
 .item:nth-child(1) {
-  width: 173px;
+  width: 172px;
+  height: 100%;
+  border-right: 1px solid var(--basic-color-key);
+  background-color: var(--basic-color-fill2);
   display: flex;
   flex-direction: column;
-  background-color: #242323;
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
 }
 .item:nth-child(2) {
   flex-grow: 1;
@@ -132,13 +244,12 @@ export default {
 }
 
 .nav-title {
-  font-size: 40px;
+  font-size: 3rem;
   font-weight: bold;
-  color: #9b9191;
-  margin: 5px;
+  color: var(--basic-color-fill);
   position: absolute;
-  bottom: 75px;
-  left: 10px;
+  bottom: 98px;
+  right: 2px;
   transform: rotate(-90deg);
 }
 .nav-btn {
@@ -146,17 +257,27 @@ export default {
   flex-flow: row nowrap;
 }
 .nav-btn > button {
-  border: 1px solid black;
-  background: black;
-  border-radius: 20px;
-  font-weight: bold;
-  color: #a3a1a1;
   width: 120px;
-  height: 25px;
+  height: 2rem;
+  line-height: 2rem;
+  margin-right: 1rem;
+
+  border-radius: 1rem;
+  font-weight: bold;
+  border: 1px solid var(--basic-color-bg);
+  background: var(--basic-color-bg);
+  color: #a3a1a1;
   left: 80px;
   transform: rotate(-90deg);
   /* width: 150px; */
 }
+
+.nav-btn > button:hover,
+.nav-btn > button:active {
+  background-color: #e1a95744;
+  border: 1px solid var(--basic-color-key);
+}
+
 .nav-btn-item1 {
   position: absolute;
   bottom: 70px;
@@ -169,6 +290,13 @@ export default {
   position: absolute;
   bottom: 330px;
 }
+.nav-btn-item4 {
+  position: absolute;
+  bottom: 460px;
+}
+.nav-btn-active {
+  border: 1px solid var(--basic-color-key) !important;
+}
 
 .right-wrap {
   display: flex;
@@ -180,7 +308,7 @@ export default {
   margin-top: 150px;
   width: 90%;
   height: auto;
-  background-color: #ffffff;
+  background-color: var(--basic-color-background);
   border-radius: 2em;
   display: flex;
   justify-content: center;
@@ -192,7 +320,12 @@ export default {
   width: 180px;
   height: 180px;
   border-radius: 70%;
+  display: flex;
+  justify-content: center;
   overflow: hidden;
+  background-color: white;
+  /* background-image: url("https://blog.kakaocdn.net/dn/bezjux/btqCX8fuOPX/6uq138en4osoKRq9rtbEG0/img.jpg"); */
+  /* background-size: contain; */
 }
 .profile {
   width: 100%;
@@ -211,9 +344,63 @@ export default {
 
 .content-item {
   width: 100%;
+  min-height: 400px;
   margin-top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#review-wraps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 600px;
+}
+
+.content3 {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin-top: 150px;
+  border-radius: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.content4 {
+  position: relative;
+  margin-top: 150px;
+  width: 90%;
+  height: auto;
+}
+
+/* 스크랩 페이지!!!! */
+.item-list {
+  width: 100%;
+  min-height: 600px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding-left: 22px;
+}
+
+.wine-item {
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+.item-title {
+  width: 60%;
+  min-height: 80px;
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  padding-top: 20px;
+  border-radius: 1rem;
+  background-color: #dadada;
 }
 </style>

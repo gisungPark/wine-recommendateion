@@ -32,7 +32,7 @@ public class FoodService {
 		FoodRecoDTO foodRecoDto = new FoodRecoDTO();
 		Food food = foodRepository.findById(foodId).orElseThrow(() -> new IllegalArgumentException("no food data"));
 		String mention = food.getDetail();
-		PageRequest pageRequest = PageRequest.of(page-1,10);
+		PageRequest pageRequest = PageRequest.of(page-1,15);
 		List<WineDTO> wineDtoList = wineFoodMatchRepository.findByFood(food, pageRequest).stream().map(WineDTO::new).collect(Collectors.toList());
 		
 		foodRecoDto.setMention(mention);

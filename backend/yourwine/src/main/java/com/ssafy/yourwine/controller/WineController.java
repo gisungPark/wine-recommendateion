@@ -74,7 +74,7 @@ public class WineController {
 		@ApiImplicitParam(name="endPrice",value = "끝가격 - max(기본)", required = true, defaultValue = "99999999", dataType = "int"),
 		@ApiImplicitParam(name="sort",value = "정렬 - 0(낮은가격,기본)/1(높은가격)/2(낮은별점)/3(높은별점)", required = true, defaultValue = "0", dataType = "int"),
 		@ApiImplicitParam(name="keyword",value = "검색키워드 - 없으면. 있으면 해당키워드값", defaultValue = ".", required = true),
-		@ApiImplicitParam(name="page",value = "기본-1(아이템 8개 기준) ex) 1-(1~8) 2-(9~16)", defaultValue = "1", required = true),
+		@ApiImplicitParam(name="page",value = "기본-1(아이템 15개 기준) ex) 1-(1~8) 2-(9~16)", defaultValue = "1", required = true),
 	})
 	@GetMapping("/list")
 	public List<WineDTO> getWineList(@RequestParam String typeFilter, @RequestParam String grapeFilter,
@@ -117,12 +117,11 @@ public class WineController {
 
 	@ApiOperation(value = "와인ID 전체 리뷰 리스트 ", notes = "와인ID에 해당되는 리뷰 리스트. 와인ID없을 경우 no wine data 에러발생")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name="page",value = "기본-1(아이템 5개 기준) ex) 1-(1~5) 2-(6~10)", defaultValue = "1", required = true),
-		@ApiImplicitParam(name="time",value = "*한국시간 기준 String. 해당 string은 서버에서 시간으로 포맷함 yyyy-MM-dd hh:mm:ss", defaultValue ="2021-03-31 11:50:00",required = true)
+		@ApiImplicitParam(name="page",value = "기본-1(아이템 5개 기준) ex) 1-(1~5) 2-(6~10)", defaultValue = "1", required = true)
 	})
 	@GetMapping("/reivew-list/{wineId}")
-	public List<ReviewDTO> getReviewList(@PathVariable Long wineId, @RequestParam int page, @RequestParam String time) throws ParseException {
-		return reviewService.getWineReviewList(wineId, page, time);
+	public List<ReviewDTO> getReviewList(@PathVariable Long wineId, @RequestParam int page) throws ParseException {
+		return reviewService.getWineReviewList(wineId, page);
 	}
 
 }

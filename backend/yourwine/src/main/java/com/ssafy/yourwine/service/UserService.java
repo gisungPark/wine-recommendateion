@@ -90,45 +90,49 @@ public class UserService {
     }
 
     public TokenResultDTO checkUser(String kakaotoken) {
-        String userId = UUID.randomUUID().toString();
         String uid = kakaoService.getKakaoProfile(kakaotoken);
-        String token = jwtTokenProvider.generateToken(userId);
 
         User user = userRepository.findByEmailAndProvider(uid, 1);
 
         TokenResultDTO tokenResultDTO = new TokenResultDTO();
 
-        if(uid != null) {
-            if (user != null) {
-                if (user.getFlag()) {
-                    tokenResultDTO.setToken(token);
-                    tokenResultDTO.setNickname(user.getNickname());
-                    tokenResultDTO.setCode(2);
-
-                    return tokenResultDTO;
-                } else {
-                    tokenResultDTO.setToken(token);
-                    tokenResultDTO.setCode(3);
-
-                    return tokenResultDTO;
-                }
-            } else {
-                user = new User();
-
-                user.setUserId(userId);
-                user.setEmail(uid);
-                user.setProvider(1);
+        if (user != null) {
+            if (user.getFlag()) {
+                String token = jwtTokenProvider.generateToken(user.getUserId());
                 user.setToken(token);
 
                 userRepository.save(user);
 
+                tokenResultDTO.setToken(token);
+                tokenResultDTO.setNickname(user.getNickname());
+                tokenResultDTO.setCode(2);
+
+                return tokenResultDTO;
+            } else {
+                String token = jwtTokenProvider.generateToken(user.getUserId());
+                user.setToken(token);
+
+                userRepository.save(user);
                 tokenResultDTO.setToken(token);
                 tokenResultDTO.setCode(3);
 
                 return tokenResultDTO;
             }
         } else {
-            tokenResultDTO.setCode(4);
+            String userId = UUID.randomUUID().toString();
+            String token = jwtTokenProvider.generateToken(userId);
+
+            User newUser = new User();
+
+            newUser.setUserId(userId);
+            newUser.setEmail(uid);
+            newUser.setProvider(1);
+            newUser.setToken(token);
+
+            userRepository.save(newUser);
+
+            tokenResultDTO.setToken(token);
+            tokenResultDTO.setCode(3);
 
             return tokenResultDTO;
         }
@@ -137,29 +141,14 @@ public class UserService {
     public TokenResultDTO updateUser(String token, String nickname) {
 	    String user_id = jwtTokenProvider.getUserId(token);
         User user = userRepository.findByUserId(user_id);
-        User user2 = userRepository.findByNickname(nickname);
         TokenResultDTO tokenResultDTO = new TokenResultDTO();
 
-        if(user2 != null) {
-            String new_token = jwtTokenProvider.generateToken(user_id);
+        user.setNickname(nickname);
+        user.setFlag(true);
 
-            user.setToken(new_token);
+        userRepository.save(user);
 
-            userRepository.save(user);
-
-            tokenResultDTO.setToken(new_token);
-            tokenResultDTO.setCode(6);
-
-        } else {
-            user.setNickname(nickname);
-            user.setToken(null);
-            user.setFlag(true);
-
-            userRepository.save(user);
-
-            tokenResultDTO.setCode(5);
-
-        }
+        tokenResultDTO.setCode(5);
 
         return tokenResultDTO;
     }
@@ -213,7 +202,7 @@ public class UserService {
     public List<ReviewDTO> getReview(String token, int page){
         String userId = jwtTokenProvider.getUserId(token);
         User user = userRepository.findByUserId(userId);
-        PageRequest pageRequest = PageRequest.of(page-1,5,Sort.by("time").descending());
+        PageRequest pageRequest = PageRequest.of(page-1,10,Sort.by("time").descending());
         List<ReviewDTO> reviewDTOList = reviewRepository.findByUser(user, pageRequest).stream().map(ReviewDTO::new).collect(Collectors.toList());
        //리뷰 최신순으로 정렬시킴. 코드추가
         return reviewDTOList;
@@ -239,5 +228,14 @@ public class UserService {
         }
 
         return flavorDTOList;
+    }
+
+    public void updateProfile(String token, String number) {
+        String user_id = jwtTokenProvider.getUserId(token);
+        User user = userRepository.findByUserId(user_id);
+
+        user.setImg(number);
+
+        userRepository.save(user);
     }
 }

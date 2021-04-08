@@ -103,14 +103,14 @@ public class RecoController {
     }
     
     //선호도 추천
-    @ApiOperation(value = "선호도 추천 와인리스트", notes = "유저 향 선호도 정보에 따른 정보를 추천해줌.1페이지당 아이템 10개씩 줌.와인은 평균 높은 순으로 줌. PreferenceRecoDTO에 와인리스트, 선호하는향, 싫어하는향 리스트정보 줌")
+    @ApiOperation(value = "선호도 추천 와인리스트", notes = "유저 향 선호도 정보에 따른 정보를 추천해줌.1페이지당 아이템 15개씩 줌.와인은 평균 높은 순으로 줌. PreferenceRecoDTO에 와인리스트, 선호하는향, 싫어하는향 리스트정보 줌")
     @GetMapping("/preference-recolist")
     public PreferenceRecoDTO getWineListByUserPreference (@RequestHeader("TOKEN") String token, @RequestParam int page) {
     	return recoService.getWineListByPreference(token, page);
     }
     
     //선호도 + 맛 필터
-    @ApiOperation(value = "선호도 기반 맛 필터 추천 와인리스트", notes = "유저 선호도 정보 + 맛 필터 걸어서 추천해줌. 1페이지당 아이템 10개씩 줌.와인은 평균 높은 순으로 줌. PreferenceRecoDTO에 와인리스트, 선호하는향, 싫어하는향 리스트정보 줌")
+    @ApiOperation(value = "선호도 기반 맛 필터 추천 와인리스트", notes = "유저 선호도 정보 + 맛 필터 걸어서 추천해줌. 1페이지당 아이템 15개씩 줌.와인은 평균 높은 순으로 줌. PreferenceRecoDTO에 와인리스트, 선호하는향, 싫어하는향 리스트정보 줌")
     @PutMapping("/preference-recolist/taste")
     public PreferenceRecoDTO getWineListByUserTaste (@RequestHeader("TOKEN") String token, @RequestBody TasteFilterDTO taste, @RequestParam int page) {
     	return recoService.getWineListByTaste(token, taste, page);

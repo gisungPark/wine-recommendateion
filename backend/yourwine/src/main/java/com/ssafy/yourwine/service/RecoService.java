@@ -157,7 +157,7 @@ public class RecoService {
 		List<FlavorDTO> userDisLikeFlavorDto = userDisLikeFlavor.stream().map(FlavorDTO::new)
 				.collect(Collectors.toList());
 		List<WineDTO> wineDtoList = new ArrayList<WineDTO>();
-		PageRequest pageRequest = PageRequest.of(page - 1, 10);
+		PageRequest pageRequest = PageRequest.of(page - 1, 15);
 
 		// 1. 선호도 둘다 입력했을 경우
 		if (userLikeFlavor.size() != 0 && userDisLikeFlavor.size() != 0)
@@ -202,7 +202,7 @@ public class RecoService {
 				.collect(Collectors.toList());
 
 		List<WineDTO> wineDtoList = new ArrayList<WineDTO>();
-		PageRequest pageRequest = PageRequest.of(page - 1, 10);
+		PageRequest pageRequest = PageRequest.of(page - 1, 15);
 
 		// 1. 선호도 둘다 입력했을 경우 + 맛 필터
 		if (userLikeFlavor.size() != 0 && userDisLikeFlavor.size() != 0)

@@ -331,7 +331,13 @@ export default {
       try {
         const response = await mypageApi.updatePreference(preferenceDTO);
         if (response.status === 200) {
-          alert("취향 설정을 완료했습니다.");
+          if (
+            window.confirm(
+              "선호하는 향 선택을 완료했습니다. 추천페이지로 이동하시겠습니까?"
+            )
+          ) {
+            this.$router.push({ name: "Recommendation" });
+          }
         }
       } catch (error) {
         alert("취향 설정에 실패했습니다.");

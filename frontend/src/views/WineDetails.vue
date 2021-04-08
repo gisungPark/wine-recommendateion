@@ -5,6 +5,7 @@
       :src="`${this.s3url}${detail.wineDto.wineId}.png`"
       :alt="`${detail.wineDto.kname} 와인의 이미지`"
       id="detail-wine-img"
+      ref="detailWineImg"
     />
     <section id="detail-section-0" :style="{ backgroundColor: backgroundColor }">
       <!-- 왼쪽 -->
@@ -175,11 +176,21 @@
     <section id="detail-section-2" :style="{ backgroundColor: backgroundColor }">
       <div class="section-title">Detail</div>
       <div class="sec-2-part-left">
-        <div v-for="n in 2" :key="n" class="food-svg-frame">
-          <FoodSvgs :foodId="n" />
-          <p>이탈리아 음식</p>
+        <div
+          class="food-svg-frame real-shadow-box"
+          v-for="(item, index) in detail.foodList"
+          :key="item.foodId + index"
+          :style="{ border: `5px solid ${fontColor}` }"
+        >
+          <FoodSvgs :foodId="item.foodId" class="food-svg" :style="{ fill: fontColor }" />
+          <div class="hover-food-info">
+            <p>
+              <span>{{ item.name }}</span
+              >{{ item.detail }}
+            </p>
+          </div>
         </div>
-        <!-- <FoodSvgs v-for="(item, index) in detail.foodList" :key="item.foodId + index" :foodId="item.foodId" /> -->
+        <!-- <p class="b-desc">이탈리아 음식</p> -->
       </div>
       <div class="sec-2-part-right">
         <p>
@@ -208,7 +219,7 @@
         <div class="review-data-frame">
           <div class="review-item" v-for="(review, index) in detail.reviewList" :key="review.nickname + index">
             <div class="profile">
-              <img v-if="review.userImg != null" class="profile-img" :src="review.userImg" alt="프로필 이미지" />
+              <img v-if="review.userImg != 0" class="profile-img" :src="review.userImg" alt="프로필 이미지" />
               <div v-else class="profile-img"></div>
               <p>{{ review.nickname }}</p>
             </div>
@@ -308,8 +319,8 @@ export default {
         },
       },
       // 이미지 postion 조절
-      targetImg: null,
-      targetYScroll: null,
+      imgStopPoint: 0, // img가 absolute로 변경되는 시점
+      img: null,
     };
   },
   created() {
@@ -371,26 +382,28 @@ export default {
     window.removeEventListener('scroll', this.imgPositionChanger);
   },
   mounted() {
-    //TODO: 마운트 되었을 때 스크롤 살짝 내려서 애니메이션 동작하도록 설정
-    //TODO: 그냥 등장 시키자....
+    this.imgStopPoint = document.body.offsetHeight - window.innerHeight * 2; // img가 absolute로 변경되는 시점
+    this.img = document.querySelector('#main-wine-img');
   },
   computed: {
     ...mapState(['s3url']),
     ...mapState('wineDetail', ['detail']),
   },
   methods: {
-    // vuex!
-    ...mapActions('wineDetail', ['actGetWineDetail']),
-
-    // vue 페이지 내 활용
+    //와인 이미지 position changer
     imgPositionChanger() {
-      // 와인 이미지가 detail-section-3 중앙까지 위치 후 고정 됨
-      if (window.pageYOffset <= this.targetYScroll) {
-        this.targetImg.position = 'fixed';
+      console.log(window.pageYOffset, this.imgStopPoint);
+      if (window.pageYOffset <= this.imgStopPoint) {
+        this.$refs.detailWineImg.style.position = 'fixed';
+        this.$refs.detailWineImg.style.top = '50%';
       } else {
-        this.targetImg.position = 'absolute';
+        this.$refs.detailWineImg.style.position = 'absolute';
+        this.$refs.detailWineImg.style.top = `${this.imgStopPoint + window.innerHeight / 2}px`;
       }
     },
+
+    // vuex!
+    ...mapActions('wineDetail', ['actGetWineDetail']),
 
     // modal 위치 초기화
     initModalPosition() {
@@ -469,7 +482,7 @@ section {
   top: 50%;
   transform: translate(-50%, -50%);
   width: auto;
-  height: 60%;
+  height: 60vh;
   min-height: 550px;
 }
 .wine-blank {
@@ -820,7 +833,7 @@ section {
   background-color: #f86161;
 }
 .left-bottom .gauge {
-  margin-top: 3px;
+  margin-top: 0;
   background-color: #fc2121;
 }
 .right-top span,
@@ -858,19 +871,59 @@ section {
   flex-direction: row;
   justify-content: center;
   position: absolute;
-  width: 50%;
+  flex-wrap: wrap;
+  width: 30%;
   height: auto;
-  left: 0;
+  left: 25%;
   top: 50%;
-  transform: translateY(-50%);
-  background-color: #ffffff55;
+  transform: translate(-50%, -50%);
 }
 .food-svg-frame {
+  position: relative;
   display: flex;
+  padding: 1.5rem;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0 2rem;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.4s ease;
+  margin: 0.5 0.5rem;
+}
+.food-svg-frame svg {
+  border-radius: 50%;
+}
+.food-svg-frame:hover {
+  background-color: #e1aa5777;
+}
+.hover-food-info {
+  position: absolute;
+  z-index: 2;
+  top: 120px;
+  width: 400px;
+  padding: 2rem;
+  color: black;
+  border-radius: 2rem;
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: saturate(180%) blur(30px);
+  transition: all 0.4s ease;
+  transform: scale(0.3);
+  opacity: 0;
+}
+.food-svg-frame:hover .hover-food-info {
+  top: 200px;
+  opacity: 1;
+  transform: scale(1);
+  top: 200px;
+  width: 400px;
+}
+.hover-food-info p > span {
+  margin-right: 1rem;
+  font-weight: 900;
+}
+.hover-food-info p {
+  line-height: 2rem;
+  margin-top: 0 !important;
 }
 .food-svg-frame p {
   margin-top: 0.5rem;
@@ -880,12 +933,12 @@ section {
   margin-left: 50%;
   width: 30%;
 }
-.sec-2-part p span {
+.sec-2-part-right p span {
   display: block;
   font-size: 8rem;
   margin-left: -2rem;
 }
-.sec-2-part p {
+.sec-2-part-right p {
   font-size: 2rem;
   line-height: 2.5rem;
 }

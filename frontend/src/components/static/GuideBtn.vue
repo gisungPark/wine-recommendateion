@@ -115,12 +115,15 @@ export default {
       this.$router.push({ name: 'Main' });
     },
     clickedMyInfo() {
+      this.SET_GUIDEBTN_TOGGLE();
       this.$router.push({ name: 'Mypage' });
     },
     clickedScrapList() {
+      this.SET_GUIDEBTN_TOGGLE();
       this.$router.push({ name: 'Mypage' });
     },
     clickedReviewList() {
+      this.SET_GUIDEBTN_TOGGLE();
       this.$router.push({ name: 'Mypage' });
     },
   },

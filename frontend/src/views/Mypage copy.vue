@@ -76,21 +76,6 @@
                 :review="review"
                 :userInfo="userInfo"
               />
-              <!-- 무한스크롤 ##################################################### -->
-              <infinite-loading
-                @infinite="infiniteHandler"
-                force-use-infinite-wrapper="true"
-                spinner="waveDots"
-                ref="infiniteLoading"
-                class="infinite"
-              >
-                <div slot="no-more">목록의 끝입니다.</div>
-                <div slot="no-results">요청 결과가 없습니다.</div>
-                <div slot="error" slot-scope="{ trigger }">
-                  문제가 발생했습니다. 재시도 하려면
-                  <a href="javascript:;" @click="trigger">여기</a>를 누르십시오.
-                </div>
-              </infinite-loading>
             </div>
             <Reviews />
             <div style="height: 10px"></div>
@@ -124,7 +109,6 @@ import PreferenceSetting from "@/components/static/mypage/PreferenceSetting.vue"
 import ChartContent from "@/components/static/mypage/chart/ChartContent.vue";
 import Winelist from "@/components/articles/Winelist.vue";
 import WineItem from "@/components/articles/ScrapWineItem.vue";
-import InfiniteLoading from "vue-infinite-loading";
 
 const SCRAP = 1;
 const REVIEW = 2;
@@ -141,13 +125,11 @@ export default {
     PreferenceSetting,
     ChartContent,
     WineItem,
-    InfiniteLoading,
   },
   watch: {},
   data: () => ({
     isUpdate: false,
     cnt: 4,
-    page: 1,
     screenState: 3,
     reviews: [],
     preferenceList: [],
@@ -157,20 +139,17 @@ export default {
     this.readUserInfo();
     // 1. 향 정보 읽어오기!!
     this.getFlavor();
-
+    // 2. 리뷰 정보
+    this.mypageReview(1);
     // 3. 스크랩 정보!!
     this.getScrap();
   },
   mounted() {
     this.readUserInfo();
-    // 2. 리뷰 정보
-    this.mypageReview(this.$refs.infiniteLoading.stateChanger);
   },
   watch: {
     reviewDialog: function () {
-      this.page = 1;
-      this.reviews = [];
-      this.mypageReview(this.$refs.infiniteLoading.stateChanger);
+      this.mypageReview(1);
     },
   },
   computed: {
@@ -184,10 +163,6 @@ export default {
   methods: {
     ...mapActions("mypage", ["getMyPreference", "actGetScrap"]),
     ...mapActions("userInfo", ["readUserInfo"]),
-    // infiniteHandler, props 전달
-    infiniteHandler($state) {
-      this.mypageReview($state);
-    },
 
     isBtnClick(index) {
       if (index == this.screenState) return true;
@@ -196,29 +171,10 @@ export default {
     setStage(index) {
       this.screenState = index;
     },
-    async mypageReview($state) {
-      try {
-        const response = await mypageApi.mypageReview(this.page);
-        console.log("리뷰 호출한다.!!!!!!!!!!!!!!!!!!!");
-        console.log(response);
-        if (response) {
-          if (response.data.length === 0) {
-            console.log("내가 쓴 리뷰 끝났다.");
-            $state.complete();
-          } else {
-            this.reviews.push(...response.data);
-            this.page += 1;
-            setTimeout(() => {
-              $state.loaded();
-            }, 1000);
-          }
-        } else {
-          $state.error(); //통신에러
-          return;
-        }
-      } catch (error) {
-        console.log(error);
-      }
+    async mypageReview(num) {
+      const response = await mypageApi.mypageReview(num);
+      console.log(response.data);
+      this.reviews = response.data;
     },
 
     async getFlavor() {

@@ -40,10 +40,10 @@ public class ReviewService {
 	private final WineRepository wineRepository;
 
 	// 해당 와인 리뷰 전체 리스트
-	public List<ReviewDTO> getWineReviewList(Long wineId, int page, String time) throws ParseException {
+	public List<ReviewDTO> getWineReviewList(Long wineId, int page) throws ParseException {
 		Wine wine = wineRepository.findById(wineId).orElseThrow(() -> new IllegalArgumentException("no wine data"));
 		PageRequest pageRequest = PageRequest.of(page-1,5);
-		List<Review> reviewList = reviewRepository.findAllByWine(wine, time, pageRequest);
+		List<Review> reviewList = reviewRepository.findAllByWine(wine, pageRequest);
 		List<ReviewDTO> reviewDtoList = reviewList.stream().map(ReviewDTO::new).collect(Collectors.toList());
 		return reviewDtoList;
 	}

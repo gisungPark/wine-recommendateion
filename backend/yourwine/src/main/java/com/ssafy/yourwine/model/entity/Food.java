@@ -1,5 +1,9 @@
 package com.ssafy.yourwine.model.entity;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 
@@ -13,11 +17,11 @@ public class Food {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //AI
     @Column(name = "food_id")
-    private Integer foodId;
-    @Column(name = "name")
+    private Long foodId;
     private String name;
-    @Column(name = "img")
-    private String img;
+    private String detail;
     
+    @OneToMany(mappedBy = "food", cascade = CascadeType.ALL)
+	private List<WineFoodMatch> wineFoodMatch = new ArrayList<WineFoodMatch>();
     
 }

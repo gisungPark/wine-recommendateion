@@ -29,6 +29,7 @@ public class Flavor {
     @Column(name = "flavor_id")
     private Long flavorId;
     private String name;
-    private String img;
-
+  
+    @OneToMany(mappedBy = "flavor", cascade = CascadeType.ALL)
+	private List<WineFlavor> wineFlavor = new ArrayList<WineFlavor>();
 }

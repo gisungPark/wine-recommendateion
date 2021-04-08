@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ScrapService {
 
 	private final ScrapRepository scrapRepository;

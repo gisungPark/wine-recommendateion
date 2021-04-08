@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
+import javax.websocket.Decoder.Text;
 
 import lombok.Data;
 
@@ -23,7 +26,6 @@ public class Wine {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "wine_id")
 	private Long wineId;
-	private String img;
 	private String kname;
 	private String ename;
 	private String alcohol;
@@ -31,7 +33,8 @@ public class Wine {
 	private String temper;
 	private float avg;
 	private int price;
-	private int year;
+	private String year;
+	@Column(name = "detail", columnDefinition = "text")
 	private String detail;
 	private String shop;
 	private int sweet;
@@ -49,4 +52,9 @@ public class Wine {
 	@OneToMany(mappedBy = "wine", cascade = CascadeType.ALL)
 	private List<Review> review = new ArrayList<Review>();
 	
+	@OneToMany(mappedBy = "wine", cascade = CascadeType.ALL)
+	private List<WineFoodMatch> wineFoodMatch = new ArrayList<WineFoodMatch>();
+	
+	@OneToMany(mappedBy = "wine", cascade = CascadeType.ALL)
+	private List<WineFlavor> wineFlavor = new ArrayList<WineFlavor>();
 }

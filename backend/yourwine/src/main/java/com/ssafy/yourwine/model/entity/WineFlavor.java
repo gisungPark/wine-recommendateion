@@ -6,31 +6,32 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-import com.ssafy.yourwine.model.key.ScrapKey;
+import com.ssafy.yourwine.model.key.FlavorKey;
+import com.ssafy.yourwine.model.key.WineFlavorKey;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class Scrap {
+@Table(name = "wine_flavor")
+public class WineFlavor {
+
+	 @EmbeddedId
+	 @Column(name = "wineflavor_id", unique = true)
+	 private WineFlavorKey wineFlavorId = new WineFlavorKey();
 	
-	@EmbeddedId
-	@Column(name = "scrap_id", unique = true)
-	private ScrapKey scrapId = new ScrapKey();
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", insertable=false, updatable=false)
-	private User user;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY) 
 	@JoinColumn(name = "wine_id", insertable=false, updatable=false)
 	private Wine wine;
+	
+	@ManyToOne(fetch = FetchType.LAZY) 
+	@JoinColumn(name = "flavor_id", insertable=false, updatable=false)
+	private Flavor flavor;
 	
 }

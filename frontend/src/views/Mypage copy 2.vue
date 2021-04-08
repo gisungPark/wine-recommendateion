@@ -5,16 +5,32 @@
       <div class="left-wrap">
         <span class="nav-title">Mypage</span>
         <div class="nav-btn">
-          <button class="nav-btn-item1" :class="{ 'nav-btn-active': isBtnClick(3) }" @click="setStage(3)">
+          <button
+            class="nav-btn-item1"
+            :class="{ 'nav-btn-active': isBtnClick(3) }"
+            @click="setStage(3)"
+          >
             Scrap
           </button>
-          <button class="nav-btn-item2" :class="{ 'nav-btn-active': isBtnClick(2) }" @click="setStage(2)">
+          <button
+            class="nav-btn-item2"
+            :class="{ 'nav-btn-active': isBtnClick(2) }"
+            @click="setStage(2)"
+          >
             Review
           </button>
-          <button class="nav-btn-item3" :class="{ 'nav-btn-active': isBtnClick(1) }" @click="setStage(1)">
+          <button
+            class="nav-btn-item3"
+            :class="{ 'nav-btn-active': isBtnClick(1) }"
+            @click="setStage(1)"
+          >
             Statistics
           </button>
-          <button class="nav-btn-item4" :class="{ 'nav-btn-active': isBtnClick(4) }" @click="setStage(4)">
+          <button
+            class="nav-btn-item4"
+            :class="{ 'nav-btn-active': isBtnClick(4) }"
+            @click="setStage(4)"
+          >
             Favorite
           </button>
         </div>
@@ -23,9 +39,16 @@
 
     <div class="item">
       <div class="right-wrap">
-        <div v-show="this.screenState == 3 || this.screenState == 2" class="content">
+        <div
+          v-show="this.screenState == 3 || this.screenState == 2"
+          class="content"
+        >
           <div class="imgBox">
-            <img class="profile" @click="changeProfile" :src="`${s3url_profile}${userInfo.profile}.svg`" />
+            <img
+              class="profile"
+              @click="changeProfile"
+              :src="`${s3url_profile}${userInfo.profile}.svg`"
+            />
           </div>
           <span id="userId">{{ this.userInfo.nickname }}</span>
           <!-- 스크랩 페이지 ################################################ -->
@@ -33,7 +56,11 @@
             <div class="item-title gray">스크랩한 와인</div>
             <div style="height: 50px"></div>
             <div class="item-list">
-              <div class="wine-item" v-for="(item, index) in scarpList" :key="item + index">
+              <div
+                class="wine-item"
+                v-for="(item, index) in scarpList"
+                :key="item + index"
+              >
                 <WineItem v-on:deleteScrap="updateScrap" :wine="item" />
               </div>
             </div>
@@ -75,7 +102,10 @@
         </div>
         <!-- 선호도 페이지 ################################################ -->
         <div v-show="this.screenState == 4" class="content4">
-          <PreferenceSetting />
+          <PreferenceSetting
+            :preferenceList="preferenceList"
+            :isUpdate="isUpdate"
+          />
         </div>
       </div>
     </div>
@@ -102,7 +132,7 @@ const STATISTICS = 3;
 const FRAVORITE = 4;
 
 export default {
-  name: 'Mypage',
+  name: "Mypage",
   components: {
     Winelist,
     MyReviews,
@@ -115,8 +145,10 @@ export default {
   },
   watch: {},
   data: () => ({
+    isUpdate: false,
     cnt: 4,
     page: 1,
+    screenState: 3,
     reviews: [],
     preferenceList: [],
     scarpList: [],
@@ -148,15 +180,14 @@ export default {
     ...mapState(["s3url_profile"]),
     ...mapState("nav", ["navActive"]),
     ...mapState("userInfo", ["userInfo"]),
-    ...mapState("mypage", ["screenState", "flavors", "scraps"]),
+    ...mapState("mypage", ["flavors", "scraps"]),
     ...mapState("reviewDialog", ["reviewDialog"]),
     ...mapState("loginDialog", ["profileDialog"]),
+    ...mapMutations("loginDialog", ["SET_PROFILE_TOGGLE"]),
   },
   methods: {
     ...mapActions("mypage", ["getMyPreference", "actGetScrap"]),
     ...mapActions("userInfo", ["readUserInfo"]),
-    ...mapMutations("loginDialog", ["SET_PROFILE_TOGGLE"]),
-    ...mapMutations("mypage", ["SET_SCREEN_STATE"]),
     // infiniteHandler, props 전달
     infiniteHandler($state) {
       this.mypageReview($state);
@@ -167,7 +198,7 @@ export default {
       else return false;
     },
     setStage(index) {
-      this.SET_SCREEN_STATE(index);
+      this.screenState = index;
     },
     async mypageReview($state) {
       try {
@@ -206,7 +237,7 @@ export default {
       this.getScrap();
     },
     changeProfile() {
-      this.SET_PROFILE_TOGGLE();
+      this.SET_PROFILE_TOGGLE;
     },
   },
 };

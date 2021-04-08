@@ -294,6 +294,12 @@ export default {
       switch (this.contentState) {
         // 선호도기반
         case 0:
+          // 미로그인 서비스 불가
+          if (this.userInfo.token == null) {
+            this.notice.title = '해당 서비스는 로그인 후 사용하실 수 있습니다.';
+            this.notice.text = '';
+            return;
+          }
           this.notice.title = `${this.userInfo.nickname}${this.notice.preferenceBased.title}`;
           if (this.checkPreference && this.preferenceBasedRecom.dislikeFlavorList.length >= 1) {
             // 좋아하는 맛, 싫어하는 맛 모두 설정
@@ -319,6 +325,12 @@ export default {
           break;
         // 평점 기반
         case 1:
+          // 미로그인 서비스 불가
+          if (this.userInfo.token == null) {
+            this.notice.title = '해당 서비스는 로그인 후 사용하실 수 있습니다.';
+            this.notice.text = '';
+            return;
+          }
           this.notice.title = `${this.userInfo.nickname}${this.notice.ratingBased.title}`;
           this.notice.text = '';
           // notice 문구 완성

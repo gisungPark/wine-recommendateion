@@ -207,4 +207,17 @@ public class UserController {
 	public StatisticsBySimilarDTO getStatisticsBySimilar (@RequestHeader("TOKEN") String token) {
 		return statisticService.getWineListBySimilar(token);
 	}
+
+	@PutMapping("/updateProfile")
+	@ApiOperation(value = "프로필 이미지 변경", notes="Parameter\n" +
+			"- token(RequestHeader): 액세스 토큰\n" +
+			"- nickname(RequestParam): 사용할 닉네임 입력\n" +
+			"Response\n" +
+			"- TokenResultDTO\n" +
+			"-- token: 액세스 토큰\n" +
+			"-- nickname: 닉네임(로그인한 유저 닉네임)\n" +
+			"-- code: 추가 입력폼 정상 적용(5) 추가 입력폼 적용 실패(6: 닉네임 중복, 추가 입력폼 다시 입력)")
+	public void updateProfile(@RequestHeader("TOKEN") String token, @RequestParam String number){
+		userService.updateProfile(token, number);
+	}
 }

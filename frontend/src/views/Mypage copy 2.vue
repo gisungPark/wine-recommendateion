@@ -102,7 +102,10 @@
         </div>
         <!-- 선호도 페이지 ################################################ -->
         <div v-show="this.screenState == 4" class="content4">
-          <PreferenceSetting />
+          <PreferenceSetting
+            :preferenceList="preferenceList"
+            :isUpdate="isUpdate"
+          />
         </div>
       </div>
     </div>
@@ -142,8 +145,10 @@ export default {
   },
   watch: {},
   data: () => ({
+    isUpdate: false,
     cnt: 4,
     page: 1,
+    screenState: 3,
     reviews: [],
     preferenceList: [],
     scarpList: [],
@@ -175,15 +180,14 @@ export default {
     ...mapState(["s3url_profile"]),
     ...mapState("nav", ["navActive"]),
     ...mapState("userInfo", ["userInfo"]),
-    ...mapState("mypage", ["screenState", "flavors", "scraps"]),
+    ...mapState("mypage", ["flavors", "scraps"]),
     ...mapState("reviewDialog", ["reviewDialog"]),
     ...mapState("loginDialog", ["profileDialog"]),
+    ...mapMutations("loginDialog", ["SET_PROFILE_TOGGLE"]),
   },
   methods: {
     ...mapActions("mypage", ["getMyPreference", "actGetScrap"]),
     ...mapActions("userInfo", ["readUserInfo"]),
-    ...mapMutations("loginDialog", ["SET_PROFILE_TOGGLE"]),
-    ...mapMutations("mypage", ["SET_SCREEN_STATE"]),
     // infiniteHandler, props 전달
     infiniteHandler($state) {
       this.mypageReview($state);
@@ -194,7 +198,7 @@ export default {
       else return false;
     },
     setStage(index) {
-      this.SET_SCREEN_STATE(index);
+      this.screenState = index;
     },
     async mypageReview($state) {
       try {
@@ -233,7 +237,7 @@ export default {
       this.getScrap();
     },
     changeProfile() {
-      this.SET_PROFILE_TOGGLE();
+      this.SET_PROFILE_TOGGLE;
     },
   },
 };

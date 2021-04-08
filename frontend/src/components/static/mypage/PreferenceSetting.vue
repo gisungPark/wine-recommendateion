@@ -168,12 +168,19 @@ const FIRST_STAGE = 1,
   THIRD_STAGE = 3;
 
 export default {
-  props: ["preferenceList", "isUpdate"],
+  props: [],
   components: {
     Card,
   },
+  created() {
+    this.getFlavor();
+    this.onInit();
+  },
   watch: {
-    isUpdate: function () {
+    screenState: function () {
+      if (this.screenState == 4) {
+        this.getFlavor();
+      }
       this.onInit();
     },
   },
@@ -188,19 +195,30 @@ export default {
     list5: [],
     likeList: [],
     hateList: [],
+    preferenceList: [],
   }),
   created() {
     this.onInit();
   },
-  watch: {
-    preferenceList: function () {
-      this.onInit();
-    },
+
+  mounted() {
+    this.getFlavor();
+    this.onInit();
   },
-  mounted() {},
-  computed: {},
+  computed: {
+    ...mapState("mypage", ["screenState"]),
+  },
   methods: {
     onInit() {
+      this.likeList = [];
+      this.hateList = [];
+      this.list1 = [];
+      this.list2 = [];
+      this.list3 = [];
+      this.list4 = [];
+      this.list5 = [];
+      this.lickCnt = 0;
+      this.hateCnt = 0;
       for (var i = 0; i < this.preferenceList.length; i++) {
         if (this.preferenceList[i].isLike) {
           this.lickCnt++;
@@ -216,6 +234,10 @@ export default {
         else if (i % 5 == 3) this.list4.push(this.preferenceList[i]);
         else this.list5.push(this.preferenceList[i]);
       }
+    },
+    async getFlavor() {
+      const response = await mypageApi.mypageFlavor();
+      this.preferenceList = response.data;
     },
     onClickStage(stage) {
       this.curStage = stage;

@@ -11,11 +11,25 @@ const INIT_FLAVOR = () => {
 
 const state = {
   flavors: INIT_FLAVOR(),
+  screenState: 3,
 };
+const mutations = {
+  SET_FLAVORS(state, payload) {
+    state.flavors = payload;
+  },
+  SET_SCRAPS(state, payload) {
+    state.scraps = payload;
+  },
+  SET_SCREEN_STATE(state, index) {
+    state.screenState = index;
+  }
+};
+
 const getters = {
   getEventById: (state) => (id) => {
     return state.events.find((event) => event.id === id);
   },
+  
   getDiviedFlavors(state) {
     let diviedFlavors = {
       list1: [],
@@ -69,14 +83,7 @@ const actions = {
     }
   }
 };
-const mutations = {
-  SET_FLAVORS(state, payload) {
-    state.flavors = payload;
-  },
-  SET_SCRAPS(state, payload) {
-    state.scraps = payload;
-  }
-};
+
 
 export default {
   namespaced: true,

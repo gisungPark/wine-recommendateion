@@ -98,37 +98,35 @@ public class UserService {
 
         TokenResultDTO tokenResultDTO = new TokenResultDTO();
 
-        if(uid != null) {
-            if (user != null) {
-                if (user.getFlag()) {
-                    tokenResultDTO.setToken(token);
-                    tokenResultDTO.setNickname(user.getNickname());
-                    tokenResultDTO.setCode(2);
+        if (user != null) {
+            if (user.getFlag()) {
+                tokenResultDTO.setToken(user.getToken());
+                tokenResultDTO.setNickname(user.getNickname());
+                tokenResultDTO.setCode(2);
 
-                    return tokenResultDTO;
-                } else {
-                    tokenResultDTO.setToken(token);
-                    tokenResultDTO.setCode(3);
-
-                    return tokenResultDTO;
-                }
+                return tokenResultDTO;
             } else {
-                user = new User();
-
-                user.setUserId(userId);
-                user.setEmail(uid);
-                user.setProvider(1);
+                token = jwtTokenProvider.generateToken(user.getUserId());
                 user.setToken(token);
 
                 userRepository.save(user);
-
                 tokenResultDTO.setToken(token);
                 tokenResultDTO.setCode(3);
 
                 return tokenResultDTO;
             }
         } else {
-            tokenResultDTO.setCode(4);
+            User newUser = new User();
+
+            newUser.setUserId(userId);
+            newUser.setEmail(uid);
+            newUser.setProvider(1);
+            newUser.setToken(token);
+
+            userRepository.save(newUser);
+
+            tokenResultDTO.setToken(token);
+            tokenResultDTO.setCode(3);
 
             return tokenResultDTO;
         }
@@ -137,29 +135,14 @@ public class UserService {
     public TokenResultDTO updateUser(String token, String nickname) {
 	    String user_id = jwtTokenProvider.getUserId(token);
         User user = userRepository.findByUserId(user_id);
-        User user2 = userRepository.findByNickname(nickname);
         TokenResultDTO tokenResultDTO = new TokenResultDTO();
 
-        if(user2 != null) {
-            String new_token = jwtTokenProvider.generateToken(user_id);
+        user.setNickname(nickname);
+        user.setFlag(true);
 
-            user.setToken(new_token);
+        userRepository.save(user);
 
-            userRepository.save(user);
-
-            tokenResultDTO.setToken(new_token);
-            tokenResultDTO.setCode(6);
-
-        } else {
-            user.setNickname(nickname);
-            user.setToken(null);
-            user.setFlag(true);
-
-            userRepository.save(user);
-
-            tokenResultDTO.setCode(5);
-
-        }
+        tokenResultDTO.setCode(5);
 
         return tokenResultDTO;
     }

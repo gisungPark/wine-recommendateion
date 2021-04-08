@@ -46,7 +46,7 @@ public class UserController {
 			"- nickname(PathVariable): 닉네임\n" +
 			"Response\n" +
 			"- check: 중복인지 아닌지(true 중복x false 중복o")
-	public Boolean checkNickname(@PathVariable String nickname){
+	public Boolean checkNickname(@RequestHeader("TOKEN") String token, @PathVariable String nickname){
 		boolean check = userService.checkNickname(nickname);
 
 		return check;

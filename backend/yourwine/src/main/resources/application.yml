@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://10.0.3.226:3306/yourwine?serverTimezone=Asia/Seoul
     username: yourwine
-    password: yourwineC102
+    password: yourwine
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     database: mysql

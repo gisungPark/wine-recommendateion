@@ -84,15 +84,16 @@
         <div id="scoreModal-info">
           <span id="scoreModal-info-item1">Price?</span>
           <span id="scoreModal-info-item2">
-            {{ this.priceRange[0] }} ~ {{ this.priceRange[1] }}
+            {{ numberFormat(this.priceRange[0]) }} ~
+            {{ numberFormat(this.priceRange[1]) }}
           </span>
         </div>
         <div id="price-slider">
           <v-range-slider
             v-model="priceRange"
-            max="50000"
+            max="5000000"
             min="0"
-            step="10000"
+            step="100000"
             color="#821a33"
             track-fill-color="#821a33"
             @click="onchageFilter"
@@ -214,6 +215,9 @@ export default {
     grapeFilter: function () {
       this.onchageFilter();
     },
+    sort: function () {
+      this.onchageFilter();
+    },
   },
   data: () => ({
     contentState: -1,
@@ -221,7 +225,7 @@ export default {
     keyword: "", // 검색어
     sort: 0, // 정렬 조건
     pointFilter: 0, // 별점 조건
-    priceRange: [0, 50000], //startPrice, endPrice
+    priceRange: [0, 5000000], //startPrice, endPrice
     grapeFilter: "전체", //품종 조건
     typeFilter: "전체", // 와인 종류 조건
     wines: [],
@@ -261,8 +265,6 @@ export default {
           this.priceRange[0],
           this.priceRange[1]
         );
-        console.log("와인 서치 결과!!!!!!!!!!!!!");
-        console.log(response);
         if (response.data) {
           if (response.status == 200) {
             this.wines.push(...response.data);
@@ -272,10 +274,27 @@ export default {
             }, 1000);
           }
         } else {
-          console.log("###########################");
           $state.complete();
         }
       } catch {}
+    },
+    numberFormat(number) {
+      var string = number.toString();
+      var length = string.length;
+      var standard = length % 3 === 0 ? 3 : length % 3;
+      var arr = [];
+      var start = 0;
+
+      while (true) {
+        var temp = string.substr(start, standard);
+        if (temp === "") break;
+        arr.push(temp);
+        start = start + standard;
+        standard = 3;
+      }
+
+      var result = arr.join(",");
+      return result;
     },
   },
 };
@@ -478,7 +497,7 @@ export default {
   color: var(--basic-color-bg2);
 }
 #scoreModal-info-item2 {
-  font-size: 23px;
+  font-size: 20px;
   margin-right: 10px;
   color: var(--basic-color-fill);
 }

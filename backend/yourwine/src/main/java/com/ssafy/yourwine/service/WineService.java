@@ -145,7 +145,7 @@ public class WineService {
 		
 		//페이징
 		List<WineDTO> returnList = new ArrayList<WineDTO>();
-		int item = 8;
+		int item = 10;
 		int size = wineDtoList.size();
 		int startIdx = (page - 1 ) * item;
 		int endIdx = startIdx + item - 1;

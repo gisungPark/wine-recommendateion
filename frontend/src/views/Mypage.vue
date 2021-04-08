@@ -43,20 +43,9 @@
             <div id="review-title" class="item-title gray">내가 쓴 리뷰</div>
             <div style="height: 50px"></div>
             <div id="review-wraps">
-              <MyReviews
-                v-for="(review, idx) in reviews"
-                :key="idx"
-                :review="review"
-                :userInfo="userInfo"
-              />
+              <MyReviews v-for="(review, idx) in reviews" :key="idx" :review="review" :userInfo="userInfo" />
               <!-- 무한스크롤 ##################################################### -->
-              <infinite-loading
-                @infinite="infiniteHandler"
-                force-use-infinite-wrapper="true"
-                spinner="waveDots"
-                ref="infiniteLoading"
-                class="infinite"
-              >
+              <infinite-loading @infinite="infiniteHandler" force-use-infinite-wrapper="true" spinner="waveDots" ref="infiniteLoading" class="infinite">
                 <div slot="no-more">목록의 끝입니다.</div>
                 <div slot="no-results">요청 결과가 없습니다.</div>
                 <div slot="error" slot-scope="{ trigger }">
@@ -85,16 +74,16 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <script>
-import { mapState, mapMutations, mapActions, mapGetters } from "vuex";
-import * as mypageApi from "@/api/mypageApi";
-import MyReviews from "@/components/static/mypage/MyReviews.vue";
-import Reviews from "@/components/static/reviews/Reviews.vue";
-import ImgUpdate from "@/components/static/user/ImgUpdate.vue";
-import PreferenceSetting from "@/components/static/mypage/PreferenceSetting.vue";
-import ChartContent from "@/components/static/mypage/chart/ChartContent.vue";
-import Winelist from "@/components/articles/Winelist.vue";
-import WineItem from "@/components/articles/ScrapWineItem.vue";
-import InfiniteLoading from "vue-infinite-loading";
+import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
+import * as mypageApi from '@/api/mypageApi';
+import MyReviews from '@/components/static/mypage/MyReviews.vue';
+import Reviews from '@/components/static/reviews/Reviews.vue';
+import ImgUpdate from '@/components/static/user/ImgUpdate.vue';
+import PreferenceSetting from '@/components/static/mypage/PreferenceSetting.vue';
+import ChartContent from '@/components/static/mypage/chart/ChartContent.vue';
+import Winelist from '@/components/articles/Winelist.vue';
+import WineItem from '@/components/articles/ScrapWineItem.vue';
+import InfiniteLoading from 'vue-infinite-loading';
 
 const SCRAP = 1;
 const REVIEW = 2;
@@ -135,28 +124,28 @@ export default {
     this.mypageReview(this.$refs.infiniteLoading.stateChanger);
   },
   watch: {
-    reviewDialog: function () {
+    reviewDialog: function() {
       this.page = 1;
       this.reviews = [];
       this.mypageReview(this.$refs.infiniteLoading.stateChanger);
     },
-    profileDialog: function () {
+    profileDialog: function() {
       this.readUserInfo();
     },
   },
   computed: {
-    ...mapState(["s3url_profile"]),
-    ...mapState("nav", ["navActive"]),
-    ...mapState("userInfo", ["userInfo"]),
-    ...mapState("mypage", ["screenState", "flavors", "scraps"]),
-    ...mapState("reviewDialog", ["reviewDialog"]),
-    ...mapState("loginDialog", ["profileDialog"]),
+    ...mapState(['s3url_profile']),
+    ...mapState('nav', ['navActive']),
+    ...mapState('userInfo', ['userInfo']),
+    ...mapState('mypage', ['screenState', 'flavors', 'scraps']),
+    ...mapState('reviewDialog', ['reviewDialog']),
+    ...mapState('loginDialog', ['profileDialog']),
   },
   methods: {
-    ...mapActions("mypage", ["getMyPreference", "actGetScrap"]),
-    ...mapActions("userInfo", ["readUserInfo"]),
-    ...mapMutations("loginDialog", ["SET_PROFILE_TOGGLE"]),
-    ...mapMutations("mypage", ["SET_SCREEN_STATE"]),
+    ...mapActions('mypage', ['getMyPreference', 'actGetScrap']),
+    ...mapActions('userInfo', ['readUserInfo']),
+    ...mapMutations('loginDialog', ['SET_PROFILE_TOGGLE']),
+    ...mapMutations('mypage', ['SET_SCREEN_STATE']),
     // infiniteHandler, props 전달
     infiniteHandler($state) {
       this.mypageReview($state);
@@ -392,7 +381,7 @@ export default {
   min-height: 600px;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: wrap;
   padding-left: 22px;
 }

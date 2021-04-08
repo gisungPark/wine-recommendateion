@@ -80,7 +80,7 @@
         <div class="gifts-btn-group" v-if="contentState == 3">
           <button class="gifts-filter-toggle-btn" @click="clickedGiftsFilterToggleBtn">filter</button>
           <div class="gifts-slider-group" :class="{ 'gifts-slider-group-active': giftsFilterState }">
-            <v-range-slider label="Price" :value="price" v-model="price" min="0" max="999999" step="1" color="#821a33" track-fill-color="#821a33">
+            <v-range-slider label="Price" :value="price" v-model="price" min="0" max="999999" step="10000" color="#821a33" track-fill-color="#821a33">
             </v-range-slider>
             <p class="tick-label">{{ price[0] | currency }}원 ~ {{ price[1] | currency }}원</p>
             <div class="slider-btn-group">
